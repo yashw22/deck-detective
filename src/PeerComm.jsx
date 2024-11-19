@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import Peer from "peerjs";
 import { v4 as uuidv4 } from "uuid";
 
-const App = () => {
+export default function PeerComm() {
   const [peerId, setPeerId] = useState("");
   const [connectionId, setConnectionId] = useState("");
   const [messages, setMessages] = useState([]);
@@ -101,6 +101,4 @@ const App = () => {
       </div>
     </div>
   );
-};
-
-export default App;
+}
