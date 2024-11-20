@@ -1,4 +1,4 @@
-import { colorElements, typeElements, weaponElements } from "./constants"
+import { colorElements, colorHexs, defaultColorHex, defaultWeaponIcon, typeElements, weaponElements, weaponIcons } from "./constants"
 
 export const getWeaponDeck = () => {
     const weaponDeck = []
@@ -46,4 +46,12 @@ export const getSearchDeck = () => {
 
 
     return searchDeck
+}
+
+export const getCardWeaponIcon = (weapon) => {
+    return weaponElements.includes(weapon) ? weaponIcons[weapon] : defaultWeaponIcon
+}
+
+export const getCardColorHex = (color) => {
+    return colorElements.includes(color) ? colorHexs[color] : defaultColorHex
 }

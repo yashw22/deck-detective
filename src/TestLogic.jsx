@@ -1,7 +1,7 @@
-import { getSearchDeck, getWeaponDeck } from "./lib/utils";
+import { getWeaponDeck } from "./lib/utils";
 
-import PropertyCard from "./components/card/PropertyCard";
-import InvestigationSheet from "./components/InvestigationSheet/InvestigationSheet";
+import ElementCard from "./components/card/ElementCard";
+// import InvestigationSheet from "./components/InvestigationSheet/InvestigationSheet";
 
 export default function TestLogic() {
   const weaponDeck = getWeaponDeck();
@@ -11,20 +11,14 @@ export default function TestLogic() {
   // console.log("searchDeck: ", searchDeck);
 
   var cards = [];
-  for (let i = 0; i < 36; i++) {
-    cards.push(
-      <PropertyCard
-        color={weaponDeck[i].color}
-        type={weaponDeck[i].weapon}
-        number={weaponDeck[i].type}
-      />
-    );
+  for (let i = 0; i < 20; i++) {
+    cards.push(<ElementCard key={"card-"+i} card={weaponDeck[i]} />);
   }
 
   return (
     <div>
       <h1>Test Logics</h1>
-      <InvestigationSheet />
+      {/* <InvestigationSheet /> */}
       <div className="test-container">{cards}</div>
     </div>
   );
