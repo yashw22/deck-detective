@@ -1,54 +1,6 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
-  margin: 0;
-  padding: 0;
-}
-
-.app {
-  text-align: center;
-  padding: 20px;
-}
-
-.connection {
-  margin: 20px 0;
-}
-
-.chat {
-  margin-top: 30px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
-  background: #fff;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.messages {
-  max-height: 300px;
-  overflow-y: auto;
-  margin-bottom: 10px;
-}
-
-.message {
-  padding: 5px;
-  margin: 5px 0;
-}
-
-.outgoing {
-  text-align: right;
-}
-
-.incoming {
-  text-align: left;
-}
-
-.send input {
-  width: 70%;
-  padding: 8px;
-  margin-right: 5px;
-}
-
-.send button {
-  padding: 8px;
+.test-container{
+  display: flex;
+  flex-wrap: wrap;
+  /* flex: 1; */
+  /* width: 100vh; */
 }
