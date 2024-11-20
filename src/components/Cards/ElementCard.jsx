@@ -2,7 +2,7 @@ import { getCardColorHex, getCardWeaponIcon } from "../../lib/utils";
 import styles from "./ElementCard.module.css";
 import PropTypes from "prop-types";
 
-export default function ElementCard({ card = {} }) {
+export default function ElementCard({ card }) {
   let icon = getCardWeaponIcon(card.weapon);
 
   const renderIcons = () => {
@@ -34,8 +34,8 @@ export default function ElementCard({ card = {} }) {
 
 ElementCard.propTypes = {
   card: PropTypes.shape({
-    weapon: PropTypes.string,
-    type: PropTypes.number,
-    color: PropTypes.string,
-  }),
+    weapon: PropTypes.string.isRequired,
+    type: PropTypes.number.isRequired,
+    color: PropTypes.string.isRequired,
+  }).isRequired,
 };

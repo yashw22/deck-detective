@@ -1,0 +1,39 @@
+.boxContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.box {
+  padding-bottom: 0.5em;
+  width: 8em;
+  height: 1em;
+  overflow: hidden;
+  border: none;
+  resize: none;
+  cursor: pointer;
+}
+
+.markContainer {
+  position: relative;
+}
+
+.markContainer::before,
+.markContainer::after {
+  content: "";
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: 4px; 
+  height: 260%; 
+  background-color: blueviolet;
+}
+
+.markContainer::before {
+  transform: translateX(3px) translateY(5px) rotate(-71deg); 
+  transform-origin: top left;
+}
+
+.markContainer::after {
+  transform: translateX(7.8em) translateY(1px)  rotate(71deg); 
+  transform-origin: top left; 
+}

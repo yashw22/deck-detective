@@ -1,0 +1,92 @@
+.outerContainer {
+  display: inline-block;
+  /* background-color: gray; */
+}
+.buttonContainer {
+  /* background-color: gray; */
+  display: flex;
+  padding: 4px;
+}
+.buttonContainer div {
+  background-color: hsl(0, 0%, 70%);
+  color: white;
+  flex: 1;
+  /* flex-grow: 1; */
+  /* flex-shrink: 1; */
+  /* flex-basis: 0%; */
+  margin: 2px;
+  padding: 2px;
+  border-radius: 5px;
+  text-align: center;
+}
+.buttonContainer div:hover {
+  background-color: hsl(0, 0%, 55%);
+  cursor: pointer;
+}
+
+.header {
+  font-size: 2em;
+  text-align: center;
+}
+
+.gridContainer {
+  display: inline-block;
+  margin: 6px;
+}
+
+.weaponGrid {
+  /* background-color: gray; */
+  font-weight: bold;
+  border: 2px solid black;
+  margin: 5px;
+}
+.weaponHeader {
+  justify-self: center;
+  margin: 2px;
+}
+
+.typeRow {
+  display: flex;
+  border-top: 2px solid black;
+}
+.typeHeader {
+  text-align: center;
+  align-self: center;
+  min-width: 5em;
+}
+
+.playerTallyContainer{
+  display: flex;
+  padding: 4px;
+}
+
+.playerTallyGroup{
+  /* color: white; */
+  flex: 1;
+  margin: 2px;
+  border: 1px solid black;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.playerTallyBtns{
+  display: flex;
+  flex-direction: row;
+}
+.playerTallyBtns div{
+  background-color: hsl(0, 0%, 70%);
+  color: white;
+  flex: 1;
+  /* flex-grow: 1; */
+  /* flex-shrink: 1; */
+  /* flex-basis: 0%; */
+  margin: 2px;
+  /* padding: 2px; */
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+.playerTallyBtns div:hover {
+  background-color: hsl(0, 0%, 55%);
+  cursor: pointer;
+}

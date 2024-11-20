@@ -16,16 +16,16 @@ export const getSearchDeck = () => {
     const searchDeck = []
 
     searchDeck.push({
-        elementCount: 1,
-        free: "free"
+        elementsCount: 1,
+        free: true
     })
     weaponElements.forEach(weapon => {
         searchDeck.push({ elementsCount: 1, weapon: weapon })
-        searchDeck.push({ elementsCount: 2, weapon: weapon, free: "free" })
+        searchDeck.push({ elementsCount: 2, weapon: weapon, free: true })
     })
     typeElements.forEach(type => {
         searchDeck.push({ elementsCount: 1, type: type })
-        searchDeck.push({ elementsCount: 2, type: type, free: "free" })
+        searchDeck.push({ elementsCount: 2, type: type, free: true })
     })
     weaponElements.forEach(weapon => {
         typeElements.forEach(type => {
@@ -34,7 +34,7 @@ export const getSearchDeck = () => {
     })
     colorElements.forEach(color => {
         searchDeck.push({ elementsCount: 1, color: color })
-        searchDeck.push({ elementsCount: 2, color: color, free: "free" })
+        searchDeck.push({ elementsCount: 2, color: color, free: true })
 
         weaponElements.forEach(weapon => {
             searchDeck.push({ elementsCount: 2, weapon: weapon, color: color })
@@ -54,4 +54,8 @@ export const getCardWeaponIcon = (weapon) => {
 
 export const getCardColorHex = (color) => {
     return colorElements.includes(color) ? colorHexs[color] : defaultColorHex
+}
+
+export const getPlayers = () => {
+    return ["P1", "P2", "P3", "P4"]
 }
