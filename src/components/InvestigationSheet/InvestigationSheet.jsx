@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   colorElements,
   typeElements,
@@ -22,24 +22,25 @@ const initBoxFeatureMap = () => {
           focusBox1: false,
           focusBox2: false,
           markBox: false,
+          playerLabel: "",
         };
       });
     });
   });
   return features;
 };
-
 const initPlayerTally = (players) => {
   const playerTally = {};
   players.forEach((player) => (playerTally[player] = 0));
   return playerTally;
 };
+const initPlayerNotes = (players) => {
+  const playerNotes = {};
+  players.forEach((player) => (playerNotes[player] = ""));
+  return playerNotes;
+};
 
 export default function InvestigationSheet() {
-  // useEffect(() => {
-  //   console.log("Rendered InvestigationSheet");
-  // });
-
   const players = getPlayers();
 
   var [boxKey, setBoxKey] = useState(
@@ -48,6 +49,42 @@ export default function InvestigationSheet() {
   var [boxIdx, setBoxIdx] = useState(0);
   const [boxFeatureMap, setBoxFeatureMap] = useState(initBoxFeatureMap());
   const [playerTally, setPlayerTally] = useState(initPlayerTally(players));
+  const [notesData, setNotesData] = useState(initPlayerNotes(players));
+
+  useEffect(() => {
+    console.log("Rendered InvestigationSheet");
+    const local_boxFeatureMap = localStorage.getItem(
+      "investigationSheet_boxFeatureMap"
+    );
+    if (local_boxFeatureMap) setBoxFeatureMap(JSON.parse(local_boxFeatureMap));
+    const local_playerTally = localStorage.getItem(
+      "investigationSheet_playerTally"
+    );
+    console.log(local_playerTally);
+    if (local_playerTally) setPlayerTally(JSON.parse(local_playerTally));
+    const local_notesData = localStorage.getItem(
+      "investigationSheet_notesData"
+    );
+    if (local_notesData) setNotesData(JSON.parse(local_notesData));
+  }, []);
+  useEffect(() => {
+    localStorage.setItem(
+      "investigationSheet_boxFeatureMap",
+      JSON.stringify(boxFeatureMap)
+    );
+  }, [boxFeatureMap]);
+  useEffect(() => {
+    localStorage.setItem(
+      "investigationSheet_playerTally",
+      JSON.stringify(playerTally)
+    );
+  }, [playerTally]);
+  useEffect(() => {
+    localStorage.setItem(
+      "investigationSheet_notesData",
+      JSON.stringify(notesData)
+    );
+  }, [notesData]);
 
   const handleBoxBtn = useCallback(
     (newBoxKey, newBoxIdx) => {
@@ -95,13 +132,13 @@ export default function InvestigationSheet() {
     }
   };
   const handleClearBtn = () => {
-    const contentKey = "contentBox" + boxIdx;
-    if (boxIdx !== 0 && boxFeatureMap[boxKey][contentKey].len !== 0) {
+    if (boxIdx !== 0) {
       setBoxFeatureMap((b) => ({
         ...b,
         [boxKey]: {
           ...b[boxKey],
-          [contentKey]: [],
+          contentBox1: [],
+          contentBox2: [],
         },
       }));
     }
@@ -112,6 +149,18 @@ export default function InvestigationSheet() {
         ...b,
         [boxKey]: { ...b[boxKey], markBox: !b[boxKey].markBox },
       }));
+    }
+  };
+  const handleWipeBtn = () => {
+    const userResponse = confirm("You are about to wipe all data. Proceed?");
+    if (userResponse) {
+      setBoxKey(
+        weaponElements[0] + "-" + typeElements[0] + "-" + colorElements[0]
+      );
+      setBoxIdx(0);
+      setBoxFeatureMap(initBoxFeatureMap());
+      setPlayerTally(initPlayerTally(players));
+      setNotesData(initPlayerNotes(players));
     }
   };
 
@@ -155,19 +204,7 @@ export default function InvestigationSheet() {
     <div className={styles.outerContainer}>
       <div className={styles.header}>Investigation Sheet</div>
 
-      <div className={styles.playerTallyContainer}>
-        {players.map((player) => (
-          <div className={styles.playerTallyGroup} key={"tally-" + player}>
-            {player}: &nbsp;&nbsp; <span>{playerTally[player]}</span>
-            <div className={styles.playerTallyBtns}>
-              <div onClick={() => handleDecrementBtn(player)}>-</div>
-              <div onClick={() => handleIncrementBtn(player)}>+</div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className={styles.gridContainer}>
+      <div id="gridContainer" className={styles.gridContainer}>
         {weaponElements.map((weapon) => getWeaponGrid(weapon))}
       </div>
 
@@ -186,7 +223,34 @@ export default function InvestigationSheet() {
           <div onClick={handleBackBtn}>back</div>
           <div onClick={handleClearBtn}>clear</div>
           <div onClick={handleMarkBtn}>mark</div>
+          <div onClick={handleWipeBtn} style={{ backgroundColor: "red" }}>
+            CROSS
+          </div>
         </div>
+      </div>
+
+      <div className={styles.notesAreaContainer}>
+        {players.map((player) => (
+          <div key={"notes-" + player} className={styles.notesRowContainer}>
+            <div className={styles.playerTallyGroup}>
+              <div className={styles.playerTallyContents}>
+                <div>{player}</div>:<div>{playerTally[player]}</div>
+              </div>
+              <div className={styles.playerTallyBtns}>
+                <div onClick={() => handleDecrementBtn(player)}>-</div>
+                <div onClick={() => handleIncrementBtn(player)}>+</div>
+              </div>
+            </div>
+            <textarea
+              className={styles.notesArea}
+              spellCheck={false}
+              value={notesData[player]}
+              onChange={(e) =>
+                setNotesData((n) => ({ ...n, [player]: e.target.value }))
+              }
+            />
+          </div>
+        ))}
       </div>
     </div>
   );

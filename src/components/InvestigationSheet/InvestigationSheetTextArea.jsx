@@ -1,13 +1,9 @@
 import PropTypes from "prop-types";
 import { getCardColorHex } from "../../lib/utils";
 import { textColorForColorBg } from "../../lib/constants";
-import { memo } from "react";
 import styles from "./InvestigationSheetTextArea.module.css";
 
-const InvestigationSheetTextArea = memo(function InvestigationSheetTextArea({
-  features,
-  onBoxClick,
-}) {
+export default function InvestigationSheetTextArea({ features, onBoxClick }) {
   const boxKey = features.weapon + "-" + features.type + "-" + features.color;
 
   // useEffect(() => {
@@ -38,18 +34,18 @@ const InvestigationSheetTextArea = memo(function InvestigationSheetTextArea({
         style={topBoxStyle}
         onClick={() => onBoxClick(boxKey, 1)}
       >
-        {features.contentBox1.join("-")}
+        {features.contentBox1.join(" ")}
       </div>
       <div
         className={styles.box}
         style={bottomBoxStyle}
         onClick={() => onBoxClick(boxKey, 2)}
       >
-        {features.contentBox2.join("-")}
+        {features.contentBox2.join(" ")}
       </div>
     </div>
   );
-});
+}
 
 InvestigationSheetTextArea.propTypes = {
   features: PropTypes.shape({
@@ -64,5 +60,3 @@ InvestigationSheetTextArea.propTypes = {
   }).isRequired,
   onBoxClick: PropTypes.func,
 };
-
-export default InvestigationSheetTextArea;

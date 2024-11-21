@@ -49,13 +49,14 @@ export const getSearchDeck = () => {
 }
 
 export const getCardWeaponIcon = (weapon) => {
-    return weaponElements.includes(weapon) ? weaponIcons[weapon] : defaultWeaponIcon
+    return weapon in weaponIcons ? weaponIcons[weapon] : defaultWeaponIcon
 }
 
 export const getCardColorHex = (color) => {
-    return colorElements.includes(color) ? colorHexs[color] : defaultColorHex
+    return color in colorHexs ? colorHexs[color] : defaultColorHex
 }
 
 export const getPlayers = () => {
-    return ["P1", "P2", "P3", "P4"]
+    // return ["P1", "P2", "P3", "P4"]
+    return ["Kj", "Mm", "Sj", "Yw"]
 }

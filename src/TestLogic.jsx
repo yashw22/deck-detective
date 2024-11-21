@@ -9,7 +9,7 @@ export default function TestLogic() {
   // // console.log("weaponDeck: ", weaponDeck);
 
   // const searchDeck = getSearchDeck();
-  // console.log("searchDeck: ", searchDeck);
+  // // console.log("searchDeck: ", searchDeck);
 
   // var cards = [];
   // for (let i = 0; i < 36; i++) {
