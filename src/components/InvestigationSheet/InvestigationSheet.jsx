@@ -52,7 +52,6 @@ export default function InvestigationSheet() {
   const [notesData, setNotesData] = useState(initPlayerNotes(players));
 
   useEffect(() => {
-    console.log("Rendered InvestigationSheet");
     const local_boxFeatureMap = localStorage.getItem(
       "investigationSheet_boxFeatureMap"
     );
@@ -60,7 +59,6 @@ export default function InvestigationSheet() {
     const local_playerTally = localStorage.getItem(
       "investigationSheet_playerTally"
     );
-    console.log(local_playerTally);
     if (local_playerTally) setPlayerTally(JSON.parse(local_playerTally));
     const local_notesData = localStorage.getItem(
       "investigationSheet_notesData"
@@ -143,7 +141,7 @@ export default function InvestigationSheet() {
       }));
     }
   };
-  const handleMarkBtn = () => {
+  const handleCrossBtn = () => {
     if (boxIdx !== 0) {
       setBoxFeatureMap((b) => ({
         ...b,
@@ -151,7 +149,7 @@ export default function InvestigationSheet() {
       }));
     }
   };
-  const handleWipeBtn = () => {
+  const handleResetBtn = () => {
     const userResponse = confirm("You are about to wipe all data. Proceed?");
     if (userResponse) {
       setBoxKey(
@@ -222,9 +220,9 @@ export default function InvestigationSheet() {
         <div className={styles.buttonContainer}>
           <div onClick={handleBackBtn}>back</div>
           <div onClick={handleClearBtn}>clear</div>
-          <div onClick={handleMarkBtn}>mark</div>
-          <div onClick={handleWipeBtn} style={{ backgroundColor: "red" }}>
-            CROSS
+          <div onClick={handleCrossBtn}>cross</div>
+          <div onClick={handleResetBtn} style={{ backgroundColor: "red" }}>
+            RESET
           </div>
         </div>
       </div>
