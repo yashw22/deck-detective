@@ -1,0 +1,52 @@
+.notesAreaContainer {
+  margin-top: 10px;
+}
+
+.notesRowContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.notesArea {
+  width: 82%;
+  margin-right: 6px;
+  font-size: 1.4em;
+  height: 4em;
+  resize: vertical;
+}
+
+.playerTallyGroup {
+  font-size: 1.2em;
+  flex: 1;
+  margin: 0px 4px;
+  text-align: center;
+}
+
+.playerTallyContents {
+  display: flex;
+  flex-direction: row;
+}
+.playerTallyContents div {
+  flex: 1;
+}
+
+.playerTallyBtns {
+  display: flex;
+  flex-direction: row;
+}
+.playerTallyBtns div {
+  background-color: hsl(0, 0%, 55%);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+  font-size: 1.2em;
+  color: white;
+  flex: 1;
+  margin: 2px;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+}
+.playerTallyBtns div:hover {
+  background-color: hsl(0, 0%, 70%);
+  cursor: pointer;
+}

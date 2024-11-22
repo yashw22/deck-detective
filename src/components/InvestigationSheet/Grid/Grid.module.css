@@ -1,0 +1,25 @@
+.gridContainer {
+  display: inline-block;
+  margin: 0px 10px;
+  background-color: #e0e0e0;
+}
+
+.weaponGrid {
+  font-weight: bold;
+  border: 2px solid black;
+  margin: 5px;
+}
+.weaponHeader {
+  justify-self: center;
+  margin: 2px;
+}
+
+.typeRow {
+  display: flex;
+  border-top: 2px solid black;
+}
+.typeHeader {
+  text-align: center;
+  align-self: center;
+  min-width: 5em;
+}
