@@ -24,17 +24,17 @@ const Notes = forwardRef(function Notes({ players }, ref) {
   const [notesData, setNotesData] = useState(initPlayerNotes(players));
 
   useEffect(() => {
-    const ss_playerTally = sessionStorage.getItem("isNotes_tally");
-    if (ss_playerTally) setPlayerTally(JSON.parse(ss_playerTally));
-    const ss_notesData = sessionStorage.getItem("isNotes_data");
-    if (ss_notesData) setNotesData(JSON.parse(ss_notesData));
+    const ls_playerTally = localStorage.getItem("isNotes_tally");
+    if (ls_playerTally) setPlayerTally(JSON.parse(ls_playerTally));
+    const ls_notesData = localStorage.getItem("isNotes_data");
+    if (ls_notesData) setNotesData(JSON.parse(ls_notesData));
   }, []);
   useEffect(
-    () => sessionStorage.setItem("isNotes_tally", JSON.stringify(playerTally)),
+    () => localStorage.setItem("isNotes_tally", JSON.stringify(playerTally)),
     [playerTally]
   );
   useEffect(
-    () => sessionStorage.setItem("isNotes_data", JSON.stringify(notesData)),
+    () => localStorage.setItem("isNotes_data", JSON.stringify(notesData)),
     [notesData]
   );
 

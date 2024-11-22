@@ -1,9 +1,17 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import styles from "./ButtonPanel.module.css";
 import PropTypes from "prop-types";
 
 function ButtonPanel({ players, selectedBox, onButtonClick }) {
   const [commonCount, setCommonCount] = useState(0);
+
+  useEffect(() => {
+    const ls_commonCount = localStorage.getItem("is_commonCount");
+    if (ls_commonCount) setCommonCount(JSON.parse(ls_commonCount));
+  }, []);
+  useEffect(() => {
+    localStorage.setItem("is_commonCount", JSON.stringify(commonCount));
+  }, [commonCount]);
 
   const handlBtnClick = (btnType, param) => {
     switch (btnType) {

@@ -39,11 +39,11 @@ const Grid = forwardRef(function Grid({ players, getFeatureForBtns }, ref) {
   const [boxFeatures, setBoxFeatures] = useState(initBoxFeatures(players));
 
   useEffect(() => {
-    const ss_boxFeatures = sessionStorage.getItem("is_boxFeatures");
-    if (ss_boxFeatures) setBoxFeatures(JSON.parse(ss_boxFeatures));
+    const ls_boxFeatures = localStorage.getItem("is_boxFeatures");
+    if (ls_boxFeatures) setBoxFeatures(JSON.parse(ls_boxFeatures));
   }, []);
   useEffect(() => {
-    sessionStorage.setItem("is_boxFeatures", JSON.stringify(boxFeatures));
+    localStorage.setItem("is_boxFeatures", JSON.stringify(boxFeatures));
   }, [boxFeatures]);
 
   useImperativeHandle(ref, () => ({
