@@ -32,7 +32,7 @@ function GridCell({ feature, onBoxClick }) {
       <div
         className={styles.markedContainer}
         style={{
-          backgroundColor: lightenColor(feature.color, 20),
+          backgroundColor: lightenColor(feature.color, 70),
           outline: feature.focusB1 ? "3px solid white" : "",
         }}
         onClick={() => onBoxClick(boxKey, 1)}
