@@ -1,28 +1,34 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import styles from "./GridCell.module.css";
-import { getCardColorHex, lightenColor } from "../../../lib/utils";
-import { textColorForColorBg } from "../../../lib/constants";
+import { getCardColorHex } from "../../lib/utils";
 
 function GridCell({ feature, onBoxClick }) {
   const boxKey = feature.weapon + feature.type + feature.color;
 
   const topBoxStyle = {
-    backgroundColor: getCardColorHex(feature.color),
-    color: textColorForColorBg,
-    outline: feature.focusB1 ? "3px solid white" : "none",
+    // backgroundColor: getCardColorHex(feature.color),
+    // outline: feature.focusB1 ? "3px solid blue" : "none",
+    backgroundColor: feature.focusB1 ? "gray" : getCardColorHex(feature.color),
   };
   const bottomBoxStyle = {
-    backgroundColor: getCardColorHex(feature.color),
-    color: textColorForColorBg,
-    outline: feature.focusB2 ? "3px solid white" : "none",
+    // backgroundColor: getCardColorHex(feature.color),
+    // outline: feature.focusB2 ? "3px solid blue" : "none",
+    backgroundColor: feature.focusB2 ? "gray" : getCardColorHex(feature.color),
   };
 
   if (feature.common)
     return (
       <div
         className={styles.commonContainer}
-        style={{ outline: feature.focusB1 ? "3px solid white" : "" }}
+        style={{
+          // backgroundColor: getCardColorHex(feature.color),
+          // outline: feature.focusB1 || feature.focusB2 ? "3px solid blue" : "",
+          backgroundColor:
+            feature.focusB1 || feature.focusB2
+              ? "gray"
+              : getCardColorHex(feature.color),
+        }}
         onClick={() => onBoxClick(boxKey, 1)}
       ></div>
     );
@@ -30,14 +36,18 @@ function GridCell({ feature, onBoxClick }) {
   if (feature.marked)
     return (
       <div
-        className={styles.markedContainer}
+        className={`${styles.markedContainer} ${styles.commonContainer}`}
         style={{
-          backgroundColor: lightenColor(feature.color, 70),
-          outline: feature.focusB1 ? "3px solid white" : "",
+          // backgroundColor: getCardColorHex(feature.color),
+          // outline: feature.focusB1 || feature.focusB2 ? "3px solid blue" : "",
+          backgroundColor:
+            feature.focusB1 || feature.focusB2
+              ? "gray"
+              : getCardColorHex(feature.color),
         }}
         onClick={() => onBoxClick(boxKey, 1)}
       >
-        {feature.label}
+        <span>{feature.label}</span>
       </div>
     );
 

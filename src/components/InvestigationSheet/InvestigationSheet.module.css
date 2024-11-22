@@ -10,3 +10,145 @@
   text-align: center;
   font-weight: bold;
 }
+
+.gridContainer {
+  display: inline-block;
+  margin: 0px 10px;
+  background-color: #e0e0e0;
+}
+
+.weaponGrid {
+  border: 2px solid black;
+  margin: 5px;
+}
+.weaponHeader {
+  font-weight: bold;
+  justify-self: center;
+  margin: 2px;
+}
+
+.typeRow {
+  display: flex;
+  border-top: 2px solid black;
+}
+.typeHeader {
+  text-align: center;
+  align-self: center;
+  min-width: 5em;
+}
+
+.buttonContainer {
+  /* background-color: gray; */
+  display: flex;
+  margin-bottom: 4px;
+}
+.topBtn {
+  color: white;
+  flex: 1;
+  margin: 2px;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+}
+.topBtnL,
+.topBtnR {
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  /* border: 1px solid black; */
+  padding: 8px;
+  flex: 1;
+  cursor: pointer;
+}
+
+.topBtnL {
+  border-radius: 8px 0px 0px 8px;
+  border-right: 1px solid white;
+}
+.topBtnR {
+  border-radius: 0px 8px 8px 0px;
+  border-left: 1px solid white;
+}
+
+.btnGrayBg {
+  background-color: hsl(0, 0%, 55%);
+}
+
+.btnGrayBg:hover {
+  background-color: hsl(0, 0%, 70%);
+}
+
+.btnGreenBg {
+  background-color: hsl(140, 70%, 40%);
+}
+.btnGreenBg:hover {
+  background-color: hsl(140, 70%, 55%);
+}
+
+.lowerBtn {
+  background-color: hsl(0, 0%, 55%);
+  color: white;
+  flex: 1;
+  margin: 2px;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  flex-direction: row;
+}
+.lowerBtn:hover {
+  background-color: hsl(0, 0%, 70%);
+  cursor: pointer;
+}
+
+.notesAreaContainer {
+  margin-top: 10px;
+}
+
+.notesRowContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.notesArea {
+  width: 82%;
+  margin-right: 6px;
+  font-size: 1.4em;
+  height: 4em;
+  resize: vertical;
+}
+
+.playerTallyGroup {
+  font-size: 1.2em;
+  flex: 1;
+  margin: 0px 4px;
+  text-align: center;
+}
+
+.playerTallyContents {
+  display: flex;
+  flex-direction: row;
+}
+.playerTallyContents div {
+  flex: 1;
+}
+
+.playerTallyBtns {
+  display: flex;
+  flex-direction: row;
+}
+.playerTallyBtns div {
+  background-color: hsl(0, 0%, 55%);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+  font-size: 1.2em;
+  color: white;
+  flex: 1;
+  margin: 2px;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+}
+.playerTallyBtns div:hover {
+  background-color: hsl(0, 0%, 70%);
+  cursor: pointer;
+}

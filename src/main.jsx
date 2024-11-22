@@ -5,10 +5,10 @@ import TestComponents from "./TestComponents";
 // import TestGameLogic from "./TestGameLogic";
 
 createRoot(document.getElementById("root")).render(
-  <TestComponents />
-  // <StrictMode>
-  //   {/* <PeerComm /> */}
-  //   <TestComponents />
-  //   {/* <TestGameLogic /> */}
-  // </StrictMode>
+  // <TestComponents />
+  <StrictMode>
+    {/* <PeerComm /> */}
+    <TestComponents />
+    {/* <TestGameLogic /> */}
+  </StrictMode>
 );
