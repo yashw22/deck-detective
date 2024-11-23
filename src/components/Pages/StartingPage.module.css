@@ -1,0 +1,107 @@
+/* Base Styles */
+.body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #121212; /* Dark background for a mysterious vibe */
+    color: #e5e5e5; /* Soft white for text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: radial-gradient(circle, #1a1a1a 0%, #121212 100%); /* Adds depth */
+  }
+  
+  /* Card Container */
+  .card {
+    background: #1f1f1f; /* Dark gray card background */
+    border: 1px solid #444; /* Subtle border */
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); /* Dramatic shadow */
+    transform: scale(1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .card:hover {
+    transform: scale(1.03); /* Slight zoom effect */
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8); /* Enhance shadow on hover */
+  }
+  
+  /* Title */
+  .title {
+    font-size: 1.8rem;
+    color: #f3f3f3; /* Brighter text for the title */
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-family: 'Creepster', cursive; /* Add a mysterious font */
+  }
+  
+  /* Input Field */
+  .input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #555; /* Darker border */
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #2c2c2c; /* Dark input background */
+    color: #e5e5e5; /* Light text for contrast */
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .input:focus {
+    border-color: #ffcc00; /* Gold border on focus */
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.5); /* Glowing gold outline */
+  }
+  
+  /* Submit Button */
+  .button {
+    display: block;
+    width: 100%;
+    background-color: #ffcc00; /* Gold button */
+    color: #1f1f1f; /* Dark text for contrast */
+    font-size: 1rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 1rem;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #e6b800; /* Darker gold on hover */
+    transform: translateY(-2px); /* Lift button slightly */
+  }
+  
+  .button:active {
+    transform: translateY(0); /* Reset on click */
+  }
+  
+  .optionButton {
+    display: block;
+    width: 100%;
+    background-color: #ffcc00;
+    color: #1f1f1f;
+    font-size: 1rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 1rem 0;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .optionButton:hover {
+    background-color: #e6b800;
+    transform: translateY(-2px);
+  }
+  
+  .optionButton:active {
+    transform: translateY(0);
+  }
