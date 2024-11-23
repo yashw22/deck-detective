@@ -12,10 +12,15 @@ export default function PeerComm() {
 
   // // Initialize Peer instance on component mount
   useEffect(() => {
-    const newPeer = new Peer(uuidv4());
+    const newPeer = new Peer(uuidv4(), {
+      host: "peerjs-server-d8ry.onrender.com",
+      path: "/deckdetective",
+      secure: true,
+    });
     peer.current = newPeer;
 
     newPeer.on("open", (id) => {
+      console.log("peer created");
       setPeerId(id);
     });
 

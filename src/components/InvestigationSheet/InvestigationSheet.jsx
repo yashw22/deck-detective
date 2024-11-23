@@ -255,7 +255,7 @@ export default function InvestigationSheet({ players }) {
             <div key={"button-" + player} className={styles.topBtn}>
               <div
                 className={`${styles.topBtnL} ${
-                  boxIdx === 0 &&
+                  boxIdx &&
                   (boxFeatures[boxKey].label === player ||
                     (!(
                       boxFeatures[boxKey].marked || boxFeatures[boxKey].common
@@ -271,7 +271,7 @@ export default function InvestigationSheet({ players }) {
               </div>
               <div
                 className={`${styles.topBtnR} ${
-                  boxIdx === 0 &&
+                  boxIdx &&
                   (boxFeatures[boxKey].label === player ||
                     (!(
                       boxFeatures[boxKey].marked || boxFeatures[boxKey].common
