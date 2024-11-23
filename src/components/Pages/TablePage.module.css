@@ -1,0 +1,58 @@
+/* Main Container */
+.body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #121212; /* Dark background */
+    color: #e5e5e5; /* Light text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: radial-gradient(circle, #1a1a1a 0%, #121212 100%);
+  }
+  
+  /* Table Section */
+  .tableContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .table {
+    position: relative;
+    width: 300px; /* Table size */
+    height: 300px;
+    background: radial-gradient(circle, #3d3d3d, #1f1f1f); /* Table-like gradient */
+    border: 8px solid #7a5230; /* Wooden border */
+    border-radius: 50%; /* Circular table */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+  }
+  
+  /* Player Icon */
+  .playerIcon {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #ffcc00; /* Gold for players */
+    border: 2px solid #ffffff; /* White border for contrast */
+    border-radius: 50%; /* Circular icon */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #1f1f1f; /* Dark text inside */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    transform: translate(-50%, -50%); /* Center the icons perfectly */
+  }
+  
+  /* Detective Name Heading */
+  .detectiveName {
+    font-size: 1.5rem;
+    color: #e5e5e5;
+    font-weight: bold;
+    text-align: center;
+  }
+  
