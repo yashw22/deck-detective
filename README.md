@@ -1,5 +1,5 @@
-# **Deck Detective: Online Sleuth Game**
-[Deck Detective](https://yashw22.github.io/deck-detective/) is an online version of the classic card game "Sleuth," where players take on the role of detectives to solve a mystery by deducing the hidden card. Play with 3-5 players and test your skills of deduction and strategy!
+# **Deck Detective**
+[Deck Detective](https://yashw22.github.io/deck-detective/) is an online card game where players take on the role of detectives to solve a mystery by deducing the hidden card. Play with 3-5 players and test your skills of deduction and strategy!
 
 ---
 
