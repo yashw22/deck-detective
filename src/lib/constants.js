@@ -1,10 +1,10 @@
-// export const weaponElements = ["Diamond", "Opal", "Pearl"]
-export const weaponElements = ["Axe", "Blaster", "Crossbow"]
+export const weaponElements = ["Diamond", "Opal", "Pearl"]
+// export const weaponElements = ["Axe", "Blaster", "Crossbow"]
 export const typeElements = [1, 2, 3]
 export const colorElements = ["red", "blue", "green", "yellow"]
 
-export const weaponIcons = { "Axe": "🪓", "Blaster": "🔫", "Crossbow": "🏹" }
-// export const weaponIcons = { "Diamond": "💎", "Opal": "🥚", "Pearl": "⚽" }
+// export const weaponIcons = { "Axe": "🪓", "Blaster": "🔫", "Crossbow": "🏹" }
+export const weaponIcons = { "Diamond": "💎", "Opal": "🍆", "Pearl": "⚽" }
 export const defaultWeaponIcon = "❓"
 
 // export const colorHexs = { "red": "red", "green": "green", "blue": "blue", "yellow": "yellow" }
