@@ -9,7 +9,7 @@ export default function CreateGame() {
   const [connList, setConnList] = useState([]);
   const [count, setCount] = useState(0);
 
-  const newConnectionRequest = (newConn) => {
+  const setupConnectionRequest = (newConn) => {
     if (connList.length < maxPlayers) {
       console.log(newConn, connList, maxPlayers);
       setConnList((c) => [...c, newConn]);
@@ -23,22 +23,24 @@ export default function CreateGame() {
   };
 
   useEffect(() => {
-    const newPeer = new Peer();
+    const myPeer = new Peer();
     // const newPeer = new Peer({
     //   host: "peerjs-server-d8ry.onrender.com",
     //   path: "/deckdetective",
     //   secure: true,
     // });
-    myPeerRef.current = newPeer;
+    myPeerRef.current = myPeer;
 
-    newPeer.on("open", (id) => {
+    myPeer.on("open", (id) => {
       console.log("Self node created");
       setCount((c) => c + 1);
       setMyPeerId(id);
     });
-    newPeer.on("connection", newConnectionRequest);
+
+    myPeer.on("connection", setupConnectionRequest);
+
     return () => {
-      newPeer.destroy();
+      myPeer.destroy();
     };
   }, []);
 

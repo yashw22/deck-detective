@@ -1,6 +1,6 @@
-import ElementCard from "./components/Cards/ElementCard";
-import InvestigationSheet from "./components/InvestigationSheet/InvestigationSheet";
-import { getPlayers, getWeaponDeck } from "./lib/utils";
+import ElementCard from "../Cards/ElementCard";
+import InvestigationSheet from "../InvestigationSheet/InvestigationSheet";
+import { getPlayers, getWeaponDeck } from "../../lib/utils";
 
 export default function TestComponents() {
   const players = getPlayers();

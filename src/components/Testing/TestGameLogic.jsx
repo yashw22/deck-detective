@@ -1,5 +1,5 @@
 // import { useState } from "react";
-import { getPlayers, getSearchDeck, getWeaponDeck } from "./lib/utils";
+import { getPlayers, getSearchDeck, getWeaponDeck } from "../../lib/utils";
 
 const distributeWeaponCards = (playersCount) => {
   var deck = getWeaponDeck();

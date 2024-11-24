@@ -1,7 +1,7 @@
 import  { useState, useEffect } from "react";
 import { ref, set} from "firebase/database";
 import Peer from "peerjs";
-import database from "../firebaseConfig";
+import database from "../../../firebaseConfig";
 
 const FirebaseChat = () => {
   const [peerId, setPeerId] = useState("");
