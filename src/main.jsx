@@ -1,18 +1,16 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-// import PeerComm from "./components/Testing/PeerComm.jsx";
-// import TestLobby from "./components/Testing/TestLobby.jsx";
+import Lobby from "./components/Testing/LobbyTesting";
 // import Firebase from "./components/Testing/Firebase.jsx";
-import TestComponents from "./components/Testing/TestComponents";
+// import TestComponents from "./components/Testing/TestComponents";
 // import TestGameLogic from "./components/Testing/TestGameLogic";
 
 createRoot(document.getElementById("root")).render(
   // <TestComponents />
   <StrictMode>
-    {/* <PeerComm /> */}
-    {/* <TestLobby /> */}
+    <Lobby />
     {/* <Firebase /> */}
-    <TestComponents />
+    {/* <TestComponents /> */}
     {/* <TestGameLogic /> */}
   </StrictMode>
 );

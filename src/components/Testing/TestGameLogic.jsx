@@ -1,5 +1,7 @@
 // import { useState } from "react";
 import { getPlayers, getSearchDeck, getWeaponDeck } from "../../lib/utils";
+import ElementCard from "../Cards/ElementCard";
+import SearchCard from "../Cards/SearchCard";
 
 const distributeWeaponCards = (playersCount) => {
   var deck = getWeaponDeck();
@@ -106,6 +108,14 @@ export default function TestGameLogic() {
   //     setCount((c) => c + 1);
   //   };
 
+  // const elementCard = getWeaponDeck();
+  // var cards = [];
+  // elementCard.forEach((card) => cards.push(<ElementCard card={card} />));
+
+  const searchCard = getSearchDeck();
+  var cards = [];
+  searchCard.forEach((card) => cards.push(<SearchCard card={card} />));
+
   return (
     <div>
       <h1>Test Game Logic</h1>
@@ -113,6 +123,7 @@ export default function TestGameLogic() {
       <div>
         Next Search Card: ({count}) {JSON.stringify(pickedSearchCard)}
       </div> */}
+      <div style={{ display: "flex", flexWrap: "wrap" }}>{cards}</div>
     </div>
   );
 }
