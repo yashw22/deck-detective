@@ -29,6 +29,13 @@ export default function JoinGame({ myName }) {
       setPlayerCount(1);
     });
     return () => {
+      // New code to gracefully close connection, not yet tested
+      // if (hostConnRef.current) {
+      //   hostConnRef.current.send({
+      //     type: "closeConn",
+      //   });
+      //   hostConnRef.current.close();
+      // }
       newPeer.destroy();
     };
   }, []);

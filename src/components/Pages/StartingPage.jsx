@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
-import styles from './StartingPage.module.css';
+import { useState } from "react";
+import LobbyCreatePage from "./LobbyCreatePage";
+import LobbyJoinPage from "./LobbyJoinPage";
 
-const StartingPage = () => {
-  const [name, setName] = useState(''); // Store the detective's name
+import styles from "./StartingPage.module.css";
+
+export default function StartingPage() {
+  const [name, setName] = useState(""); // Store the detective's name
   const [isGamePage, setIsGamePage] = useState(false); // Toggle between pages
+  const [activeComponent, setActiveComponent] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (name.trim()) {
       setIsGamePage(true); // Move to the second page
     } else {
-      alert('Please enter a valid name!');
+      alert("Please enter a valid name!");
     }
   };
 
-  const handleCreateGame = () => {
-    alert('Create Game selected!'); // Replace with navigation logic
+  const handleLobbyOptionClick = (component) => {
+    setActiveComponent(component);
   };
 
-  const handleJoinGame = () => {
-    alert('Join Game selected!'); // Replace with navigation logic
-  };
-
-  return (
-    <div className={styles.body}>
-      {!isGamePage ? (
-        /* First Page: Enter Name */
+  /* First Page: Enter Name */
+  if (!isGamePage)
+    return (
+      <div className={styles.body}>
         <div className={styles.card}>
           <h1 className={styles.title}>Deck Detective</h1>
           <form onSubmit={handleSubmit}>
@@ -42,27 +42,37 @@ const StartingPage = () => {
             </button>
           </form>
         </div>
-      ) : (
-        /* Second Page: Game Options */
+      </div>
+    );
+
+  /* Second Page: Game Options */
+  if (!activeComponent)
+    return (
+      <div className={styles.body}>
         <div className={styles.card}>
           <h1 className={styles.title}>Detective {name}</h1>
           <p>What would you like to do?</p>
           <button
             className={styles.optionButton}
-            onClick={handleCreateGame}
+            onClick={() => handleLobbyOptionClick("create")}
           >
             Create Game
           </button>
           <button
             className={styles.optionButton}
-            onClick={handleJoinGame}
+            onClick={() => handleLobbyOptionClick("join")}
           >
             Join Game
           </button>
         </div>
-      )}
+      </div>
+    );
+
+  /* Third Page: Lobby */
+  return (
+    <div className="app">
+      {activeComponent === "create" && <LobbyCreatePage myName={name} />}
+      {activeComponent === "join" && <LobbyJoinPage myName={name} />}
     </div>
   );
-};
-
-export default StartingPage;
+}

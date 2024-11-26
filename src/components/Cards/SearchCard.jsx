@@ -1,9 +1,10 @@
-import { getCardColorHex, getCardWeaponIcon } from "../../lib/utils";
-import styles from "./SearchCard.module.css";
 import PropTypes from "prop-types";
+import styles from "./SearchCard.module.css";
+
+import { getColorHex, getWeaponIcon } from "../../lib/utils";
 
 export default function SearchCard({ card }) {
-  const icon = getCardWeaponIcon(card.weapon);
+  const icon = getWeaponIcon(card.weapon);
   const displayProperty = () => {
     console.log(card)
   }
@@ -53,17 +54,17 @@ export default function SearchCard({ card }) {
       
       icons.push(
         <span className={styles.icon}>
-          {getCardWeaponIcon(card.weapon?card.weapon:"Axe")}{card.type>1 && getCardWeaponIcon(card.weapon?card.weapon:"Axe")}{card.type>2 && getCardWeaponIcon(card.weapon?card.weapon:"Axe")}
+          {getWeaponIcon(card.weapon?card.weapon:"Axe")}{card.type>1 && getWeaponIcon(card.weapon?card.weapon:"Axe")}{card.type>2 && getWeaponIcon(card.weapon?card.weapon:"Axe")}
         </span>
       );
       icons.push(
         <span className={styles.icon}>
-          {getCardWeaponIcon(card.weapon?card.weapon:"Blaster")}{card.type>1 && getCardWeaponIcon(card.weapon?card.weapon:"Blaster")}{card.type>2 && getCardWeaponIcon(card.weapon?card.weapon:"Blaster")}
+          {getWeaponIcon(card.weapon?card.weapon:"Blaster")}{card.type>1 && getWeaponIcon(card.weapon?card.weapon:"Blaster")}{card.type>2 && getWeaponIcon(card.weapon?card.weapon:"Blaster")}
         </span>
       );
       icons.push(
         <span className={styles.icon}>
-          {getCardWeaponIcon(card.weapon?card.weapon:"Crossbow")}{card.type>1 && getCardWeaponIcon(card.weapon?card.weapon:"Crossbow")}{card.type>2 && getCardWeaponIcon(card.weapon?card.weapon:"Crossbow")}
+          {getWeaponIcon(card.weapon?card.weapon:"Crossbow")}{card.type>1 && getWeaponIcon(card.weapon?card.weapon:"Crossbow")}{card.type>2 && getWeaponIcon(card.weapon?card.weapon:"Crossbow")}
         </span>
       );
     }
@@ -78,7 +79,7 @@ export default function SearchCard({ card }) {
   return (
     <div
       className={styles.cardBody}
-      style={{ backgroundColor: card.color ? getCardColorHex(card.color) : "whitesmoke" }}
+      style={{ backgroundColor: card.color ? getColorHex(card.color) : "whitesmoke" }}
       onClick={displayProperty}
     >
       <div className={styles.cardHeader}>

@@ -1,9 +1,10 @@
-import { getCardColorHex, getCardWeaponIcon } from "../../lib/utils";
-import styles from "./ElementCard.module.css";
 import PropTypes from "prop-types";
+import styles from "./ElementCard.module.css";
+
+import { getColorHex, getWeaponIcon } from "../../lib/utils";
 
 export default function ElementCard({ card }) {
-  let icon = getCardWeaponIcon(card.weapon);
+  let icon = getWeaponIcon(card.weapon);
 
   const renderIcons = () => {
     // Generate an array of icons based on `props.number`
@@ -25,7 +26,7 @@ export default function ElementCard({ card }) {
   return (
     <div
       className={styles.cardBody}
-      style={{ backgroundColor: getCardColorHex(card.color) }}
+      style={{ backgroundColor: getColorHex(card.color) }}
     >
       {renderIcons()}
     </div>

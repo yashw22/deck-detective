@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import GridCell from "./GridCell";
+import styles from "./InvestigationSheet.module.css";
+
+import { getWeaponIcon } from "../../lib/utils";
 import {
   colorElements,
   typeElements,
   weaponElements,
-} from "../../lib/constants";
-// import Grid from "./Grid/Grid";
-import GridCell from "./GridCell";
-
-import styles from "./InvestigationSheet.module.css";
-import { getCardWeaponIcon } from "../../lib/utils";
+} from "../../lib/gameConstants";
 
 const initBoxFeatures = (players) => {
   const features = {};
@@ -216,7 +215,7 @@ export default function InvestigationSheet({ players }) {
   const getTypeRow = (weapon, type) => (
     <div className={styles.typeRow} key={weapon + type}>
       <div className={styles.typeHeader}>
-        {getCardWeaponIcon(weapon).repeat(type)}
+        {getWeaponIcon(weapon).repeat(type)}
       </div>
 
       {colorElements.map((color) => {
@@ -234,7 +233,7 @@ export default function InvestigationSheet({ players }) {
   const getWeaponGrid = (weapon) => (
     <div className={styles.weaponGrid} key={weapon}>
       <div className={styles.weaponHeader}>
-        {weapon} ({getCardWeaponIcon(weapon)})
+        {weapon} ({getWeaponIcon(weapon)})
       </div>
       {typeElements.map((type) => getTypeRow(weapon, type))}
     </div>
