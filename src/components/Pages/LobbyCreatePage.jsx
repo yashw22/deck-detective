@@ -3,6 +3,10 @@ import PropTypes from "prop-types";
 import Peer from "peerjs";
 
 import GamePage from "./GamePage";
+import {
+  distributeSearchCards,
+  distributeWeaponCards,
+} from "../../lib/gameUtils";
 
 const minPlayers = 3,
   maxPlayers = 5;
@@ -17,6 +21,8 @@ export default function LobbyCreatePage({ myName }) {
   //   const [selectedPeer, setSelectedPeer] = useState("");
 
   const [beginGame, setBeginGame] = useState(false);
+  const gamePageRef = useRef();
+  const [boardInfo, setBoardInfo] = useState({});
 
   useEffect(() => {
     const myPeer = new Peer();
@@ -122,20 +128,54 @@ export default function LobbyCreatePage({ myName }) {
   const sendBroadcast = (data) => {
     forwardBroadcast(myPeerRef.current.id, data);
   };
-  //   const sendPrivate = (receiver, data) => {
-  //     forwardPrivate(myPeerRef.current.id, receiver, data);
-  //   };
+  const sendPrivate = (receiverPeerId, data) => {
+    forwardPrivate(myPeerRef.current.id, receiverPeerId, data);
+  };
 
   const handleBeginClick = () => {
-    console.log(playerCount, minPlayers);
     if (playerCount >= minPlayers) {
+      const [playerWeaponCards, commonWeaponCards, resultCard] =
+        distributeWeaponCards(playerCount);
+
+      var [playerSearchCards, searchDeck] = distributeSearchCards(playerCount);
+
+      var newBoard = {
+        searchDeck: searchDeck,
+        commonCards: commonWeaponCards,
+        resultCard: resultCard,
+        [myPeerId]: {
+          name: myName,
+          weaponCards: playerWeaponCards[playerCount - 1],
+          searchCards: playerSearchCards[playerCount - 1],
+        },
+      };
+      Object.entries(connListRef.current).map(([peerId, peerObj], idx) => {
+        newBoard[peerId] = {
+          name: peerObj.name,
+          weaponCards: playerWeaponCards[idx],
+          searchCards: playerSearchCards[idx],
+        };
+      });
+
+      setBoardInfo(newBoard);
+      sendBroadcast({ info: "beginGame", boardInfo: newBoard });
       setBeginGame(true);
-      sendBroadcast({ info: "beginGame" });
     }
   };
 
   if (beginGame) {
-    return <GamePage myName={myName} />;
+    return (
+      <GamePage
+        ref={gamePageRef}
+        myPeerId={myPeerId}
+        myName={myName}
+        // playerCount={playerCount}
+        sendBroadcast={sendBroadcast}
+        sendPrivate={sendPrivate}
+        playerList={connListRef.current}
+        boardInfo={boardInfo}
+      />
+    );
   }
 
   return (

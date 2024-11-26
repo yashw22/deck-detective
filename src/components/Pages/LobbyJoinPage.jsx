@@ -15,6 +15,8 @@ export default function LobbyJoinPage({ myName }) {
   //   const [selectedPeer, setSelectedPeer] = useState("");
 
   const [beginGame, setBeginGame] = useState(false);
+  const gamePageRef = useRef();
+  const [boardInfo, setBoardInfo] = useState({});
 
   useEffect(() => {
     const newPeer = new Peer();
@@ -57,7 +59,11 @@ export default function LobbyJoinPage({ myName }) {
         connListRef.current[packet.peerId] = { name: packet.peerName };
         setPlayerCount((p) => p + 1);
       } else if (packet.type === "broadcast") {
-        if (packet.data.info == "beginGame") setBeginGame(true);
+        if (packet.data.info == "beginGame") {
+          setBoardInfo(packet.data.boardInfo);
+        //   console.log(packet.data.boardInfo);
+          setBeginGame(true);
+        }
       } else if (packet.type === "private") {
         alert(
           `**PRIVATE** ${connListRef.current[packet.sender].name} says: ${
@@ -68,19 +74,30 @@ export default function LobbyJoinPage({ myName }) {
     });
   };
 
-  //   const sendBroadcast = (data) => {
-  //     hostConnRef.current.send({ type: "broadcast", data: data });
-  //   };
-  //   const sendPrivate = (receiverPeerId, data) => {
-  //     hostConnRef.current.send({
-  //       type: "private",
-  //       receiver: receiverPeerId,
-  //       data: data,
-  //     });
-  //   };
+  const sendBroadcast = (data) => {
+    hostConnRef.current.send({ type: "broadcast", data: data });
+  };
+  const sendPrivate = (receiverPeerId, data) => {
+    hostConnRef.current.send({
+      type: "private",
+      receiver: receiverPeerId,
+      data: data,
+    });
+  };
 
   if (beginGame) {
-    return <GamePage myName={myName} />;
+    return (
+      <GamePage
+        ref={gamePageRef}
+        myPeerId={myPeerRef.current.id}
+        myName={myName}
+        // playerCount={playerCount}
+        sendBroadcast={sendBroadcast}
+        sendPrivate={sendPrivate}
+        playerList={connListRef.current}
+        boardInfo={boardInfo}
+      />
+    );
   }
 
   return (

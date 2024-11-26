@@ -11,7 +11,7 @@ import {
 export default function TestGameLogic() {
   const players = getPlayers();
 
-  const { playerWeaponCards, commonWeaponCards, resultCard } =
+  const [playerWeaponCards, commonWeaponCards, resultCard] =
     distributeWeaponCards(players.length);
 
   var [playerSearchCards, newSearchDeck] = distributeSearchCards(

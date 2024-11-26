@@ -70,7 +70,7 @@ export const distributeWeaponCards = (playersCount) => {
     const resultCard = deck[cardIdx++];
     const commonWeaponCards = deck.slice(cardIdx);
 
-    return { playerWeaponCards, commonWeaponCards, resultCard };
+    return [playerWeaponCards, commonWeaponCards, resultCard];
 };
 
 export const distributeSearchCards = (playersCount) => {
