@@ -49,6 +49,23 @@ export const getSearchDeck = () => {
 }
 
 
+export const sortCardDict = (a, b) => {
+    // Compare colors
+    const colorComparison =
+        colorElements.indexOf(a.color) - colorElements.indexOf(b.color);
+    if (colorComparison !== 0) return colorComparison;
+
+    // Compare weapons
+    const weaponComparison =
+        weaponElements.indexOf(a.weapon) - weaponElements.indexOf(b.weapon);
+    if (weaponComparison !== 0) return weaponComparison;
+
+    // Compare types
+    const typeComparison =
+        typeElements.indexOf(a.type) - typeElements.indexOf(b.type);
+    return typeComparison;
+}
+
 export const distributeWeaponCards = (playersCount) => {
     var deck = getWeaponDeck();
     const deckCount = deck.length;
@@ -69,6 +86,10 @@ export const distributeWeaponCards = (playersCount) => {
     }
     const resultCard = deck[cardIdx++];
     const commonWeaponCards = deck.slice(cardIdx);
+
+    playerWeaponCards.forEach(playerDeck => playerDeck.sort(sortCardDict))
+    commonWeaponCards.sort(sortCardDict)
+
 
     return [playerWeaponCards, commonWeaponCards, resultCard];
 };
@@ -124,3 +145,4 @@ export const getMatchedCards = (searchCard, playerCards) => {
 
     return filtered;
 };
+

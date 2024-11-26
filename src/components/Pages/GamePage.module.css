@@ -1,4 +1,12 @@
 .cardRow {
-    display: flex;
-    flex-wrap: wrap;
+  background-color: aqua;
+  /* overflow: hidden; */
+}
+
+.cards {
+  background-color: pink;
+  transform: scale(0.6);
+  /* transform-origin: top left; */
+  display: inline-block;
+  overflow: hidden;
 }

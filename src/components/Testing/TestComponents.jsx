@@ -11,6 +11,8 @@ export default function TestComponents() {
     cards.push(<ElementCard key={index} card={card} />)
   );
 
+  // items.sort();
+
   return (
     <div>
       {/* <h1>Test Components</h1> */}

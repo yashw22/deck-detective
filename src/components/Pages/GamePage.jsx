@@ -26,14 +26,15 @@ const GamePage = forwardRef(function GamePage(
 
   return (
     <div>
-      <h1>Deck Detective</h1>
+      {/* <h1>Deck Detective</h1> */}
       {Object.entries(playerList).map(([playerId, playerObj]) => (
         <div key={playerId}>
-          <h3>{playerObj.name}</h3>
+          <h2>{playerObj.name}</h2>
           <div className={styles.cardRow}>
             {boardInfo[playerId].searchCards.map((card, idx) => (
-              <SearchCard key={idx} card={card} />
-              // <div key={idx}>{JSON.stringify(card)}</div>
+              <div key={idx} className={styles.cards}>
+                <SearchCard card={card} />
+              </div>
             ))}
           </div>
         </div>
@@ -41,15 +42,17 @@ const GamePage = forwardRef(function GamePage(
       <h1>Detective {myName}</h1>
       <div className={styles.cardRow}>
         {boardInfo[myPeerId].searchCards.map((card, idx) => (
-          <SearchCard key={idx} card={card} />
-          //   <div key={idx}>{JSON.stringify(card)}</div>
+          <div key={idx} className={styles.cards}>
+            <SearchCard card={card} />
+          </div>
         ))}
       </div>
       <br />
       <div className={styles.cardRow}>
         {boardInfo[myPeerId].weaponCards.map((card, idx) => (
-          <ElementCard key={idx} card={card} />
-          // <div key={idx}>{JSON.stringify(card)}</div>
+          <div key={idx} className={styles.cards}>
+            <ElementCard card={card} />
+          </div>
         ))}
       </div>
     </div>
@@ -59,7 +62,6 @@ const GamePage = forwardRef(function GamePage(
 GamePage.propTypes = {
   myPeerId: PropTypes.string.isRequired,
   myName: PropTypes.string.isRequired,
-  // playerCount: PropTypes.number.isRequired,
   sendBroadcast: PropTypes.func.isRequired,
   sendPrivate: PropTypes.func.isRequired,
   playerList: PropTypes.object.isRequired,
