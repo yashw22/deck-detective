@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Peer from "peerjs";
+import styles from './LobbyJoinPage.module.css';
+
 
 import GamePage from "./GamePage";
 
@@ -107,31 +109,35 @@ export default function LobbyJoinPage({ myName }) {
   }
 
   return (
-    <div className="app">
-      <h1>Lobby</h1>
-      <p>
-        Detective {myName}
-        {/* <br /> */}
-        {/* my Peer ID: <strong>{myPeerId}</strong> */}
+    <div className={styles.container}>
+      <p className={styles.title}>
+        <span className={styles.detectiveLabel}>Detective</span>{" "}
+        <span className={styles.playerName}>{myName}</span>
       </p>
-      <p>number of players: {playerCount}</p>
-
       {!hostConnRef.current && (
-        <div className="connection">
+        <div className={styles.connection}>
           <input
             type="text"
+            className={styles.input}
             placeholder="Enter Game ID to connect"
             value={hostPeerId}
             onChange={(e) => setHostPeerId(e.target.value)}
           />
-          <button onClick={connectToPeer}>Connect</button>
+          <button className={styles.connectButton} onClick={connectToPeer}>
+            Connect
+          </button>
         </div>
       )}
 
-      <h2>Connected Players</h2>
-      {Object.entries(connListRef.current).map(([peerId, obj]) => (
-        <div key={peerId}>{obj.name}</div>
-      ))}
+      <h2 className={styles.heading}>Lobby</h2>
+      <p className={styles.info}>Connected Players: {playerCount}</p>
+      <div className={styles.playersContainer}>
+        {Object.entries(connListRef.current).map(([peerId, obj]) => (
+          <div key={peerId} className={styles.playerBox}>
+            <span>{obj.name}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
