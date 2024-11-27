@@ -125,7 +125,7 @@ export const pickNextSearchCard = (searchDeck, usedDeck) => {
         usedDeck = [];
     }
     const pickedSearchCard = searchDeck.shift();
-    usedDeck.push(pickedSearchCard);
+    // usedDeck.push(pickedSearchCard);
     return [pickedSearchCard, searchDeck, usedDeck];
 };
 

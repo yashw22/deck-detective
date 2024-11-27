@@ -8,7 +8,7 @@ import {
   distributeWeaponCards,
 } from "../../lib/gameUtils";
 
-const minPlayers = 3,
+const minPlayers = 2,
   maxPlayers = 5;
 
 export default function LobbyCreatePage({ myName }) {
@@ -118,7 +118,9 @@ export default function LobbyCreatePage({ myName }) {
 
   const processData = (senderPeerId, packet) => {
     if (packet.type === "broadcast") {
-      alert(`${connListRef.current[senderPeerId].name} says: ${packet.data}`);
+      if (packet.data.info === "responseSearchCard") {
+        gamePageRef.current.setResponse(packet.data);
+      }
     } else if (packet.type === "private") {
       alert(
         `**PRIVATE** ${connListRef.current[senderPeerId].name} says: ${packet.data}`
@@ -128,9 +130,9 @@ export default function LobbyCreatePage({ myName }) {
   const sendBroadcast = (data) => {
     forwardBroadcast(myPeerRef.current.id, data);
   };
-  const sendPrivate = (receiverPeerId, data) => {
-    forwardPrivate(myPeerRef.current.id, receiverPeerId, data);
-  };
+  // const sendPrivate = (receiverPeerId, data) => {
+  //   forwardPrivate(myPeerRef.current.id, receiverPeerId, data);
+  // };
 
   const handleBeginClick = () => {
     if (playerCount >= minPlayers) {
@@ -141,6 +143,7 @@ export default function LobbyCreatePage({ myName }) {
 
       var newBoard = {
         searchDeck: searchDeck,
+        usedDeck: [],
         commonCards: commonWeaponCards,
         resultCard: resultCard,
         [myPeerId]: {
@@ -171,7 +174,7 @@ export default function LobbyCreatePage({ myName }) {
         myName={myName}
         // playerCount={playerCount}
         sendBroadcast={sendBroadcast}
-        sendPrivate={sendPrivate}
+        // sendPrivate={sendPrivate}
         playerList={connListRef.current}
         boardInfo={boardInfo}
       />
