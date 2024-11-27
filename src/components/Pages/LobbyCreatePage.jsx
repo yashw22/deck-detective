@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Peer from "peerjs";
+import styles from "./LobbyCreatePage.module.css";
 
 import GamePage from "./GamePage";
 import {
@@ -182,21 +183,47 @@ export default function LobbyCreatePage({ myName }) {
   }
 
   return (
-    <div className="app">
-      <h1>Lobby</h1>
+    <div className={styles.createpage}>
+      <p className={styles.title}>
+      <span className={styles.detectiveLabel}>Detective</span>{" "}
+      <span className={styles.playerName}>{myName}</span>
+    </p>
       <p>
-        Detective {myName} <br />
         Joining Game ID: <strong>{myPeerId}</strong>
+        <button
+          className={styles.copyButton}
+          onClick={() => navigator.clipboard.writeText(myPeerId)}
+          aria-label="Copy Game ID"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            width="16px"
+            height="16px"
+          >
+            <path d="M8 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8zm0 2h8v12H8V4zm-2 4H4v12a2 2 0 0 0 2 2h8v-2H6V8z" />
+          </svg>
+        </button>
       </p>
-      <p>number of players: {playerCount}</p>
-
-      <button onClick={handleBeginClick}>Begin Game</button>
-      <h2>Connected Players</h2>
-      {Object.entries(connListRef.current).map(([peerId, obj]) => (
-        <div key={peerId}>{obj.name}</div>
-      ))}
+      
+  
+      <button className={styles.button} onClick={handleBeginClick}>
+        Begin Game
+      </button>
+  
+      <h1 className={styles.heading}>Lobby</h1>
+      <div className={styles.playersContainer}>
+      <p>Connected Players: {playerCount}</p>
+        {Object.entries(connListRef.current).map(([peerId, obj]) => (
+          <div key={peerId} className={styles.playerBox}>
+            <span>{obj.name}</span>
+            <button className={styles.removeButton}>X</button>
+          </div>
+        ))}
+      </div>
     </div>
-  );
+  );  
 }
 
 LobbyCreatePage.propTypes = {

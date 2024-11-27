@@ -1,0 +1,133 @@
+/* General styles */
+.createpage {
+    background: #1f1f1f; /* Dark gray card background */
+    border: 1px solid #444; /* Subtle border */
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); /* Dramatic shadow */
+    margin: 1rem auto; /* Center the container */
+  }
+  
+  /* .createpage:hover {
+    transform: scale(1.03); 
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8); 
+  } */
+  
+  .heading {
+    font-weight: bold;
+    font-family: 'Creepster', cursive;
+    font-size: 2rem; /* Scalable font size */
+    margin-bottom: 1rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Creepster', cursive; /* Add a mysterious font */
+    margin-bottom: 1rem;
+    color: #f3f3f3; /* Default text color */
+  }
+  
+  .detectiveLabel {
+    color: #f3f3f3; /* Gold color for "Detective" */
+  }
+  
+  .playerName { 
+    color: #ffcc00; /* Bright blue for player's name */
+  }
+  
+  
+  .subheading {
+    font-size: 1.2rem;
+    color: #f3f3f3;
+    margin-top: 2rem; /* Space above "Connected Players" */
+  }
+  
+  .button {
+    background-color: #ffcc00;
+    color: #1f1f1f;
+    font-size: 1rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 1rem;
+    width: 100%; /* Full-width button for mobile */
+    max-width: 300px; /* Limit size for larger screens */
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #e6b800;
+    transform: translateY(-2px);
+  }
+  
+  .playersContainer {
+    margin-top: 1.5rem; /* Space above the players list */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Space between player boxes */
+  }
+  
+  .playerBox {
+    background: #292929; /* Slightly lighter shade than the card */
+    color: #e5e5e5;
+    padding: 0.75rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex; /* Align content horizontally */
+    justify-content: space-between; /* Space between name and button */
+    align-items: center; /* Center items vertically */
+  }
+  
+  .removeButton {
+    background-color: transparent; /* No background */
+    border: none; /* No border */
+    color: #ff6b6b; /* Bright red for the X button */
+    font-size: 1rem; /* Match font size */
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .removeButton:hover {
+    color: #ff4c4c; /* Slightly darker red on hover */
+  }
+  
+  .removeButton:active {
+    color: #ff2e2e; /* Dark red when pressed */
+  }
+
+  /* Copy Button */
+/* Copy Button */
+.copyButton {
+    background-color: transparent; /* No background */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor */
+    color: #ffcc00; /* Gold color */
+    margin-left: 0.5rem; /* Space between Game ID and button */
+    display: inline-flex; /* Align SVG icon */
+    align-items: center;
+    padding: 0; /* Remove padding */
+    transition: color 0.3s ease, transform 0.3s;
+  }
+  
+  .copyButton:hover {
+    color: #e6b800; /* Darker gold on hover */
+    transform: scale(1.1); /* Slight zoom effect */
+  }
+  
+  .copyButton:active {
+    transform: scale(1); /* Reset on click */
+    color: #cca300; /* Slightly darker color on click */
+  }
+  
+  
+  
