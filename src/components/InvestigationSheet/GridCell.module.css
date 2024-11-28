@@ -1,22 +1,23 @@
-.boxContainer {
+/* .boxContainer {
   display: flex;
   flex-direction: column;
   overflow: visible;
-}
+} */
 
 .box {
   /* padding-bottom: 0.5em; */
-  width: 8em;
-  height: 1.4em;
+  width: 5em;
+  height: 1em;
   cursor: pointer;
-  text-align: center;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
 .commonContainer {
+  width: 5em;
   position: relative;
   cursor: pointer;
-  width: 8em;
 }
 
 .commonContainer::before,
@@ -26,28 +27,27 @@
   top: 0;
   left: 0;
   width: 4px;
-  height: 270%;
+  height: 230%;
   background-color: blueviolet;
 }
 
 .commonContainer::before {
-  transform: translateX(5px) translateY(6px) rotate(-73deg);
+  transform: translateX(4.8px) translateY(6px) rotate(-73deg);
   transform-origin: top left;
 }
 
 .commonContainer::after {
-  transform: translateX(7.5em) translateY(2px) rotate(73deg);
+  transform: translateX(4.7em) translateY(2px) rotate(73deg);
   transform-origin: top left;
 }
 
 .markedContainer {
-  width: 8em;
-  height: 2.8em;
+  height: 2em;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-weight: bold;
+  /* font-weight: bold; */
   z-index: 1;
 }
 .markedContainer span {
