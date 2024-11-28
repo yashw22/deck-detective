@@ -1,10 +1,29 @@
+.infobar {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 8px 0;
+  background-color: #555;
+  color: white;
+  /* box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); */
+  display: flex;
+  justify-content: space-around;
+  font-size: 16px;
+  z-index: 10;
+}
+
+.gameBoardContainer {
+  justify-content: center;
+}
+
 .cardRow {
   background-color: aqua;
-  /* overflow: hidden; */
 }
 
 .cards {
-  background-color: pink;
+  /* background-color: pink; */
   transform: scale(0.6);
   /* transform-origin: top left; */
   display: inline-block;
@@ -33,7 +52,7 @@
 }
 
 .modalContent {
-  background: white;
+  background: radial-gradient(circle, #686363 0%, #121212 100%);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -57,4 +76,40 @@
   background-color: hsl(0, 0%, 80%);
   border-radius: 5px;
   margin: 2px;
+}
+
+.navbar {
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  /* justify-content: space-around;
+  align-items: center; */
+  /* padding: 10px 0; */
+  z-index: 10;
+}
+
+.navButton {
+  flex: 1;
+  background-color: #555;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  /* border-radius: 5px; */
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.navButton:hover {
+  background-color: #777;
+}
+
+.navButtonActive {
+  background-color: #777;
+  /* background-color: #999; */
 }

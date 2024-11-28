@@ -21,7 +21,7 @@ export default function LobbyCreatePage({ myName }) {
   const connListRef = useRef({});
   //   const [selectedPeer, setSelectedPeer] = useState("");
 
-  const [beginGame, setBeginGame] = useState(false);
+  const beginGameRef = useRef(false);
   const gamePageRef = useRef();
   const [boardInfo, setBoardInfo] = useState({});
 
@@ -40,7 +40,10 @@ export default function LobbyCreatePage({ myName }) {
     });
 
     myPeer.on("connection", (newConn) => {
-      if (Object.keys(connListRef.current).length < maxPlayers - 1) {
+      if (
+        !beginGameRef.current &&
+        Object.keys(connListRef.current).length < maxPlayers - 1
+      ) {
         const { peerName } = newConn.metadata;
         connListRef.current[newConn.peer] = { conn: newConn, name: peerName };
         setPlayerCount((p) => p + 1);
@@ -135,7 +138,7 @@ export default function LobbyCreatePage({ myName }) {
   //   forwardPrivate(myPeerRef.current.id, receiverPeerId, data);
   // };
 
-  const handleBeginClick = () => {
+  const handleBeginGame = () => {
     if (playerCount >= minPlayers) {
       const [playerWeaponCards, commonWeaponCards, resultCard] =
         distributeWeaponCards(playerCount);
@@ -161,13 +164,26 @@ export default function LobbyCreatePage({ myName }) {
         };
       });
 
+      // console.log(newBoard);
+      // console.log(connListRef.current);
+      beginGameRef.current = true;
+      // setBeginGame(true);
       setBoardInfo(newBoard);
       sendBroadcast({ info: "beginGame", boardInfo: newBoard });
-      setBeginGame(true);
     }
   };
 
-  if (beginGame) {
+  const handleRemovePlayer = (peerId) => {
+    sendBroadcast({
+      info: "lobbyRemovePlayer",
+      peerId: peerId,
+    });
+    connListRef.current[peerId].conn.close();
+    delete connListRef.current[peerId];
+    setPlayerCount((p) => p - 1);
+  };
+
+  if (beginGameRef.current) {
     return (
       <GamePage
         ref={gamePageRef}
@@ -185,45 +201,53 @@ export default function LobbyCreatePage({ myName }) {
   return (
     <div className={styles.createpage}>
       <p className={styles.title}>
-      <span className={styles.detectiveLabel}>Detective</span>{" "}
-      <span className={styles.playerName}>{myName}</span>
-    </p>
-      <p>
-        Joining Game ID: <strong>{myPeerId}</strong>
-        <button
-          className={styles.copyButton}
-          onClick={() => navigator.clipboard.writeText(myPeerId)}
-          aria-label="Copy Game ID"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            width="16px"
-            height="16px"
-          >
-            <path d="M8 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8zm0 2h8v12H8V4zm-2 4H4v12a2 2 0 0 0 2 2h8v-2H6V8z" />
-          </svg>
-        </button>
+        <span className={styles.detectiveLabel}>Detective</span>{" "}
+        <span className={styles.playerName}>{myName}</span>
       </p>
-      
-  
-      <button className={styles.button} onClick={handleBeginClick}>
-        Begin Game
-      </button>
-  
+      <p>
+        Game ID: <strong>{myPeerId}</strong>
+        {myPeerId && (
+          <button
+            className={styles.copyButton}
+            onClick={() => navigator.clipboard.writeText(myPeerId)}
+            aria-label="Copy Game ID"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              width="16px"
+              height="16px"
+            >
+              <path d="M8 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8zm0 2h8v12H8V4zm-2 4H4v12a2 2 0 0 0 2 2h8v-2H6V8z" />
+            </svg>
+          </button>
+        )}
+      </p>
+
+      {playerCount >= minPlayers && (
+        <button className={styles.button} onClick={handleBeginGame}>
+          Begin Game
+        </button>
+      )}
+
       <h1 className={styles.heading}>Lobby</h1>
       <div className={styles.playersContainer}>
-      <p>Connected Players: {playerCount}</p>
+        <p>Connected Players: {playerCount}</p>
         {Object.entries(connListRef.current).map(([peerId, obj]) => (
           <div key={peerId} className={styles.playerBox}>
             <span>{obj.name}</span>
-            <button className={styles.removeButton}>X</button>
+            <button
+              className={styles.removeButton}
+              onClick={() => handleRemovePlayer(peerId)}
+            >
+              X
+            </button>
           </div>
         ))}
       </div>
     </div>
-  );  
+  );
 }
 
 LobbyCreatePage.propTypes = {

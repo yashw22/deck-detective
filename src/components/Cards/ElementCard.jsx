@@ -7,15 +7,11 @@ export default function ElementCard({ card }) {
   let icon = getWeaponIcon(card.weapon);
 
   const renderIcons = () => {
-    // Generate an array of icons based on `props.number`
     const icons = [];
     for (let i = 0; i < card.type; i++) {
-      icons.push(
-        <span key={i} className={styles.icon}>
-          {icon}
-        </span>
-      );
+      icons.push(<span key={i}>{icon}</span>);
     }
+
     return (
       <div className={card.type === 3 ? styles.diagonal : styles.icons}>
         {icons}

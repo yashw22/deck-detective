@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Peer from "peerjs";
-import styles from './LobbyJoinPage.module.css';
-
+import styles from "./LobbyJoinPage.module.css";
 
 import GamePage from "./GamePage";
 
@@ -29,8 +28,9 @@ export default function LobbyJoinPage({ myName }) {
     // });
     myPeerRef.current = newPeer;
 
-    newPeer.on("open", (id) => {
-      console.log(id);
+    newPeer.on("open", () => {
+      // newPeer.on("open", (id) => {
+      // console.log(id);
       //   setMyPeerId(id);
       setPlayerCount(1);
     });
@@ -61,14 +61,21 @@ export default function LobbyJoinPage({ myName }) {
         connListRef.current[packet.peerId] = { name: packet.peerName };
         setPlayerCount((p) => p + 1);
       } else if (packet.type === "broadcast") {
-        if (packet.data.info === "beginGame") {
+        if (packet.data.info === "lobbyRemovePlayer") {
+          if (packet.data.peerId === myPeerRef.current.id) {
+            connListRef.current = {};
+            setPlayerCount(1);
+            hostConnRef.current = null;
+          } else {
+            delete connListRef.current[packet.data.peerId];
+            setPlayerCount((p) => p - 1);
+          }
+        } else if (packet.data.info === "beginGame") {
           setBoardInfo(packet.data.boardInfo);
           setBeginGame(true);
+        } else if (packet.data.info === "responseSearchCard") {
+          gamePageRef.current.setResponse(packet.data);
         }
-        else if (packet.data.info === "responseSearchCard") {
-          gamePageRef.current.setResponse(packet.data)
-        }
-
       } else if (packet.type === "private") {
         // alert(
         //   `**PRIVATE** ${connListRef.current[packet.sender].name} says: ${
@@ -130,7 +137,7 @@ export default function LobbyJoinPage({ myName }) {
       )}
 
       <h2 className={styles.heading}>Lobby</h2>
-      <p className={styles.info}>Connected Players: {playerCount}</p>
+      <p className={styles.info}>Players in Lobby: {playerCount}</p>
       <div className={styles.playersContainer}>
         {Object.entries(connListRef.current).map(([peerId, obj]) => (
           <div key={peerId} className={styles.playerBox}>

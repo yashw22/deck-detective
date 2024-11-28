@@ -1,8 +1,10 @@
 .outerContainer {
-  font-family: Arial, sans-serif;
-  display: inline-block;
   /* background-color: lightblue; */
-  padding-right: 5px;
+  font-family: Arial, sans-serif;
+  /* font-family: "Creepster", cursive; */
+  justify-content: center;
+  /* align-items: center; */
+  /* display:block; */
 }
 
 .header {
@@ -14,11 +16,11 @@
 .gridContainer {
   display: inline-block;
   margin: 0px 10px;
-  background-color: #e0e0e0;
+  /* background-color: #e0e0e0; */
 }
 
 .weaponGrid {
-  border: 2px solid black;
+  border: 2px solid hsl(0, 0%, 80%);
   margin: 5px;
 }
 .weaponHeader {
@@ -29,7 +31,7 @@
 
 .typeRow {
   display: flex;
-  border-top: 2px solid black;
+  border-top: 2px solid hsl(0, 0%, 20%);
 }
 .typeHeader {
   text-align: center;
@@ -43,7 +45,7 @@
   margin-bottom: 4px;
 }
 .topBtn {
-  color: white;
+  /* color: white; */
   flex: 1;
   margin: 2px;
   justify-content: center;

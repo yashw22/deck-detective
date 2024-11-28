@@ -1,29 +1,30 @@
 import ElementCard from "../Cards/ElementCard";
-import InvestigationSheet from "../InvestigationSheet/InvestigationSheet";
-import { getSearchDeck } from "../../lib/gameUtils";
+import { getSearchDeck, getWeaponDeck } from "../../lib/gameUtils";
 import SearchCard from "../Cards/SearchCard";
-import { getPlayers } from "../../lib/utils";
+// import { getPlayers } from "../../lib/utils";
+// import InvestigationSheet from "../InvestigationSheet/InvestigationSheet";
 
 export default function TestComponents() {
-  const players = getPlayers();
-  // const weaponDeck = getWeaponDeck();
+  // const players = getPlayers();
+  const weaponDeck = getWeaponDeck();
 
-  // var cards = [];
-  // weaponDeck.forEach((card, index) =>
-  //   cards.push(<ElementCard key={index} card={card} />)
-  // );
+  var wCards = [];
+  weaponDeck.forEach((card, index) =>
+    wCards.push(<ElementCard key={index} card={card} />)
+  );
 
   
   const searchDeck = getSearchDeck();
-  var cards = [];
+  var sCards = [];
   searchDeck.forEach((card, index) =>
-    cards.push(<SearchCard key={index} card={card} />)
+    sCards.push(<SearchCard key={index} card={card} />)
   );
 
   return (
     <div>
       <h1>Test Components</h1>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>{cards}</div>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>{wCards}</div>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>{sCards}</div>
       {/* <InvestigationSheet players={players} /> */}
     </div>
   );

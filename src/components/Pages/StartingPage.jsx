@@ -11,11 +11,7 @@ export default function StartingPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name.trim()) {
-      setIsGamePage(true); // Move to the second page
-    } else {
-      alert("Please enter a valid name!");
-    }
+    if (name.trim()) setIsGamePage(true); // Move to the second page
   };
 
   const handleLobbyOptionClick = (component) => {
@@ -70,9 +66,9 @@ export default function StartingPage() {
 
   /* Third Page: Lobby */
   return (
-    <div className="app">
+    <>
       {activeComponent === "create" && <LobbyCreatePage myName={name} />}
       {activeComponent === "join" && <LobbyJoinPage myName={name} />}
-    </div>
+    </>
   );
 }

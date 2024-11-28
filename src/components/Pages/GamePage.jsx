@@ -13,15 +13,18 @@ import {
 import { getColorHex, getWeaponIcon, lightenColor } from "../../lib/utils";
 import { getMatchedCards, pickNextSearchCard } from "../../lib/gameUtils";
 
+import InvestigationSheet from "../InvestigationSheet/InvestigationSheet";
+
 const GamePage = forwardRef(function GamePage(
   { myPeerId, myName, sendBroadcast, playerList, boardInfo },
   ref
 ) {
   const [myBoardInfo, setMyBoardInfo] = useState(boardInfo);
 
+  const [navbarOption, setNavbarOption] = useState("GameBoard");
   const [showSearchCardModal, setShowSearchCardModal] = useState(false);
   const [showResponseModal, setShowResponseModal] = useState(false);
-  const [responseData, setResponseData] = useState(false);
+  const [resData, setResData] = useState(false);
 
   const [showPlayerSelect, setShowPlayerSelect] = useState();
   const [selectedCard, setSelectedCard] = useState();
@@ -29,21 +32,13 @@ const GamePage = forwardRef(function GamePage(
   const [singleFree, setSingleFree] = useState(false);
   const [elementsChosen, setElementsChosen] = useState({});
 
-  // useEffect(() => {
-  //   console.log(myPeerId)
-  //   console.log(myName)
-  //   console.log(playerList)
-  //   console.log(myBoardInfo)
-  //   console.log(myBoardInfo[myPeerId]);
-  // }, []);
-
   useImperativeHandle(ref, () => ({
     setResponse: (data) => {
       // console.log("got response", data);
       if (data.info === "responseSearchCard") {
-        setResponseData(data);
-        console.log(myBoardInfo)
-        console.log(data.boardInfo)
+        setResData(data);
+        // console.log(myBoardInfo);
+        // console.log(data.boardInfo);
         // boardInfo = { ...data.boardInfo };
         setMyBoardInfo(data.boardInfo);
         // setShowResponseModal(true)
@@ -87,8 +82,8 @@ const GamePage = forwardRef(function GamePage(
 
     newUsedDeck.push(selectedCard);
     myBoardInfo[myPeerId].searchCards[selectedCardIdx] = nextSearchCard;
-    myBoardInfo.searchDeck = newSearchDeck
-    myBoardInfo.usedDeck = newUsedDeck
+    myBoardInfo.searchDeck = newSearchDeck;
+    myBoardInfo.usedDeck = newUsedDeck;
     // myBoardInfo = {
     //   ...myBoardInfo,
     //   searchDeck: newSearchDeck,
@@ -109,14 +104,14 @@ const GamePage = forwardRef(function GamePage(
       freeChoice: elementsChosen,
       from: myName,
       to: myBoardInfo[playerId].name,
-      res: res.length,
+      res: res,
       boardInfo: myBoardInfo,
     });
 
     setElementsChosen({});
     setShowSearchCardModal(false);
 
-    setResponseData({
+    setResData({
       info: "selfSearchCard",
       searchCard: selectedCard,
       freeChoice: elementsChosen,
@@ -215,66 +210,49 @@ const GamePage = forwardRef(function GamePage(
     </>
   );
 
-  const responseModalContent = () => {
-    if (responseData.info === "selfSearchCard") {
+  const getSearchResponseContent = () => {
+    if (
+      resData.info === "selfSearchCard" &&
+      (resData.searchCard.elementsCount === 2 || "free" in resData.searchCard)
+    ) {
       return (
-        <>
-          <h2>
-            {responseData.from} asked {responseData.to}
-          </h2>
-          <div className={styles.cards}>
-            <SearchCard card={responseData.searchCard} />
-          </div>
-          {Object.keys(responseData.freeChoice).length !== 0 && (
-            <div>
-              <span>with: &nbsp; &nbsp;</span>
-              {Object.entries(responseData.freeChoice).map(
-                ([element, value]) => (
-                  <span key={element}>
-                    {element}: {value} &nbsp;&nbsp;
-                  </span>
-                )
-              )}
+        <div className={styles.cardRow}>
+          {resData.res.map((card, idx) => (
+            <div key={idx} className={styles.cards}>
+              <ElementCard card={card} />
             </div>
-          )}
-          <div className={styles.cardRow}>
-            {responseData.res.map((card, idx) => (
-              <div key={idx} className={styles.cards}>
-                <ElementCard card={card} />
-              </div>
-            ))}
-          </div>
-        </>
+          ))}
+        </div>
       );
-    } else if (responseData.info === "responseSearchCard") {
-      return (
-        <>
-          <h2>
-            {responseData.from} asked {responseData.to}
-          </h2>
-          <div className={styles.cards}>
-            <SearchCard card={responseData.searchCard} />
-          </div>
-          {Object.keys(responseData.freeChoice).length !== 0 && (
-            <div>
-              <p>with:</p>
-              {Object.entries(responseData.freeChoice).map(
-                ([element, value]) => (
-                  <p key={element}>
-                    {element} = {value}
-                  </p>
-                )
-              )}
-            </div>
-          )}
-          <div>Count: {responseData.res}</div>
-        </>
-      );
-    }
+    } else return <div>No. of cards: {resData.res.length}</div>;
   };
 
-  return (
-    <div>
+  const getResModalContent = () => {
+    return (
+      <>
+        <h2>
+          {resData.from} asked {resData.to}
+        </h2>
+        <div className={styles.cards}>
+          <SearchCard card={resData.searchCard} />
+        </div>
+        {Object.keys(resData.freeChoice).length !== 0 && (
+          <div>
+            <span>[choice] &nbsp;</span>
+            {Object.entries(resData.freeChoice).map(([element, value]) => (
+              <span key={element}>
+                {element}: {value} &nbsp;&nbsp;
+              </span>
+            ))}
+          </div>
+        )}
+        {getSearchResponseContent()}
+      </>
+    );
+  };
+
+  const getGameBoard = () => (
+    <div className={styles.gameBoardContainer}>
       {/* SearchCard Modal */}
       {showSearchCardModal && (
         <div className={styles.modalOverlay}>
@@ -293,8 +271,8 @@ const GamePage = forwardRef(function GamePage(
           onClick={() => setShowResponseModal(false)}
         >
           <div className={styles.modalContent}>
-            {responseModalContent()}
-            <button onClick={() => setShowResponseModal(false)}>Close</button>
+            {getResModalContent()}
+            {/* <button onClick={() => setShowResponseModal(false)}>Close</button> */}
           </div>
         </div>
       )}
@@ -334,6 +312,44 @@ const GamePage = forwardRef(function GamePage(
             <ElementCard card={card} />
           </div>
         ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.infobar}>
+        <div>InfoBar</div>
+      </div>
+      <div className={styles.contentContainer}>
+        {navbarOption === "GameBoard" && getGameBoard()}
+        {navbarOption === "InvestigationSheet" && (
+          <InvestigationSheet
+            players={[
+              ...Object.values(playerList).map((obj) => obj.name),
+              myName,
+            ]}
+          />
+        )}
+      </div>
+      <div className={styles.navbar}>
+        <button
+          className={`${styles.navButton} ${
+            navbarOption === "GameBoard" ? styles.navButtonActive : ""
+          }`}
+          onClick={() => setNavbarOption("GameBoard")}
+        >
+          Board
+        </button>
+        <button
+          // className={styles.navButton}
+          className={`${styles.navButton} ${
+            navbarOption === "InvestigationSheet" ? styles.navButtonActive : ""
+          }`}
+          onClick={() => setNavbarOption("InvestigationSheet")}
+        >
+          Investigation Sheet
+        </button>
       </div>
     </div>
   );

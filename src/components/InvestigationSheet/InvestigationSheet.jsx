@@ -241,7 +241,7 @@ export default function InvestigationSheet({ players }) {
 
   return (
     <div className={styles.outerContainer}>
-      <div className={styles.header}>Investigation Sheet</div>
+      {/* <div className={styles.header}>Investigation Sheet</div> */}
 
       <div id="gridContainer" className={styles.gridContainer}>
         {weaponElements.map((weapon) => getWeaponGrid(weapon))}
