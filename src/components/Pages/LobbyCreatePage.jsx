@@ -26,12 +26,12 @@ export default function LobbyCreatePage({ myName }) {
   const [boardInfo, setBoardInfo] = useState({});
 
   useEffect(() => {
-    const myPeer = new Peer();
-    // const myPeer = new Peer({
-    //   host: "peerjs-server-d8ry.onrender.com",
-    //   path: "/deckdetective",
-    //   secure: true,
-    // });
+    // const myPeer = new Peer();
+    const myPeer = new Peer({
+      host: "peerjs-server-d8ry.onrender.com",
+      path: "/deckdetective",
+      secure: true,
+    });
     myPeerRef.current = myPeer;
 
     myPeer.on("open", (id) => {
