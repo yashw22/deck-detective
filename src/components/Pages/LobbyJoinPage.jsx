@@ -142,6 +142,7 @@ export default function LobbyJoinPage({ myName }) {
         {Object.entries(connListRef.current).map(([peerId, obj]) => (
           <div key={peerId} className={styles.playerBox}>
             <span>{obj.name}</span>
+            {peerId === hostConnRef.current.peer && <span>👑</span>}
           </div>
         ))}
       </div>

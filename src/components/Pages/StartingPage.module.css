@@ -40,6 +40,9 @@ body {
   font-weight: bold;
   font-family: "Creepster", cursive; /* Add a mysterious font */
 }
+.playerName {
+  color: #ffcc00; /* Bright blue for player's name */
+}
 
 /* Input Field */
 .input {

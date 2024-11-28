@@ -3,23 +3,31 @@ import LobbyCreatePage from "./LobbyCreatePage";
 import LobbyJoinPage from "./LobbyJoinPage";
 
 import styles from "./StartingPage.module.css";
+import HowToPlay from "./HowToPlayPage";
 
 export default function StartingPage() {
   const [name, setName] = useState(""); // Store the detective's name
-  const [isLobby, setIsLobby] = useState(false); // Toggle between pages
+  const [isRulePage, setIsRulePage] = useState(false); // Toggle Rule page
+  const [isNamePage, setIsNamePage] = useState(true); // Toggle lobby page
   const [activeComponent, setActiveComponent] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name.trim()) setIsLobby(true); // Move to the second page
+    if (name.trim()) setIsNamePage(false); // Move to the second page
   };
 
   const handleLobbyOptionClick = (component) => {
     setActiveComponent(component);
   };
 
+  const onRuleBack = () => {
+    setIsRulePage(false);
+  };
+
+  if (isRulePage) return <HowToPlay onBack={onRuleBack} />;
+
   /* First Page: Enter Name */
-  if (!isLobby)
+  if (isNamePage)
     return (
       <div className={styles.body}>
         <div className={styles.card}>
@@ -35,6 +43,9 @@ export default function StartingPage() {
           <button onClick={handleSubmit} className={styles.button}>
             Begin Investigation
           </button>
+          <button onClick={() => setIsRulePage(true)} className={styles.button}>
+            How to Play
+          </button>
         </div>
       </div>
     );
@@ -44,7 +55,9 @@ export default function StartingPage() {
     return (
       <div className={styles.body}>
         <div className={styles.card}>
-          <h1 className={styles.title}>Detective {name}</h1>
+          <h1 className={styles.title}>
+            Detective <span className={styles.playerName}>{name}</span>
+          </h1>
           <p>What would you like to do?</p>
           <button
             className={styles.optionButton}

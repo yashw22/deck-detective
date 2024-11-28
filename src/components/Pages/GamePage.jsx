@@ -15,6 +15,8 @@ import { getMatchedCards, pickNextSearchCard } from "../../lib/gameUtils";
 
 import InvestigationSheet from "../InvestigationSheet/InvestigationSheet";
 
+const nameLen = 3;
+
 const GamePage = forwardRef(function GamePage(
   { myPeerId, myName, sendBroadcast, playerList, boardInfo },
   ref
@@ -32,7 +34,12 @@ const GamePage = forwardRef(function GamePage(
   const [elementsChosen, setElementsChosen] = useState({});
 
   const memoPlayerNames = useMemo(
-    () => [...Object.values(playerList).map((obj) => obj.name), myName],
+    () => [
+      ...Object.values(playerList).map((obj) =>
+        obj.name.length >= nameLen ? obj.name.substring(0, nameLen) : obj.name
+      ),
+      myName.length >= nameLen ? myName.substring(0, nameLen) : myName,
+    ],
     [playerList, myName]
   );
 
