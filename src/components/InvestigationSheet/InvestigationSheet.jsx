@@ -253,96 +253,97 @@ function InvestigationSheet({ players }) {
   return (
     <div className={styles.outerContainer}>
       {/* <div className={styles.header}>Investigation Sheet</div> */}
+      <div className={styles.innerContainer}>
+        <div className={styles.gridContainer}>
+          {weaponElements.map((weapon) => getWeaponGrid(weapon))}
+        </div>
 
-      <div id="gridContainer" className={styles.gridContainer}>
-        {weaponElements.map((weapon) => getWeaponGrid(weapon))}
-      </div>
+        {/* Button Panel */}
+        <div>
+          <div className={styles.buttonContainer}>
+            {players.map((player) => (
+              <div key={"button-" + player} className={styles.topBtn}>
+                <div
+                  className={`${styles.topBtnL} ${
+                    boxIdx &&
+                    (boxFeatures[boxKey].label === player ||
+                      (!(
+                        boxFeatures[boxKey].marked || boxFeatures[boxKey].common
+                      ) &&
+                        (boxFeatures[boxKey].valsB1[player] ||
+                          boxFeatures[boxKey].valsB2[player])))
+                      ? styles.btnGreenBg
+                      : styles.btnGrayBg
+                  }`}
+                  onClick={() => handlePlayerClick(player)}
+                >
+                  {player}
+                </div>
+                <div
+                  className={`${styles.topBtnR} ${
+                    boxIdx &&
+                    (boxFeatures[boxKey].label === player ||
+                      (!(
+                        boxFeatures[boxKey].marked || boxFeatures[boxKey].common
+                      ) &&
+                        (boxFeatures[boxKey].valsB1[player] ||
+                          boxFeatures[boxKey].valsB2[player])))
+                      ? styles.btnGreenBg
+                      : styles.btnGrayBg
+                  }`}
+                  onClick={() => handlePlayerCrossClick(player)}
+                >
+                  X
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className={styles.buttonContainer}>
+            <div
+              className={styles.lowerBtn}
+              style={{ backgroundColor: "brown" }}
+              onClick={handleCommonClick}
+            >
+              common: {commonCount}
+            </div>
+            <div className={styles.lowerBtn} onClick={handleClearClick}>
+              clear
+            </div>
 
-      {/* Button Panel */}
-      <div>
-        <div className={styles.buttonContainer}>
+            <div
+              className={styles.lowerBtn}
+              onClick={handleResetClick}
+              style={{ backgroundColor: "red" }}
+            >
+              RESET
+            </div>
+          </div>
+        </div>
+
+        {/* Notes */}
+        <div className={styles.notesAreaContainer}>
           {players.map((player) => (
-            <div key={"button-" + player} className={styles.topBtn}>
-              <div
-                className={`${styles.topBtnL} ${
-                  boxIdx &&
-                  (boxFeatures[boxKey].label === player ||
-                    (!(
-                      boxFeatures[boxKey].marked || boxFeatures[boxKey].common
-                    ) &&
-                      (boxFeatures[boxKey].valsB1[player] ||
-                        boxFeatures[boxKey].valsB2[player])))
-                    ? styles.btnGreenBg
-                    : styles.btnGrayBg
-                }`}
-                onClick={() => handlePlayerClick(player)}
-              >
-                {player}
+            <div key={"notes-" + player} className={styles.notesRowContainer}>
+              <div className={styles.playerTallyGroup}>
+                <div className={styles.playerTallyContents}>
+                  <div>{player}</div>:<div>{playerTally[player]}</div>
+                </div>
+                <div className={styles.playerTallyBtns}>
+                  <div onClick={() => handleDecrementClick(player)}>-</div>
+                  <div onClick={() => handleIncrementClick(player)}>+</div>
+                </div>
               </div>
-              <div
-                className={`${styles.topBtnR} ${
-                  boxIdx &&
-                  (boxFeatures[boxKey].label === player ||
-                    (!(
-                      boxFeatures[boxKey].marked || boxFeatures[boxKey].common
-                    ) &&
-                      (boxFeatures[boxKey].valsB1[player] ||
-                        boxFeatures[boxKey].valsB2[player])))
-                    ? styles.btnGreenBg
-                    : styles.btnGrayBg
-                }`}
-                onClick={() => handlePlayerCrossClick(player)}
-              >
-                X
-              </div>
+              <textarea
+                className={styles.notesArea}
+                spellCheck={false}
+                value={notesData[player]}
+                onChange={(e) =>
+                  setNotesData((n) => ({ ...n, [player]: e.target.value }))
+                }
+              />
             </div>
           ))}
         </div>
-        <div className={styles.buttonContainer}>
-          <div
-            className={styles.lowerBtn}
-            style={{ backgroundColor: "brown" }}
-            onClick={handleCommonClick}
-          >
-            common: {commonCount}
-          </div>
-          <div className={styles.lowerBtn} onClick={handleClearClick}>
-            clear
-          </div>
-
-          <div
-            className={styles.lowerBtn}
-            onClick={handleResetClick}
-            style={{ backgroundColor: "red" }}
-          >
-            RESET
-          </div>
-        </div>
-      </div>
-
-      {/* Notes */}
-      <div className={styles.notesAreaContainer}>
-        {players.map((player) => (
-          <div key={"notes-" + player} className={styles.notesRowContainer}>
-            <div className={styles.playerTallyGroup}>
-              <div className={styles.playerTallyContents}>
-                <div>{player}</div>:<div>{playerTally[player]}</div>
-              </div>
-              <div className={styles.playerTallyBtns}>
-                <div onClick={() => handleDecrementClick(player)}>-</div>
-                <div onClick={() => handleIncrementClick(player)}>+</div>
-              </div>
-            </div>
-            <textarea
-              className={styles.notesArea}
-              spellCheck={false}
-              value={notesData[player]}
-              onChange={(e) =>
-                setNotesData((n) => ({ ...n, [player]: e.target.value }))
-              }
-            />
-          </div>
-        ))}
       </div>
     </div>
   );

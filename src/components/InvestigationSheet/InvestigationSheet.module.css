@@ -2,7 +2,8 @@
   /* background-color: lightblue; */
   font-family: Arial, sans-serif;
   /* font-family: "Creepster", cursive; */
-  justify-content: center;
+  /* justify-content: space-around; */
+  /* width: 100vw; */
   /* align-items: center; */
   /* display:block; */
 }
@@ -104,6 +105,9 @@
 
 .notesAreaContainer {
   margin-top: 10px;
+  /* display: inline-flex;
+  min-width: 0;
+  width: auto; */
 }
 
 .notesRowContainer {

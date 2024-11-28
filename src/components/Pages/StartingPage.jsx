@@ -6,12 +6,12 @@ import styles from "./StartingPage.module.css";
 
 export default function StartingPage() {
   const [name, setName] = useState(""); // Store the detective's name
-  const [isGamePage, setIsGamePage] = useState(false); // Toggle between pages
+  const [isLobby, setIsLobby] = useState(false); // Toggle between pages
   const [activeComponent, setActiveComponent] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name.trim()) setIsGamePage(true); // Move to the second page
+    if (name.trim()) setIsLobby(true); // Move to the second page
   };
 
   const handleLobbyOptionClick = (component) => {
@@ -19,24 +19,22 @@ export default function StartingPage() {
   };
 
   /* First Page: Enter Name */
-  if (!isGamePage)
+  if (!isLobby)
     return (
       <div className={styles.body}>
         <div className={styles.card}>
           <h1 className={styles.title}>Deck Detective</h1>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Enter Your Detective Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className={styles.input}
-              required
-            />
-            <button type="submit" className={styles.button}>
-              Begin Investigation
-            </button>
-          </form>
+          <input
+            type="text"
+            placeholder="Enter Your Detective Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className={styles.input}
+            required
+          />
+          <button onClick={handleSubmit} className={styles.button}>
+            Begin Investigation
+          </button>
         </div>
       </div>
     );

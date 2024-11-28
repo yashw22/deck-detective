@@ -4,11 +4,10 @@
     border: 1px solid #444; /* Subtle border */
     border-radius: 16px;
     padding: 2rem;
-    width: 90%;
     max-width: 400px;
     text-align: center;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); /* Dramatic shadow */
-    margin: 1rem auto; /* Center the container */
+
   }
   
   .heading {

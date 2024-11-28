@@ -228,7 +228,7 @@ const GamePage = forwardRef(function GamePage(
           ))}
         </div>
       );
-    } else return <div>No. of cards: {resData.res.length}</div>;
+    }
   };
 
   const getResModalContent = () => {
@@ -251,6 +251,7 @@ const GamePage = forwardRef(function GamePage(
           </div>
         )}
         {getSearchResponseContent()}
+        <div>No. of cards: {resData.res.length}</div>
       </>
     );
   };
