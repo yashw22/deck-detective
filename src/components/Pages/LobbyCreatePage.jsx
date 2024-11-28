@@ -8,9 +8,9 @@ import {
   distributeSearchCards,
   distributeWeaponCards,
 } from "../../lib/gameUtils";
+import { maxPlayers, minPlayers } from "../../lib/gameConstants";
 
-const minPlayers = 2,
-  maxPlayers = 5;
+
 
 export default function LobbyCreatePage({ myName }) {
   const myPeerRef = useRef(null);

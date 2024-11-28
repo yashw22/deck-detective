@@ -1,5 +1,8 @@
 export const gameEmoji = "🔎"
 
+export const minPlayers = 3,
+    maxPlayers = 5;
+
 // export const weaponElements = ["Diamond", "Opal", "Pearl"]
 export const weaponElements = ["Axe", "Blaster", "Crossbow"]
 export const typeElements = [1, 2, 3]
