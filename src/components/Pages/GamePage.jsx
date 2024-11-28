@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 
 import styles from "./GamePage.module.css";
@@ -20,7 +20,6 @@ const GamePage = forwardRef(function GamePage(
   ref
 ) {
   const [myBoardInfo, setMyBoardInfo] = useState(boardInfo);
-
   const [navbarOption, setNavbarOption] = useState("GameBoard");
   const [showSearchCardModal, setShowSearchCardModal] = useState(false);
   const [showResponseModal, setShowResponseModal] = useState(false);
@@ -31,6 +30,11 @@ const GamePage = forwardRef(function GamePage(
   const [selectedCardIdx, setSelectedCardIdx] = useState();
   const [singleFree, setSingleFree] = useState(false);
   const [elementsChosen, setElementsChosen] = useState({});
+
+  const memoPlayerNames = useMemo(
+    () => [...Object.values(playerList).map((obj) => obj.name), myName],
+    [playerList, myName]
+  );
 
   useImperativeHandle(ref, () => ({
     setResponse: (data) => {
@@ -324,12 +328,7 @@ const GamePage = forwardRef(function GamePage(
       <div className={styles.contentContainer}>
         {navbarOption === "GameBoard" && getGameBoard()}
         {navbarOption === "InvestigationSheet" && (
-          <InvestigationSheet
-            players={[
-              ...Object.values(playerList).map((obj) => obj.name),
-              myName,
-            ]}
-          />
+          <InvestigationSheet players={memoPlayerNames} />
         )}
       </div>
       <div className={styles.navbar}>

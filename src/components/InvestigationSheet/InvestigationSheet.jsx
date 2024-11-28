@@ -45,42 +45,58 @@ const initPlayerNotes = (players) => {
   return playerNotes;
 };
 
-export default function InvestigationSheet({ players }) {
-  var [boxKey, setBoxKey] = useState(null);
-  var [boxIdx, setBoxIdx] = useState(null);
-  const [boxFeatures, setBoxFeatures] = useState(initBoxFeatures(players));
-  const [commonCount, setCommonCount] = useState(0);
-  const [playerTally, setPlayerTally] = useState(initPlayerTally(players));
-  const [notesData, setNotesData] = useState(initPlayerNotes(players));
+function InvestigationSheet({ players }) {
+  const ls_data = sessionStorage.getItem("investigationSheet");
+
+  var [boxKey, setBoxKey] = useState(() => {
+    return ls_data ? JSON.parse(ls_data).boxKey : null;
+  });
+  var [boxIdx, setBoxIdx] = useState(() => {
+    return ls_data ? JSON.parse(ls_data).boxIdx : null;
+  });
+
+  const [boxFeatures, setBoxFeatures] = useState(() => {
+    return ls_data ? JSON.parse(ls_data).boxFeatures : initBoxFeatures(players);
+  });
+  const [commonCount, setCommonCount] = useState(() => {
+    return ls_data ? JSON.parse(ls_data).commonCount : 0;
+  });
+  const [playerTally, setPlayerTally] = useState(() => {
+    return ls_data ? JSON.parse(ls_data).playerTally : initPlayerTally(players);
+  });
+
+  const [notesData, setNotesData] = useState(() => {
+    return ls_data ? JSON.parse(ls_data).notesData : initPlayerNotes(players);
+  });
 
   useEffect(() => {
-    const ls_boxFeatures = localStorage.getItem("is_boxFeatures");
-    if (ls_boxFeatures) setBoxFeatures(JSON.parse(ls_boxFeatures));
-    const ls_commonCount = localStorage.getItem("is_commonCount");
-    if (ls_commonCount) setCommonCount(JSON.parse(ls_commonCount));
-    const ls_playerTally = localStorage.getItem("isNotes_tally");
-    if (ls_playerTally) setPlayerTally(JSON.parse(ls_playerTally));
-    const ls_notesData = localStorage.getItem("isNotes_data");
-    if (ls_notesData) setNotesData(JSON.parse(ls_notesData));
+    console.log("sheet render");
   }, []);
-  useEffect(
-    () => localStorage.setItem("is_boxFeatures", JSON.stringify(boxFeatures)),
-    [boxFeatures]
-  );
-  useEffect(
-    () => localStorage.setItem("is_commonCount", JSON.stringify(commonCount)),
-    [commonCount]
-  );
-  useEffect(
-    () => localStorage.setItem("isNotes_tally", JSON.stringify(playerTally)),
-    [playerTally]
-  );
-  useEffect(
-    () => localStorage.setItem("isNotes_data", JSON.stringify(notesData)),
-    [notesData]
-  );
+
+  useEffect(() => {
+    const dataToStore = {
+      boxKey,
+      boxIdx,
+      boxFeatures,
+      commonCount,
+      playerTally,
+      notesData,
+    };
+    sessionStorage.setItem("investigationSheet", JSON.stringify(dataToStore));
+  }, [boxKey, boxIdx, boxFeatures, commonCount, playerTally, notesData]);
 
   // helper functions
+
+  const resetSheet = () => {
+    sessionStorage.removeItem("investigationSheetData");
+    setBoxKey(null);
+    setBoxIdx(null);
+    setBoxFeatures(initBoxFeatures(players));
+    setCommonCount(0);
+    setPlayerTally(initPlayerTally(players));
+    setNotesData(initPlayerNotes(players));
+  };
+
   const handleBoxClick = (newKey, newIdx) => {
     if (boxIdx !== null) {
       setBoxFeatures((b) => ({
@@ -195,12 +211,7 @@ export default function InvestigationSheet({ players }) {
   const handleResetClick = () => {
     const userResponse = confirm("You are about to wipe all data. Proceed?");
     if (userResponse) {
-      setBoxKey(null);
-      setBoxIdx(null);
-      setBoxFeatures(initBoxFeatures(players));
-      setCommonCount(0);
-      setPlayerTally(initPlayerTally(players));
-      setNotesData(initPlayerNotes(players));
+      resetSheet();
     }
   };
 
@@ -336,7 +347,8 @@ export default function InvestigationSheet({ players }) {
     </div>
   );
 }
-
 InvestigationSheet.propTypes = {
   players: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
+
+export default InvestigationSheet;

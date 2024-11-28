@@ -4,18 +4,25 @@
   top: 0;
   left: 0;
   width: 100%;
-  padding: 8px 0;
+  height: 40px;
   background-color: #555;
   color: white;
   /* box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); */
   display: flex;
   justify-content: space-around;
+  align-items: center;
   font-size: 16px;
   z-index: 10;
 }
 
-.gameBoardContainer {
-  justify-content: center;
+.contentContainer {
+  height: calc(100vh - 80px);
+  /* width: 100vh; */
+  /* overflow-x: hidden; */
+  /* overflow-y: scroll; */
+  /* padding-top: 40px;
+  padding-bottom: 40px; */
+  text-align: center;
 }
 
 .cardRow {
@@ -84,6 +91,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
+  height: 40px;
   background-color: #333;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -98,7 +106,7 @@
   background-color: #555;
   color: white;
   border: none;
-  padding: 10px 20px;
+  /* padding: 10px 20px; */
   /* border-radius: 5px; */
   cursor: pointer;
   font-size: 16px;
