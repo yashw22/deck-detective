@@ -423,6 +423,16 @@ const GamePage = forwardRef(function GamePage(
           </div>
         ))}
       </div>
+      <br />
+
+      <h1>Common Cards</h1>
+      <div className={styles.cardRow}>
+        {myBoardInfo.commonCards.map((card, idx) => (
+          <div key={idx} className={styles.cards}>
+            <ElementCard card={card} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 
