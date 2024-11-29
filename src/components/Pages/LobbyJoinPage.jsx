@@ -7,13 +7,11 @@ import GamePage from "./GamePage";
 
 export default function LobbyJoinPage({ myName }) {
   const myPeerRef = useRef(null);
-  //   const [myPeerId, setMyPeerId] = useState();
 
   const [hostPeerId, setHostPeerId] = useState("");
   const hostConnRef = useRef(null);
   const [playerCount, setPlayerCount] = useState(0);
   const connListRef = useRef({});
-  //   const [selectedPeer, setSelectedPeer] = useState("");
 
   const [beginGame, setBeginGame] = useState(false);
   const gamePageRef = useRef();
@@ -121,7 +119,7 @@ export default function LobbyJoinPage({ myName }) {
         <span className={styles.detectiveLabel}>Detective</span>{" "}
         <span className={styles.playerName}>{myName}</span>
       </p>
-      {!hostConnRef.current && (
+      {playerCount!==0 && !hostConnRef.current && (
         <div className={styles.connection}>
           <input
             type="text"

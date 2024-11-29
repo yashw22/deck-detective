@@ -10,8 +10,6 @@ import {
 } from "../../lib/gameUtils";
 import { maxPlayers, minPlayers } from "../../lib/gameConstants";
 
-
-
 export default function LobbyCreatePage({ myName }) {
   const myPeerRef = useRef(null);
   const myPeerNameRef = useRef(myName);
@@ -19,13 +17,43 @@ export default function LobbyCreatePage({ myName }) {
 
   const [playerCount, setPlayerCount] = useState(0);
   const connListRef = useRef({});
-  //   const [selectedPeer, setSelectedPeer] = useState("");
 
   const beginGameRef = useRef(false);
   const gamePageRef = useRef();
   const [boardInfo, setBoardInfo] = useState({});
 
   useEffect(() => {
+    // const savedSession = sessionStorage.getItem("lobbyData");
+    // if (savedSession) {
+    //   const lobbyData = JSON.parse(savedSession);
+
+    //   // Restore connections and board info
+    //   myPeerRef.current = lobbyData.myPeerRef.current;
+    //   setMyPeerId(lobbyData.myPeerId);
+    //   myPeerNameRef.current = lobbyData.myPeerNameRef.current;
+
+    //   setPlayerCount(lobbyData.playerCount);
+    //   connListRef.current = lobbyData.connListRef.current;
+
+    //   beginGameRef.current = lobbyData.beginGameRef.current;
+    //   setBoardInfo(lobbyData.boardInfo);
+
+    //   Object.entries(connListRef.current).forEach(([peerId, peerObj]) => {
+    //     peerObj.conn.on("data", (packet) => {
+    //       if (packet.type === "broadcast") {
+    //         forwardBroadcast(peerId, packet.data);
+    //         processData(peerId, packet);
+    //       } else if (packet.type === "private") {
+    //         if (packet.receiver == myPeerRef.current.id)
+    //           processData(peerId, packet);
+    //         else forwardPrivate(peerId, packet.receiver, packet.data);
+    //       }
+    //     });
+    //   });
+
+    //   // const myPeer = new Peer(lobbyData.myPeerId);
+    //   // myPeerRef.current = myPeer;
+    // } else {
     // const myPeer = new Peer();
     const myPeer = new Peer({
       host: "peerjs-server-d8ry.onrender.com",
@@ -65,6 +93,7 @@ export default function LobbyCreatePage({ myName }) {
         });
       } else newConn.close();
     });
+    // }
 
     return () => {
       // New code to gracefully close connection, not yet tested
@@ -74,9 +103,23 @@ export default function LobbyCreatePage({ myName }) {
       //     });
       //     conn.close();
       //   });
-      myPeer.destroy();
+      if (myPeerRef.current) myPeerRef.current.destroy();
     };
   }, []);
+
+  // const saveSession = () => {
+  //   sessionStorage.setItem(
+  //     "lobbySession",
+  //     JSON.stringify({
+  //       myPeerId,
+  //       myPeerNameRef,
+  //       playerCount,
+  //       connListRef,
+  //       beginGameRef,
+  //       boardInfo,
+  //     })
+  //   );
+  // };
 
   const shareAllConnections = (newConn) => {
     newConn.send({
@@ -155,6 +198,7 @@ export default function LobbyCreatePage({ myName }) {
           weaponCards: playerWeaponCards[playerCount - 1],
           searchCards: playerSearchCards[playerCount - 1],
         },
+        turnQ: [myPeerId, ...Object.keys(connListRef.current)],
       };
       Object.entries(connListRef.current).map(([peerId, peerObj], idx) => {
         newBoard[peerId] = {
