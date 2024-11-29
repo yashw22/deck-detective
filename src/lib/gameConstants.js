@@ -1,6 +1,6 @@
 export const gameEmoji = "🔎"
 
-export const minPlayers = 3,
+export const minPlayers = 2,
     maxPlayers = 5;
 
 // export const weaponElements = ["Diamond", "Opal", "Pearl"]
