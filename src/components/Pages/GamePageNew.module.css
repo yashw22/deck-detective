@@ -1,0 +1,250 @@
+.infobar {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  /* padding: 10px; */
+  color: white;
+  /* box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  z-index: 100;
+  border-radius: 0px 0px 8px 8px;
+  background-color: #1f1f1f;
+  box-shadow: 0 4px 10px rgb(0, 0, 0);
+  font-family: "Creepster", cursive;
+}
+
+.infobarBtn {
+  margin: 0px 10px;
+  font-family: "Arial", sans-serif;
+  background-color: #ffcc00; /* Gold button */
+  color: #121212;
+  border-radius: 4px;
+  padding: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s, transform 0.3s;
+}
+.infobarBtn:hover {
+  background-color: #e6b800; /* Darker gold on hover */
+  transform: translateY(-2px); /* Lift button slightly */
+}
+
+.sheetContainer {
+  /* height: calc(75vh - 100px); */
+  height: calc(75% - 100px);
+  /* height: calc(90vh); */
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  /* background-color: blue; */
+  object-fit: cover;
+  z-index: 50;
+}
+
+/* .sheet {
+  width: 100vw;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  text-align: center;
+} */
+/* .sheet::-webkit-scrollbar {
+  display: none;
+}
+
+.sheet {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+} */
+
+.dynamicBox {
+  position: fixed;
+  bottom: 50px;
+  left: 0;
+  /* height: 25vh; */
+  height: 25%;
+  width: 100%;
+  /* background-color: green; */
+  /* color: white; */
+  /* display: flex; */
+  /* justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  z-index: 1000; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardRow {
+  /* background-color: hsla(36, 100%, 90%, 0.521); */
+  overflow-y: hidden;
+  overflow-x: scroll;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: space-evenly;
+  /* cursor: grab; */
+  /* text-align: center; */
+
+  /* -ms-overflow-style: none; */
+  /* scrollbar-width: none; */
+}
+.cardRow::-webkit-scrollbar {
+  height: 6px; /* Adjust height for horizontal scrollbar */
+}
+.cardRow::-webkit-scrollbar-track {
+  background: transparent; /* Remove scrollbar track background */
+}
+.cardRow::-webkit-scrollbar-thumb {
+  background: #888; /* Set thumb color */
+  border-radius: 4px; /* Optional: Rounded corners for the thumb */
+}
+.cardRow::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Optional: Darken thumb on hover */
+}
+
+.card {
+  transform: scale(0.6);
+  /* overflow: hidden; */
+  display: inline-block;
+  transition: transform 0.5s ease;
+}
+.card:hover {
+  transform: scale(0.8);
+}
+.clickable {
+  cursor: pointer;
+}
+
+.oscBox {
+  display: flex;
+  align-items: center;
+  padding: 0px 10px;
+  border-left: 1px solid white;
+  border-right: 1px solid white;
+}
+.oscTitle {
+  font-size: 2em;
+  transform: rotate(-90deg);
+}
+
+.notes {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  /* background-color: red; */
+}
+.notes::-webkit-scrollbar {
+  width: 6px;
+}
+.notes::-webkit-scrollbar-track {
+  background: transparent; /* Remove scrollbar track background */
+}
+.notes::-webkit-scrollbar-thumb {
+  background: #888; /* Set thumb color */
+  border-radius: 4px; /* Optional: Rounded corners for the thumb */
+}
+.notes::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Optional: Darken thumb on hover */
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #1f1f1f;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+  /* width: 300px; */
+  text-align: center;
+}
+
+.modalContent h2 {
+  margin: 0;
+  font-family: "Creepster", cursive;
+  /* margin-bottom: 15px; */
+}
+
+.modalBtnRow {
+  display: flex;
+  margin-top: 10px;
+}
+
+.modalBtn {
+  flex: 1;
+  cursor: pointer;
+  background-color: #ffcc00;
+  color: black;
+  margin: 2px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s, transform 0.3s;
+}
+.modalBtn:hover {
+  background-color: #e6b800; /* Darker gold on hover */
+  transform: translateY(-2px); /* Lift button slightly */
+}
+
+
+.navbar {
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #333;
+  /* box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); */
+  display: flex;
+  /* justify-content: space-around;
+  align-items: center; */
+  /* padding: 10px 0; */
+  z-index: 100;
+}
+
+.navButton {
+  flex: 1;
+  background-color: #555;
+  color: white;
+  border: none;
+  /* padding: 10px 20px; */
+  /* border-radius: 5px; */
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  font-family: "Creepster", cursive;
+
+  border-radius: 8px 8px 0px 0px;
+  background-color: #1f1f1f;
+  box-shadow: -2px -4px 20px rgb(0, 0, 0);
+}
+
+.navButton:hover {
+  background-color: #3d3d3d;
+}
+
+.navButtonActive {
+  background-color: #474747;
+  /* background-color: #999; */
+}

@@ -6,9 +6,9 @@ import styles from "./InvestigationSheet.module.css";
 import { getString } from "../../utils/helpers";
 import { COLORS, COUNTS, WEAPONS } from "../../config/constants";
 import { initGridCells, initTally } from "../../utils/gameInits";
-import Notes from "../Notes";
+// import Notes from "../Notes";
 
-export default function InvestigationSheet({ players }) {
+export default function InvestigationSheetNew({ players }) {
   const ss_sheetData = sessionStorage.getItem("sheetData");
 
   var [cellKey, setCellKey] = useState(() => {
@@ -255,7 +255,7 @@ export default function InvestigationSheet({ players }) {
           <div className={styles.buttonContainer}>
             <div
               className={styles.lowerBtn}
-              style={{ backgroundColor: "brown" }}
+              // style={{ backgroundColor: "brown" }}
               onClick={handleCommonClick}
             >
               common: {commonCount}
@@ -267,7 +267,7 @@ export default function InvestigationSheet({ players }) {
             <div
               className={styles.lowerBtn}
               onClick={handleResetClick}
-              style={{ backgroundColor: "red" }}
+              // style={{ backgroundColor: "red" }}
             >
               RESET
             </div>
@@ -275,11 +275,11 @@ export default function InvestigationSheet({ players }) {
         </div>
 
         {/* Notes */}
-        <Notes players={players} />
+        {/* <Notes players={players} /> */}
       </div>
     </div>
   );
 }
-InvestigationSheet.propTypes = {
+InvestigationSheetNew.propTypes = {
   players: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

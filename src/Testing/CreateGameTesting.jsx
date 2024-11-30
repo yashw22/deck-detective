@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Peer from "peerjs";
-
-const maxPlayers = 5;
+import { MAX_PLAYERS } from "../config/constants";
 
 export default function CreateGame({ myName }) {
   const myPeerRef = useRef(null);
@@ -31,7 +30,7 @@ export default function CreateGame({ myName }) {
     });
 
     myPeer.on("connection", (newConn) => {
-      if (Object.keys(connListRef.current).length < maxPlayers - 1) {
+      if (Object.keys(connListRef.current).length < MAX_PLAYERS - 1) {
         const { peerName } = newConn.metadata;
         connListRef.current[newConn.peer] = { conn: newConn, name: peerName };
         setPlayerCount((p) => p + 1);

@@ -4,9 +4,9 @@ import { getPlayers } from "../../lib/utils";
 import {
   distributeSearchCards,
   distributeWeaponCards,
-  getMatchedCards,
+  getCardMatches,
   pickNextSearchCard,
-} from "../../lib/gameUtils";
+} from "../../lib/gameUtil";
 
 export default function TestGameLogic() {
   const players = getPlayers();
@@ -18,7 +18,7 @@ export default function TestGameLogic() {
     players.length
   );
 
-  const matchedCards = getMatchedCards(newSearchDeck[0], playerWeaponCards[0]);
+  const matchedCards = getCardMatches(newSearchDeck[0], playerWeaponCards[0]);
   console.log("res", matchedCards);
 
   const [usedDeck, setUsedDeck] = useState([]);

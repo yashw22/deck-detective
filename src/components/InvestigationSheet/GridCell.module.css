@@ -1,9 +1,3 @@
-/* .boxContainer {
-  display: flex;
-  flex-direction: column;
-  overflow: visible;
-} */
-
 .box {
   /* padding-bottom: 0.5em; */
   width: 5em;

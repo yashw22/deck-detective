@@ -3,12 +3,15 @@ import PropTypes from "prop-types";
 import Peer from "peerjs";
 import styles from "./LobbyCreatePage.module.css";
 
-import GamePage from "./GamePage";
+import GamePageNew from "./GamePageNew";
 import {
   distributeSearchCards,
   distributeWeaponCards,
-} from "../../lib/gameUtils";
-import { maxPlayers, minPlayers } from "../../lib/gameConstants";
+} from "../../utils/gameUtil";
+import { MAX_PLAYERS, MIN_PLAYERS } from "../../config/constants";
+import { peerConfig } from "../../config/peerConfig";
+import { generateString } from "../../utils/helpers";
+// import { generateString } from "../../utils/helpers";
 
 export default function LobbyCreatePage({ myName }) {
   const myPeerRef = useRef(null);
@@ -54,12 +57,7 @@ export default function LobbyCreatePage({ myName }) {
     //   // const myPeer = new Peer(lobbyData.myPeerId);
     //   // myPeerRef.current = myPeer;
     // } else {
-    // const myPeer = new Peer();
-    const myPeer = new Peer({
-      host: "peerjs-server-d8ry.onrender.com",
-      path: "/deckdetective",
-      secure: true,
-    });
+    const myPeer = new Peer(generateString(), peerConfig);
     myPeerRef.current = myPeer;
 
     myPeer.on("open", (id) => {
@@ -70,7 +68,7 @@ export default function LobbyCreatePage({ myName }) {
     myPeer.on("connection", (newConn) => {
       if (
         !beginGameRef.current &&
-        Object.keys(connListRef.current).length < maxPlayers - 1
+        Object.keys(connListRef.current).length < MAX_PLAYERS - 1
       ) {
         const { peerName } = newConn.metadata;
         connListRef.current[newConn.peer] = { conn: newConn, name: peerName };
@@ -182,7 +180,7 @@ export default function LobbyCreatePage({ myName }) {
   // };
 
   const handleBeginGame = () => {
-    if (playerCount >= minPlayers) {
+    if (playerCount >= MIN_PLAYERS) {
       const [playerWeaponCards, commonWeaponCards, resultCard] =
         distributeWeaponCards(playerCount);
 
@@ -229,7 +227,7 @@ export default function LobbyCreatePage({ myName }) {
 
   if (beginGameRef.current) {
     return (
-      <GamePage
+      <GamePageNew
         ref={gamePageRef}
         myPeerId={myPeerId}
         myName={myName}
@@ -269,7 +267,7 @@ export default function LobbyCreatePage({ myName }) {
         )}
       </p>
 
-      {playerCount >= minPlayers && (
+      {playerCount >= MIN_PLAYERS && (
         <button className={styles.button} onClick={handleBeginGame}>
           Begin Game
         </button>

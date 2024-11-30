@@ -1,8 +1,8 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import styles from "./HowToPlay.module.css";
+import styles from "./HowToPlayPage.module.css";
 
-export default function HowToPlay({ onBack }) {
+export default function HowToPlayPage({ onBack }) {
   const [openSections, setOpenSections] = useState({});
 
   const toggleSection = (section) => {
@@ -166,6 +166,6 @@ export default function HowToPlay({ onBack }) {
     </div>
   );
 }
-HowToPlay.propTypes = {
+HowToPlayPage.propTypes = {
   onBack: PropTypes.func.isRequired,
 };

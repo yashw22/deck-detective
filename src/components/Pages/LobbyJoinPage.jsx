@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import Peer from "peerjs";
 import styles from "./LobbyJoinPage.module.css";
 
-import GamePage from "./GamePage";
+import GamePageNew from "./GamePageNew";
+
+import { peerConfig } from "../../config/peerConfig";
+import { generateString } from "../../utils/helpers";
 
 export default function LobbyJoinPage({ myName }) {
   const myPeerRef = useRef(null);
@@ -18,12 +21,7 @@ export default function LobbyJoinPage({ myName }) {
   const [boardInfo, setBoardInfo] = useState({});
 
   useEffect(() => {
-    // const newPeer = new Peer();
-    const newPeer = new Peer({
-      host: "peerjs-server-d8ry.onrender.com",
-      path: "/deckdetective",
-      secure: true,
-    });
+    const newPeer = new Peer(generateString(), peerConfig);
     myPeerRef.current = newPeer;
 
     newPeer.on("open", () => {
@@ -100,7 +98,7 @@ export default function LobbyJoinPage({ myName }) {
 
   if (beginGame) {
     return (
-      <GamePage
+      <GamePageNew
         ref={gamePageRef}
         myPeerId={myPeerRef.current.id}
         myName={myName}
@@ -119,7 +117,7 @@ export default function LobbyJoinPage({ myName }) {
         <span className={styles.detectiveLabel}>Detective</span>{" "}
         <span className={styles.playerName}>{myName}</span>
       </p>
-      {playerCount!==0 && !hostConnRef.current && (
+      {playerCount !== 0 && !hostConnRef.current && (
         <div className={styles.connection}>
           <input
             type="text"

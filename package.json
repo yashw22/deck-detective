@@ -12,6 +12,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "firebase": "^11.0.2",
     "gh-pages": "^6.2.0",
     "peerjs": "^1.5.4",

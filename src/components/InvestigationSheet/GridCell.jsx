@@ -1,53 +1,32 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import styles from "./GridCell.module.css";
-import { getColorHex } from "../../lib/utils";
+import { getHex } from "../../utils/helpers";
 
 function GridCell({ feature, onBoxClick }) {
-  const boxKey = feature.weapon + feature.type + feature.color;
+  const { weapon, count, color, valsB1, valsB2, focus, marked, common, label } =
+    feature;
+  const boxKey = weapon + count + color;
 
-  const topBoxStyle = {
-    // backgroundColor: getColorHex(feature.color),
-    // outline: feature.focusB1 ? "3px solid blue" : "none",
-    backgroundColor: feature.focusB1 ? "gray" : getColorHex(feature.color),
-  };
-  const bottomBoxStyle = {
-    // backgroundColor: getColorHex(feature.color),
-    // outline: feature.focusB2 ? "3px solid blue" : "none",
-    backgroundColor: feature.focusB2 ? "gray" : getColorHex(feature.color),
-  };
+  // outline: focus ? "3px solid blue" : "",
 
-  if (feature.common)
+  if (common)
     return (
       <div
         className={styles.commonContainer}
-        style={{
-          // backgroundColor: getColorHex(feature.color),
-          // outline: feature.focusB1 || feature.focusB2 ? "3px solid blue" : "",
-          backgroundColor:
-            feature.focusB1 || feature.focusB2
-              ? "gray"
-              : getColorHex(feature.color),
-        }}
+        style={{ backgroundColor: focus === 1 ? "gray" : getHex(color) }}
         onClick={() => onBoxClick(boxKey, 1)}
       ></div>
     );
 
-  if (feature.marked)
+  if (marked)
     return (
       <div
         className={`${styles.markedContainer} ${styles.commonContainer}`}
-        style={{
-          // backgroundColor: getColorHex(feature.color),
-          // outline: feature.focusB1 || feature.focusB2 ? "3px solid blue" : "",
-          backgroundColor:
-            feature.focusB1 || feature.focusB2
-              ? "gray"
-              : getColorHex(feature.color),
-        }}
+        style={{ backgroundColor: focus === 1 ? "gray" : getHex(color) }}
         onClick={() => onBoxClick(boxKey, 1)}
       >
-        <span>{feature.label}</span>
+        <span>{label}</span>
       </div>
     );
 
@@ -55,20 +34,20 @@ function GridCell({ feature, onBoxClick }) {
     <div className={styles.boxContainer}>
       <div
         className={styles.box}
-        style={topBoxStyle}
+        style={{ backgroundColor: focus === 1 ? "gray" : getHex(color) }}
         onClick={() => onBoxClick(boxKey, 1)}
       >
-        {Object.keys(feature.valsB1)
-          .filter((key) => feature.valsB1[key])
+        {Object.keys(valsB1)
+          .filter((key) => valsB1[key])
           .join(" ")}
       </div>
       <div
         className={styles.box}
-        style={bottomBoxStyle}
+        style={{ backgroundColor: focus === 2 ? "gray" : getHex(color) }}
         onClick={() => onBoxClick(boxKey, 2)}
       >
-        {Object.keys(feature.valsB2)
-          .filter((key) => feature.valsB2[key])
+        {Object.keys(valsB2)
+          .filter((key) => valsB2[key])
           .join(" ")}
       </div>
     </div>
@@ -78,13 +57,11 @@ function GridCell({ feature, onBoxClick }) {
 GridCell.propTypes = {
   feature: PropTypes.shape({
     weapon: PropTypes.string.isRequired,
-    type: PropTypes.number.isRequired,
+    count: PropTypes.number.isRequired,
     color: PropTypes.string.isRequired,
     valsB1: PropTypes.object.isRequired,
     valsB2: PropTypes.object.isRequired,
-    focusB0: PropTypes.bool.isRequired,
-    focusB1: PropTypes.bool.isRequired,
-    focusB2: PropTypes.bool.isRequired,
+    focus: PropTypes.number.isRequired,
     marked: PropTypes.bool.isRequired,
     common: PropTypes.bool.isRequired,
     label: PropTypes.string.isRequired,

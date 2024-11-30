@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 
-import styles from "./GamePage.module.css";
+import styles from "./GamePageNew.module.css";
 
 import SearchCard from "../Cards/SearchCard";
 import ElementCard from "../Cards/ElementCard";
@@ -9,8 +9,8 @@ import { COLORS, COUNTS, S_NAME_LEN, WEAPONS } from "../../config/constants";
 import { getHex, getString, lightenHex } from "../../utils/helpers";
 import { getCardMatches, pickNextSearchCard } from "../../utils/gameUtil";
 
-import InvestigationSheet from "../InvestigationSheet/InvestigationSheet";
-
+import InvestigationSheetNew from "../InvestigationSheet/InvestigationSheetNew";
+import Notes from "../Notes";
 
 const getNameForSheet = (name) => {
   return name.length >= S_NAME_LEN
@@ -18,15 +18,16 @@ const getNameForSheet = (name) => {
     : name.toLowerCase();
 };
 
-const GamePage = forwardRef(function GamePage(
+const GamePageNew = forwardRef(function GamePageNew(
   { myPeerId, myName, sendBroadcast, playerList, boardInfo },
   ref
 ) {
   const [myBoardInfo, setMyBoardInfo] = useState(boardInfo);
-  const [navbarOption, setNavbarOption] = useState("GameBoard");
+  const [navbarOption, setNavbarOption] = useState("weaponCards");
   const [showSearchCardModal, setShowSearchCardModal] = useState(false);
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [finalCardModal, setFinalCardModal] = useState(false);
+  const [resChecked, setResChecked] = useState(false);
   const [finalGuessElements, setFinalGuessElements] = useState({});
   const [resData, setResData] = useState(false);
 
@@ -236,7 +237,7 @@ const GamePage = forwardRef(function GamePage(
       return (
         <div className={styles.cardRow}>
           {resData.res.map((card, idx) => (
-            <div key={idx} className={styles.cards}>
+            <div key={idx} className={styles.card}>
               <ElementCard card={card} />
             </div>
           ))}
@@ -255,7 +256,7 @@ const GamePage = forwardRef(function GamePage(
           <h2>
             {resData.from} asked {resData.to}
           </h2>
-          <div className={styles.cards}>
+          <div className={styles.card}>
             <SearchCard card={resData.searchCard} />
           </div>
           {Object.keys(resData.freeChoice).length !== 0 && (
@@ -269,6 +270,7 @@ const GamePage = forwardRef(function GamePage(
             </div>
           )}
           {getSearchResponseContent()}
+          <br />
           <div>No. of cards: {resData.res.length}</div>
         </div>
         {/* <button onClick={() => setShowResponseModal(false)}>Close</button> */}
@@ -287,6 +289,7 @@ const GamePage = forwardRef(function GamePage(
       } else {
         setInfobarStr("Yow lost!!!");
       }
+      setResChecked(true);
     }
     setFinalCardModal(false);
   };
@@ -359,15 +362,28 @@ const GamePage = forwardRef(function GamePage(
               </div>
             ))}
           </div>
-          <button onClick={handleFinalCardGuess}>Submit</button>
-          <button onClick={() => setFinalCardModal(false)}>Close</button>
+          <div className={styles.modalBtn} onClick={handleFinalCardGuess}>
+            Submit
+          </div>
+          <div
+            className={styles.modalBtn}
+            onClick={() => setFinalCardModal(false)}
+          >
+            Close
+          </div>
         </div>
       </div>
     );
   };
 
-  const getGameBoard = () => (
-    <div className={styles.gameBoardContainer}>
+  return (
+    <div className={styles.container}>
+      {/* Response Modal */}
+      {showResponseModal && getResModalContent()}
+
+      {/* FInal Guess Modal */}
+      {finalCardModal && getFinalCardGuessModal()}
+
       {/* SearchCard Modal */}
       {showSearchCardModal && (
         <div className={styles.modalOverlay}>
@@ -379,115 +395,164 @@ const GamePage = forwardRef(function GamePage(
         </div>
       )}
 
-      {/* <h1>Deck Detective</h1> */}
-      {/* Opponent's search cards */}
-      {Object.entries(playerList).map(([playerId, playerObj]) => (
-        <div key={playerId}>
-          <h2>{playerObj.name}</h2>
-          <div className={styles.cardRow}>
-            {myBoardInfo[playerId].searchCards.map((card, idx) => (
-              <div key={idx} className={styles.cards}>
-                <SearchCard card={card} />
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-
-      {/* Self cards (weapon and search) */}
-      <h1>Detective {myName}</h1>
-      <div className={styles.cardRow}>
-        {myBoardInfo[myPeerId].searchCards.map((card, idx) => (
-          <div
-            key={idx}
-            className={`${styles.cards} ${styles.clickable}`}
-            onClick={() => {
-              if (myBoardInfo.turnQ[0] === myPeerId)
-                handleSearchCardClick(card, idx);
-            }}
-          >
-            <SearchCard card={card} />
-          </div>
-        ))}
-      </div>
-      <br />
-      <div className={styles.cardRow}>
-        {myBoardInfo[myPeerId].weaponCards.map((card, idx) => (
-          <div key={idx} className={styles.cards}>
-            <ElementCard card={card} />
-          </div>
-        ))}
-      </div>
-      <br />
-
-      <h1>Common Cards</h1>
-      <div className={styles.cardRow}>
-        {myBoardInfo.commonCards.map((card, idx) => (
-          <div key={idx} className={styles.cards}>
-            <ElementCard card={card} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  return (
-    <div className={styles.container}>
+      {/* infobar header */}
       <div className={styles.infobar}>
-        <button
+        <div
+          className={styles.infobarBtn}
           onClick={() => {
             if (resData) setShowResponseModal(true);
           }}
         >
-          Check Response
-        </button>
+          Last response
+        </div>
         <div>{infobarStr}</div>
-        <button onClick={() => setFinalCardModal(true)}>Guess Card</button>
+        <div
+          className={styles.infobarBtn}
+          onClick={() => {
+            if (!resChecked) setFinalCardModal(true);
+          }}
+        >
+          Guess Card
+        </div>
       </div>
 
-      {/* Response Modal */}
-      {showResponseModal && getResModalContent()}
+      {/* sheet content */}
+      <div className={styles.sheetContainer}>
+        <InvestigationSheetNew players={memoPlayerNames} />
+      </div>
 
-      {/* FInal Guess Modal */}
-      {finalCardModal && getFinalCardGuessModal()}
-
-      <div className={styles.contentContainer}>
-        {navbarOption === "GameBoard" && getGameBoard()}
-        {navbarOption === "InvestigationSheet" && (
-          <InvestigationSheet players={memoPlayerNames} />
+      {/* dynamic box content */}
+      <div className={styles.dynamicBox}>
+        {navbarOption === "weaponCards" && (
+          <div className={styles.cardRow}>
+            <CardRow
+              cards={myBoardInfo[myPeerId].weaponCards}
+              cardType="weapon"
+              isClickable={false}
+            />
+          </div>
+        )}
+        {navbarOption === "commonCards" && (
+          <div className={styles.cardRow}>
+            <CardRow
+              cards={myBoardInfo.commonCards}
+              cardType="weapon"
+              isClickable={false}
+            />{" "}
+          </div>
+        )}
+        {navbarOption === "searchCards" && (
+          <div className={styles.cardRow}>
+            <CardRow
+              cards={myBoardInfo[myPeerId].searchCards}
+              cardType="search"
+              isClickable={myBoardInfo.turnQ[0] === myPeerId}
+              handleClick={handleSearchCardClick}
+            />
+          </div>
+        )}
+        {navbarOption === "otherSearchCards" && (
+          <div className={styles.cardRow}>
+            {Object.entries(playerList).map(([playerId, playerObj]) => (
+              <div className={styles.oscBox} key={playerId}>
+                <span className={styles.oscTitle}>{playerObj.name}</span>
+                <CardRow
+                  cards={myBoardInfo[playerId].searchCards}
+                  cardType="search"
+                  isClickable={false}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+        {navbarOption === "notes" && (
+          <div className={styles.notes}>
+            <Notes players={memoPlayerNames} />
+          </div>
         )}
       </div>
 
+      {/* navbar footer */}
       <div className={styles.navbar}>
-        <button
-          className={`${styles.navButton} ${
-            navbarOption === "GameBoard" ? styles.navButtonActive : ""
-          }`}
-          onClick={() => setNavbarOption("GameBoard")}
-        >
-          Board
-        </button>
-        <button
-          // className={styles.navButton}
-          className={`${styles.navButton} ${
-            navbarOption === "InvestigationSheet" ? styles.navButtonActive : ""
-          }`}
-          onClick={() => setNavbarOption("InvestigationSheet")}
-        >
-          Investigation Sheet
-        </button>
+        <NavBtn
+          isActive={navbarOption === "weaponCards"}
+          handleClick={() => setNavbarOption("weaponCards")}
+          text={"Weapon Cards"}
+        />
+        <NavBtn
+          isActive={navbarOption === "commonCards"}
+          handleClick={() => setNavbarOption("commonCards")}
+          text={"Common Cards"}
+        />
+        <NavBtn
+          isActive={navbarOption === "searchCards"}
+          handleClick={() => setNavbarOption("searchCards")}
+          text={"Search Cards"}
+        />
+        <NavBtn
+          isActive={navbarOption === "otherSearchCards"}
+          handleClick={() => setNavbarOption("otherSearchCards")}
+          text={"Others"}
+        />
+        <NavBtn
+          isActive={navbarOption === "notes"}
+          handleClick={() => setNavbarOption("notes")}
+          text={"Notes"}
+        />
       </div>
     </div>
   );
 });
 
-GamePage.propTypes = {
+GamePageNew.propTypes = {
   myPeerId: PropTypes.string.isRequired,
   myName: PropTypes.string.isRequired,
   sendBroadcast: PropTypes.func.isRequired,
-  // sendPrivate: PropTypes.func.isRequired,
   playerList: PropTypes.object.isRequired,
   boardInfo: PropTypes.object.isRequired,
 };
 
-export default GamePage;
+export default GamePageNew;
+
+function CardRow({ cards, cardType, isClickable, handleClick }) {
+  return (
+    <>
+      {cards.map((card, idx) => (
+        <div
+          key={idx}
+          className={`${styles.card} ${isClickable ? styles.clickable : ""}`}
+          onClick={() => {
+            if (isClickable) handleClick(card, idx);
+          }}
+        >
+          {cardType == "weapon" && <ElementCard card={card} />}
+          {cardType == "search" && <SearchCard card={card} />}
+        </div>
+      ))}
+    </>
+  );
+}
+CardRow.propTypes = {
+  cards: PropTypes.array.isRequired,
+  cardType: PropTypes.string.isRequired,
+  isClickable: PropTypes.bool.isRequired,
+  handleClick: PropTypes.func,
+};
+
+function NavBtn({ text, isActive, handleClick }) {
+  return (
+    <button
+      className={`${styles.navButton} ${
+        isActive ? styles.navButtonActive : ""
+      }`}
+      onClick={handleClick}
+    >
+      {text}
+    </button>
+  );
+}
+NavBtn.propTypes = {
+  text: PropTypes.string.isRequired,
+  isActive: PropTypes.bool.isRequired,
+  handleClick: PropTypes.func.isRequired,
+};

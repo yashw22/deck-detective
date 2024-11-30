@@ -3,7 +3,7 @@ import LobbyCreatePage from "./LobbyCreatePage";
 import LobbyJoinPage from "./LobbyJoinPage";
 
 import styles from "./StartingPage.module.css";
-import HowToPlay from "./HowToPlayPage";
+import HowToPlayPage from "./HowToPlayPage";
 
 export default function StartingPage() {
   const [name, setName] = useState(""); // Store the detective's name
@@ -24,7 +24,7 @@ export default function StartingPage() {
     setIsRulePage(false);
   };
 
-  if (isRulePage) return <HowToPlay onBack={onRuleBack} />;
+  if (isRulePage) return <HowToPlayPage onBack={onRuleBack} />;
 
   /* First Page: Enter Name */
   if (isNamePage)

@@ -1,5 +1,5 @@
 import ElementCard from "../Cards/ElementCard";
-import { getSearchDeck, getWeaponDeck } from "../../lib/gameUtils";
+import { getSearchDeck, getWeaponDeck } from "../../lib/gameUtil";
 import SearchCard from "../Cards/SearchCard";
 // import { getPlayers } from "../../lib/utils";
 // import InvestigationSheet from "../InvestigationSheet/InvestigationSheet";

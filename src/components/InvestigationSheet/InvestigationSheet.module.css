@@ -31,13 +31,14 @@
   font-weight: bold;
   justify-self: center;
   margin: 2px;
+  font-family: "Creepster", cursive;
 }
 
-.typeRow {
+.countRow {
   display: flex;
   border-top: 2px solid hsl(0, 0%, 20%);
 }
-.typeHeader {
+.countHeader {
   text-align: center;
   align-self: center;
   font-size: 0.5em;
@@ -71,31 +72,33 @@
 
 .topBtnL {
   border-radius: 4px 0px 0px 4px;
-  border-right: 1px solid white;
+  border-right: 1px solid rgb(0, 0, 0);
 }
 .topBtnR {
   border-radius: 0px 4px 4px 0px;
-  border-left: 1px solid white;
+  border-left: 1px solid rgb(0, 0, 0);
 }
 
 .btnGrayBg {
-  background-color: hsl(0, 0%, 55%);
+  background-color: #ffcc00;
+  color: black;
 }
 
 .btnGrayBg:hover {
-  background-color: hsl(0, 0%, 70%);
+  background-color: hsla(48, 100%, 40%, 0.8);
+  color: black;
 }
 
 .btnGreenBg {
-  background-color: hsl(140, 70%, 40%);
+  background-color: hsl(140, 70%, 30%);
 }
 .btnGreenBg:hover {
-  background-color: hsl(140, 70%, 55%);
+  background-color: hsl(140, 70%, 35%);
 }
 
 .lowerBtn {
-  background-color: hsl(0, 0%, 55%);
-  color: white;
+  background-color: #ffcc00;
+  color: black;
   flex: 1;
   margin: 2px;
   padding: 4px;
@@ -103,67 +106,9 @@
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.4);
   text-align: center;
   flex-direction: row;
+  font-family: "Creepster", cursive;
 }
 .lowerBtn:hover {
-  background-color: hsl(0, 0%, 70%);
-  cursor: pointer;
-}
-
-.notesAreaContainer {
-  margin-top: 10px;
-  /* display: inline-flex;
-  min-width: 0;
-  width: auto; */
-
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.notesRowContainer {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.notesArea {
-  width: 82%;
-  margin-right: 6px;
-  font-size: 1.4em;
-  height: 2.5em;
-  resize: vertical;
-}
-
-.playerTallyGroup {
-  font-size: 1.2em;
-  flex: 1;
-  margin: 0px 4px;
-  text-align: center;
-}
-
-.playerTallyContents {
-  display: flex;
-  flex-direction: row;
-}
-.playerTallyContents div {
-  flex: 1;
-}
-
-.playerTallyBtns {
-  display: flex;
-  flex-direction: row;
-}
-.playerTallyBtns div {
-  background-color: hsl(0, 0%, 55%);
-  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
-  font-size: 1.2em;
-  color: white;
-  flex: 1;
-  margin: 2px;
-  border-radius: 6px;
-  text-align: center;
-  cursor: pointer;
-}
-.playerTallyBtns div:hover {
-  background-color: hsl(0, 0%, 70%);
+  background-color: hsla(48, 100%, 40%, 0.8);
   cursor: pointer;
 }
