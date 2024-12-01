@@ -419,50 +419,44 @@ const GamePageNew = forwardRef(function GamePageNew(
       {/* sheet content */}
       <div className={styles.sheetContainer}>
         {/* <div className={styles.sheet}> */}
-          <InvestigationSheetNew players={memoPlayerNames} />
+        <InvestigationSheetNew players={memoPlayerNames} />
         {/* </div>   */}
       </div>
 
       {/* dynamic box content */}
       <div className={styles.dynamicBox}>
         {navbarOption === "weaponCards" && (
-          <div className={styles.cardRow}>
-            <CardRow
-              cards={myBoardInfo[myPeerId].weaponCards}
-              cardType="weapon"
-              isClickable={false}
-            />
-          </div>
+          <CardRow
+            cards={myBoardInfo[myPeerId].weaponCards}
+            cardType="weapon"
+            isClickable={false}
+          />
         )}
         {navbarOption === "commonCards" && (
-          <div className={styles.cardRow}>
-            <CardRow
-              cards={myBoardInfo.commonCards}
-              cardType="weapon"
-              isClickable={false}
-            />{" "}
-          </div>
+          <CardRow
+            cards={myBoardInfo.commonCards}
+            cardType="weapon"
+            isClickable={false}
+          />
         )}
         {navbarOption === "searchCards" && (
-          <div className={styles.cardRow}>
-            <CardRow
-              cards={myBoardInfo[myPeerId].searchCards}
-              cardType="search"
-              isClickable={myBoardInfo.turnQ[0] === myPeerId}
-              handleClick={handleSearchCardClick}
-            />
-          </div>
+          <CardRow
+            cards={myBoardInfo[myPeerId].searchCards}
+            cardType="search"
+            isClickable={myBoardInfo.turnQ[0] === myPeerId}
+            handleClick={handleSearchCardClick}
+          />
         )}
         {navbarOption === "otherSearchCards" && (
           <div className={styles.cardRow}>
             {Object.entries(playerList).map(([playerId, playerObj]) => (
               <div className={styles.oscBox} key={playerId}>
                 <span className={styles.oscTitle}>{playerObj.name}</span>
-                <CardRow
-                  cards={myBoardInfo[playerId].searchCards}
-                  cardType="search"
-                  isClickable={false}
-                />
+                {myBoardInfo[playerId].searchCards.map((card, idx) => (
+                  <div key={idx} className={styles.card}>
+                    <SearchCard card={card} />
+                  </div>
+                ))}
               </div>
             ))}
           </div>
@@ -518,7 +512,7 @@ export default GamePageNew;
 
 function CardRow({ cards, cardType, isClickable, handleClick }) {
   return (
-    <>
+    <div className={styles.cardRow}>
       {cards.map((card, idx) => (
         <div
           key={idx}
@@ -531,7 +525,7 @@ function CardRow({ cards, cardType, isClickable, handleClick }) {
           {cardType == "search" && <SearchCard card={card} />}
         </div>
       ))}
-    </>
+    </div>
   );
 }
 CardRow.propTypes = {

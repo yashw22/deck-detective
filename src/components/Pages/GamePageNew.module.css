@@ -84,7 +84,7 @@
   overflow-x: scroll;
   height: 100%;
   width: 100%;
-  background-color: green;
+  /* background-color: green; */
   display: flex;
   white-space: nowrap;
   /* align-items: center; */
