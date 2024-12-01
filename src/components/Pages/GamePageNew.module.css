@@ -36,40 +36,36 @@
 }
 
 .sheetContainer {
-  /* height: calc(75vh - 100px); */
-  height: calc(75% - 100px);
   /* height: calc(90vh); */
+  height: calc(75% - 100px);
+  width: 100%;
   position: fixed;
   top: 50px;
   left: 50%;
   transform: translateX(-50%);
   /* background-color: blue; */
-  object-fit: cover;
+  /* object-fit: cover; */
+  /* overflow: hidden; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 50;
 }
 
-/* .sheet {
-  width: 100vw;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  text-align: center;
-} */
-/* .sheet::-webkit-scrollbar {
-  display: none;
-}
-
-.sheet {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-} */
+/* .sheet { */
+/* height: 100%; */
+/* display: flex; */
+/* background-color: red; */
+/* display: block; */
+/* } */
 
 .dynamicBox {
+  width: 100%;
+  height: 25%;
   position: fixed;
   bottom: 50px;
   left: 0;
   /* height: 25vh; */
-  height: 25%;
-  width: 100%;
   /* background-color: green; */
   /* color: white; */
   /* display: flex; */
@@ -88,29 +84,31 @@
   overflow-x: scroll;
   height: 100%;
   width: 100%;
+  background-color: green;
   display: flex;
   white-space: nowrap;
-  align-items: center;
-  justify-content: space-evenly;
+  /* align-items: center; */
+  /* justify-content: space-around; */
   /* cursor: grab; */
   /* text-align: center; */
 
-  /* -ms-overflow-style: none; */
+  -ms-overflow-style: none;
   /* scrollbar-width: none; */
 }
 .cardRow::-webkit-scrollbar {
-  height: 6px; /* Adjust height for horizontal scrollbar */
+  display: none;
+  /* height: 6px; */
 }
-.cardRow::-webkit-scrollbar-track {
-  background: transparent; /* Remove scrollbar track background */
+/* .cardRow::-webkit-scrollbar-track {
+  background: transparent;
 }
 .cardRow::-webkit-scrollbar-thumb {
-  background: #888; /* Set thumb color */
-  border-radius: 4px; /* Optional: Rounded corners for the thumb */
+  background: #888;
+  border-radius: 4px;
 }
 .cardRow::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Optional: Darken thumb on hover */
-}
+  background: #555;
+} */
 
 .card {
   transform: scale(0.6);
@@ -142,20 +140,22 @@
   width: 100%;
   overflow-y: scroll;
   /* background-color: red; */
+  -ms-overflow-style: none;
 }
 .notes::-webkit-scrollbar {
-  width: 6px;
+  display: none;
+  /* width: 6px; */
 }
-.notes::-webkit-scrollbar-track {
-  background: transparent; /* Remove scrollbar track background */
+/* .notes::-webkit-scrollbar-track {
+  background: transparent;
 }
 .notes::-webkit-scrollbar-thumb {
-  background: #888; /* Set thumb color */
-  border-radius: 4px; /* Optional: Rounded corners for the thumb */
+  background: #888; 
+  border-radius: 4px;
 }
 .notes::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Optional: Darken thumb on hover */
-}
+  background: #555; 
+} */
 
 .modalOverlay {
   position: fixed;
@@ -206,7 +206,6 @@
   transform: translateY(-2px); /* Lift button slightly */
 }
 
-
 .navbar {
   overflow: hidden;
   position: fixed;
@@ -247,4 +246,35 @@
 .navButtonActive {
   background-color: #474747;
   /* background-color: #999; */
+}
+
+@media (max-height: 630px) {
+  .sheetContainer {
+    height: calc(80% - 100px);
+  }
+  .dynamicBox {
+    height: 20%;
+  }
+  .card {
+    transform: scale(0.4);
+  }
+  .card:hover {
+    transform: scale(0.5, 0.45);
+  }
+}
+
+@media (max-height: 720px) {
+  .sheetContainer {
+    height: calc(85% - 100px);
+  }
+  .dynamicBox {
+    height: 15%;
+  }
+
+  .card {
+    transform: scale(0.4);
+  }
+  .card:hover {
+    transform: scale(0.5, 0.45);
+  }
 }

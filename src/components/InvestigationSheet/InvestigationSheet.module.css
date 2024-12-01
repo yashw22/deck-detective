@@ -1,11 +1,22 @@
-.outerContainer {
+/* .container * { */
+/* width: auto;
+  height: auto; */
+/* display: flex; */
+/* align-items: center;
+  justify-content: center; */
+/* } */
+
+.container {
   /* background-color: lightblue; */
   font-family: Arial, sans-serif;
-  /* font-family: "Creepster", cursive; */
-  /* justify-content: space-around; */
-  /* width: 100vw; */
-  /* align-items: center; */
-  /* display:block; */
+  /* width: auto; */
+  height: 100%;
+  /* width: 100%; */
+  /* height: 100%; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .header {
@@ -15,28 +26,28 @@
 }
 
 .gridContainer {
-  display: inline-block;
-  margin: 10px;
-  /* background-color: #e0e0e0; */
-
-  /* margin-left: 10px;
-  margin-right: 10px; */
+  /* background-color: green; */
+  margin: 0.5em;
+  /* margin-left: 0.5em;
+  margin-right: 10.5em; */
+  /* height: 85%; */
 }
 
 .weaponGrid {
-  border: 2px solid hsl(0, 0%, 80%);
-  margin: 5px;
+  border: 0.1em solid hsl(0, 0%, 80%);
+  margin: 0.3em;
 }
 .weaponHeader {
   font-weight: bold;
+  display: flex;
   justify-self: center;
-  margin: 2px;
+  /* margin: 0.1em; */
   font-family: "Creepster", cursive;
 }
 
 .countRow {
   display: flex;
-  border-top: 2px solid hsl(0, 0%, 20%);
+  border-top: 0.1em solid hsl(0, 0%, 20%);
 }
 .countHeader {
   text-align: center;
@@ -46,37 +57,50 @@
 }
 
 .buttonContainer {
+  /* background-color: pink; */
+  width: 100%;
+  /* height: 15%; */
+  /* width: 100%; */
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center; */
+}
+
+.buttonRow {
   /* background-color: gray; */
   display: flex;
-  margin-bottom: 4px;
-  margin-left: 10px;
-  margin-right: 10px;
+  /* margin-bottom: 0.2em; */
+  /* margin: 0.5em; */
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 .topBtn {
   /* color: white; */
   flex: 1;
-  margin: 2px;
+  margin: 0.2em;
   justify-content: center;
   display: flex;
   flex-direction: row;
 }
 .topBtnL,
 .topBtnR {
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.4);
   text-align: center;
-  /* border: 1px solid black; */
-  padding: 4px;
+  /* border: 0.1em solid black; */
+  padding: 0.2em;
   flex: 1;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .topBtnL {
-  border-radius: 4px 0px 0px 4px;
-  border-right: 1px solid rgb(0, 0, 0);
+  border-radius: 0.4em 0 0 0.4em;
+  border-right: 0.1em solid rgb(0, 0, 0);
 }
 .topBtnR {
-  border-radius: 0px 4px 4px 0px;
-  border-left: 1px solid rgb(0, 0, 0);
+  border-radius: 0 0.4em 0.4em 0;
+  border-left: 0.1em solid rgb(0, 0, 0);
 }
 
 .btnGrayBg {
@@ -100,15 +124,48 @@
   background-color: #ffcc00;
   color: black;
   flex: 1;
-  margin: 2px;
-  padding: 4px;
-  border-radius: 4px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.4);
+  margin: 0.2em;
+  padding: 0.2em;
+  border-radius: 0.4em;
+  box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.4);
   text-align: center;
   flex-direction: row;
-  font-family: "Creepster", cursive;
+  white-space: nowrap;
 }
 .lowerBtn:hover {
   background-color: hsla(48, 100%, 40%, 0.8);
   cursor: pointer;
+}
+
+@media (max-height: 630px) {
+  .container {
+    flex-direction: row;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    white-space: nowrap;
+    -ms-overflow-style: none;
+  }
+  .container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .buttonRow {
+    flex-direction: column;
+  }
+}
+
+@media (max-height: 720px) {
+
+  .buttonRow * {
+    font-size: 0.8em;
+  }
+  .gridContainer {
+    margin: 0em;
+  }
 }

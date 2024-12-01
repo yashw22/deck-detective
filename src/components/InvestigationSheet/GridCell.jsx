@@ -32,24 +32,26 @@ function GridCell({ feature, onBoxClick }) {
 
   return (
     <div className={styles.boxContainer}>
-      <div
-        className={styles.box}
-        style={{ backgroundColor: focus === 1 ? "gray" : getHex(color) }}
-        onClick={() => onBoxClick(boxKey, 1)}
-      >
-        {Object.keys(valsB1)
-          .filter((key) => valsB1[key])
-          .join(" ")}
-      </div>
-      <div
-        className={styles.box}
-        style={{ backgroundColor: focus === 2 ? "gray" : getHex(color) }}
-        onClick={() => onBoxClick(boxKey, 2)}
-      >
-        {Object.keys(valsB2)
-          .filter((key) => valsB2[key])
-          .join(" ")}
-      </div>
+      <>
+        <div
+          className={styles.box}
+          style={{ backgroundColor: focus === 1 ? "gray" : getHex(color) }}
+          onClick={() => onBoxClick(boxKey, 1)}
+        >
+          {Object.keys(valsB1)
+            .filter((key) => valsB1[key])
+            .join(" ")}
+        </div>
+        <div
+          className={styles.box}
+          style={{ backgroundColor: focus === 2 ? "gray" : getHex(color) }}
+          onClick={() => onBoxClick(boxKey, 2)}
+        >
+          {Object.keys(valsB2)
+            .filter((key) => valsB2[key])
+            .join(" ")}
+        </div>
+      </>
     </div>
   );
 }

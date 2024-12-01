@@ -10,6 +10,7 @@ import { initGridCells, initTally } from "../../utils/gameInits";
 
 export default function InvestigationSheetNew({ players }) {
   const ss_sheetData = sessionStorage.getItem("sheetData");
+  // const isShortScreen = window.innerHeight < 680;
 
   var [cellKey, setCellKey] = useState(() => {
     return ss_sheetData ? JSON.parse(ss_sheetData).cellKey : null;
@@ -136,7 +137,12 @@ export default function InvestigationSheetNew({ players }) {
           }));
           setGridCells((b) => ({
             ...b,
-            [cellKey]: { ...b[cellKey], common: true, marked: false, label: "" },
+            [cellKey]: {
+              ...b[cellKey],
+              common: true,
+              marked: false,
+              label: "",
+            },
           }));
         } else {
           setGridCells((b) => ({
@@ -205,79 +211,76 @@ export default function InvestigationSheetNew({ players }) {
   );
 
   return (
-    <div className={styles.outerContainer}>
-      {/* <div className={styles.header}>Investigation Sheet</div> */}
-      <div className={styles.innerContainer}>
-        <div className={styles.gridContainer}>
-          {WEAPONS.map((weapon) => getWeaponGrid(weapon))}
-        </div>
+    // <div className={styles.outerContainer}>
+    // <div className={styles.header}>Investigation Sheet</div>
+    <div className={styles.container}>
+      <div className={styles.gridContainer}>
+        {WEAPONS.map((weapon) => getWeaponGrid(weapon))}
+      </div>
 
-        {/* Button Panel */}
-        <div>
-          <div className={styles.buttonContainer}>
-            {players.map((player) => (
-              <div key={"button-" + player} className={styles.topBtn}>
-                <div
-                  className={`${styles.topBtnL} ${
-                    cellIdx &&
-                    (gridCells[cellKey].label === player ||
-                      (!(
-                        gridCells[cellKey].marked || gridCells[cellKey].common
-                      ) &&
-                        (gridCells[cellKey].valsB1[player] ||
-                          gridCells[cellKey].valsB2[player])))
-                      ? styles.btnGreenBg
-                      : styles.btnGrayBg
-                  }`}
-                  onClick={() => handlePlayerClick(player)}
-                >
-                  {player}
-                </div>
-                <div
-                  className={`${styles.topBtnR} ${
-                    cellIdx &&
-                    (gridCells[cellKey].label === player ||
-                      (!(
-                        gridCells[cellKey].marked || gridCells[cellKey].common
-                      ) &&
-                        (gridCells[cellKey].valsB1[player] ||
-                          gridCells[cellKey].valsB2[player])))
-                      ? styles.btnGreenBg
-                      : styles.btnGrayBg
-                  }`}
-                  onClick={() => handlePlayerCrossClick(player)}
-                >
-                  X : {tally[player]}
-                </div>
+      {/* Button Panel */}
+      <div className={styles.buttonContainer}>
+        <div className={styles.buttonRow}>
+          {players.map((player) => (
+            <div key={"button-" + player} className={styles.topBtn}>
+              <div
+                className={`${styles.topBtnL} ${
+                  cellIdx &&
+                  (gridCells[cellKey].label === player ||
+                    (!(
+                      gridCells[cellKey].marked || gridCells[cellKey].common
+                    ) &&
+                      (gridCells[cellKey].valsB1[player] ||
+                        gridCells[cellKey].valsB2[player])))
+                    ? styles.btnGreenBg
+                    : styles.btnGrayBg
+                }`}
+                onClick={() => handlePlayerClick(player)}
+              >
+                {player}
               </div>
-            ))}
+              <div
+                className={`${styles.topBtnR} ${
+                  cellIdx &&
+                  (gridCells[cellKey].label === player ||
+                    (!(
+                      gridCells[cellKey].marked || gridCells[cellKey].common
+                    ) &&
+                      (gridCells[cellKey].valsB1[player] ||
+                        gridCells[cellKey].valsB2[player])))
+                    ? styles.btnGreenBg
+                    : styles.btnGrayBg
+                }`}
+                onClick={() => handlePlayerCrossClick(player)}
+              >
+                X : {tally[player]}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className={styles.buttonRow}>
+          <div
+            className={styles.lowerBtn}
+            // style={{ backgroundColor: "brown" }}
+            onClick={handleCommonClick}
+          >
+            common: {commonCount}
           </div>
-          <div className={styles.buttonContainer}>
-            <div
-              className={styles.lowerBtn}
-              // style={{ backgroundColor: "brown" }}
-              onClick={handleCommonClick}
-            >
-              common: {commonCount}
-            </div>
-            <div className={styles.lowerBtn} onClick={handleClearClick}>
-              clear
-            </div>
+          <div className={styles.lowerBtn} onClick={handleClearClick}>
+            clear
+          </div>
 
-            <div
-              className={styles.lowerBtn}
-              onClick={handleResetClick}
-              // style={{ backgroundColor: "red" }}
-            >
-              RESET
-            </div>
+          <div
+            className={styles.lowerBtn}
+            onClick={handleResetClick}
+            // style={{ backgroundColor: "red" }}
+          >
+            RESET
           </div>
         </div>
-
-        {/* Notes */}
-        {/* <Notes players={players} /> */}
       </div>
     </div>
+    // </div>
   );
 }
 InvestigationSheetNew.propTypes = {

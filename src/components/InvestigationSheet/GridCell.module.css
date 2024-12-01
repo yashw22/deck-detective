@@ -1,3 +1,8 @@
+.boxContainer{
+  display: flex;
+  flex-direction: column;
+}
+
 .box {
   /* padding-bottom: 0.5em; */
   width: 5em;
@@ -6,34 +11,51 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: clamp(5em, 5em, 10em);
+  height: clamp(1em, 1em, 1em);
+  /* width: auto; */
+  /* height: 50%; */
 }
 
 .commonContainer {
+  /* width: clamp(); */
   width: 5em;
   position: relative;
   cursor: pointer;
 }
 
-.commonContainer::before,
+.commonContainer::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 90%;
+  height: 0.2em;
+  background-color: blueviolet;
+}
+
+/* .commonContainer::before,
 .commonContainer::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
-  width: 4px;
+  width: 0.2em;
   height: 230%;
   background-color: blueviolet;
-}
+} */
 
-.commonContainer::before {
-  transform: translateX(4.8px) translateY(6px) rotate(-73deg);
+/* .commonContainer::before {
+  transform: translateX(0.3em) translateY(0.4em) rotate(-73deg);
   transform-origin: top left;
 }
 
 .commonContainer::after {
-  transform: translateX(4.7em) translateY(2px) rotate(73deg);
+  transform: translateX(4.7em) translateY(0.2em) rotate(73deg);
   transform-origin: top left;
-}
+} */
 
 .markedContainer {
   height: 2em;

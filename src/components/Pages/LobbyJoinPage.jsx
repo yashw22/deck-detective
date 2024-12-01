@@ -124,7 +124,7 @@ export default function LobbyJoinPage({ myName }) {
             className={styles.input}
             placeholder="Enter Game ID to connect"
             value={hostPeerId}
-            onChange={(e) => setHostPeerId(e.target.value)}
+            onChange={(e) => setHostPeerId(e.target.value.toLowerCase())}
           />
           <button className={styles.connectButton} onClick={connectToPeer}>
             Connect

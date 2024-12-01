@@ -418,7 +418,9 @@ const GamePageNew = forwardRef(function GamePageNew(
 
       {/* sheet content */}
       <div className={styles.sheetContainer}>
-        <InvestigationSheetNew players={memoPlayerNames} />
+        {/* <div className={styles.sheet}> */}
+          <InvestigationSheetNew players={memoPlayerNames} />
+        {/* </div>   */}
       </div>
 
       {/* dynamic box content */}
@@ -477,7 +479,7 @@ const GamePageNew = forwardRef(function GamePageNew(
         <NavBtn
           isActive={navbarOption === "weaponCards"}
           handleClick={() => setNavbarOption("weaponCards")}
-          text={"Weapon Cards"}
+          text={`Weapon Cards: ${myBoardInfo[myPeerId].weaponCards.length}`}
         />
         <NavBtn
           isActive={navbarOption === "commonCards"}
