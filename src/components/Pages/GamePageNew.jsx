@@ -5,12 +5,20 @@ import styles from "./GamePageNew.module.css";
 
 import SearchCard from "../Cards/SearchCard";
 import ElementCard from "../Cards/ElementCard";
-import { COLORS, COUNTS, S_NAME_LEN, WEAPONS } from "../../config/constants";
-import { getHex, getString, lightenHex } from "../../utils/helpers";
+import {
+  COLORS,
+  COUNTS,
+  ELEMENTS_TYPE,
+  S_NAME_LEN,
+  WEAPONS,
+} from "../../config/constants";
+import { getHex, getString } from "../../utils/helpers";
 import { getCardMatches, pickNextSearchCard } from "../../utils/gameUtil";
 
 import InvestigationSheetNew from "../InvestigationSheet/InvestigationSheetNew";
 import Notes from "../Notes";
+
+import useLongPress from "../../hooks/useLongPress";
 
 const getNameForSheet = (name) => {
   return name.length >= S_NAME_LEN
@@ -19,138 +27,223 @@ const getNameForSheet = (name) => {
 };
 
 const GamePageNew = forwardRef(function GamePageNew(
-  { myPeerId, myName, sendBroadcast, playerList, boardInfo },
+  { myPeerId, sendBroadcast, playerList, boardInfo },
   ref
 ) {
-  const [myBoardInfo, setMyBoardInfo] = useState(boardInfo);
-  const [navbarOption, setNavbarOption] = useState("weaponCards");
-  const [showSearchCardModal, setShowSearchCardModal] = useState(false);
-  const [showResponseModal, setShowResponseModal] = useState(false);
-  const [finalCardModal, setFinalCardModal] = useState(false);
-  const [resChecked, setResChecked] = useState(false);
-  const [finalGuessElements, setFinalGuessElements] = useState({});
-  const [resData, setResData] = useState(false);
-
-  const [showPlayerSelect, setShowPlayerSelect] = useState();
-  const [selectedCard, setSelectedCard] = useState();
-  const [selectedCardIdx, setSelectedCardIdx] = useState();
-  const [singleFree, setSingleFree] = useState(false);
-  const [elementsChosen, setElementsChosen] = useState({});
-
-  const [infobarStr, setInfobarStr] = useState(() => {
-    if (myBoardInfo.turnQ[0] === myPeerId) return "Your turn...";
-    else return `${myBoardInfo[boardInfo.turnQ[0]].name} 's  turn...`;
+  const [boardState, setBoardState] = useState(boardInfo);
+  const [navbarActiveItem, setNavbarActiveItem] = useState("weaponCards");
+  const [infobarMsg, setInfobarMsg] = useState(() => {
+    if (boardState.turnQ[0] === myPeerId) return "Your turn...";
+    else return `${boardState[boardInfo.turnQ[0]].name} 's  turn...`;
   });
 
-  const memoPlayerNames = useMemo(
-    () => [
-      ...Object.values(playerList).map((obj) => getNameForSheet(obj.name)),
-      getNameForSheet(myName),
-    ],
-    [playerList, myName]
-  );
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [showSearchModalPlayers, setShowSearchModalPlayers] = useState();
+  const [showLastResponseModal, setShowLastResponseModal] = useState(false);
+  const [showGuessModal, setShowGuessModal] = useState(false);
 
-  // useEffect(() => console.log(currentTurn));
+  const [pickedSearchCard, setPickedSearchCard] = useState();
+  const [pickedSearchCardIdx, setPickedSearchCardIdx] = useState();
+  const [searchFreeElement, setSearchFreeElement] = useState({});
+  const [lastResponse, setLastResponse] = useState();
+  const [finalGuessElements, setFinalGuessElements] = useState({});
+  const [hasPlayerGuessed, setHasPlayerGuessed] = useState(false);
+  // const [isGuessCorrect, setIsGuessCorrect] = useState(false);
+
+  const playersNameList = boardInfo.turnQ.map((peerId) =>
+    getNameForSheet(boardInfo[peerId].name)
+  );
+  const memoPlayerNames = useMemo(() => playersNameList, [playersNameList]);
 
   useImperativeHandle(ref, () => ({
     setResponse: (data) => {
-      if (data.info === "responseSearchCard") {
-        if (data.boardInfo.turnQ[0] === myPeerId) setInfobarStr("Your turn...");
+      if (
+        data.info === "searchResponse" ||
+        data.info === "searchReplaceResponse"
+      ) {
+        if (data.boardInfo.turnQ[0] === myPeerId) setInfobarMsg("Your turn...");
         else
-          setInfobarStr(
+          setInfobarMsg(
             `${boardInfo[data.boardInfo.turnQ[0]].name} 's  turn...`
           );
-        setResData(data);
-        // console.log(data.boardInfo);
-        // console.log(currentTurn)
-        // console.log(data.boardInfo);
-        setMyBoardInfo(data.boardInfo);
+        setLastResponse(data);
+        setBoardState(data.boardInfo);
+        setShowLastResponseModal(true);
+      } else if (data.info === "guessedHiddenCard") {
+        if (data.isGuessCorrect || data.boardInfo.turnQ.length === 1) {
+          setHasPlayerGuessed(true);
+          setInfobarMsg("Game over!!");
+        } else if (data.boardInfo.turnQ[0] === myPeerId)
+          setInfobarMsg("Your turn...");
+        else
+          setInfobarMsg(
+            `${boardInfo[data.boardInfo.turnQ[0]].name} 's  turn...`
+          );
+        setLastResponse(data);
+        setBoardState(data.boardInfo);
+        setShowLastResponseModal(true);
       }
-      setShowResponseModal(true);
     },
   }));
 
+  const navbarSearchCardsLongPressHandler = useLongPress(() => {
+    const isTrue = confirm("Sure you wanna replace all your Search Cards?");
+    if (isTrue) {
+      let newPlayerSearchDeck = [];
+
+      for (let i = 0; i < 4; i++) {
+        const [nextSearchCard, newSearchDeck, newUsedDeck] = pickNextSearchCard(
+          boardState.searchDeck,
+          boardState.usedDeck
+        );
+        newPlayerSearchDeck.push(nextSearchCard);
+        boardState.searchDeck = newSearchDeck;
+        boardState.usedDeck = newUsedDeck;
+      }
+      boardState.usedDeck = [
+        ...boardState.usedDeck,
+        ...boardState[myPeerId].searchCards,
+      ];
+      boardState[myPeerId].searchCards = newPlayerSearchDeck;
+
+      boardState.turnQ = [...boardState.turnQ.slice(1), boardState.turnQ[0]];
+      setInfobarMsg(`${boardState[boardState.turnQ[0]].name} 's  turn...`);
+
+      setBoardState(boardState);
+      const responseData = {
+        info: "searchReplaceResponse",
+        from: myPeerId,
+        boardInfo: boardState,
+      };
+      sendBroadcast(responseData);
+      setLastResponse(responseData);
+      setShowLastResponseModal(true);
+    }
+  });
+
   const handleSearchCardClick = (card, cardIdx) => {
-    setSelectedCard(card);
-    setSelectedCardIdx(cardIdx);
+    setPickedSearchCard(card);
+    setPickedSearchCardIdx(cardIdx);
 
-    if ("free" in card) {
-      setShowPlayerSelect(false);
-      if (card.elementsCount === 1) setSingleFree(true);
-      else setSingleFree(false);
-    } else setShowPlayerSelect(true);
+    if ("free" in card) setShowSearchModalPlayers(false);
+    else setShowSearchModalPlayers(true);
 
-    setShowSearchCardModal(true);
+    setShowSearchModal(true);
   };
 
-  const handleModalElementBtn = (key, value) => {
-    if (singleFree) {
-      setSingleFree(false);
-      setElementsChosen({ [key]: value });
-    } else {
-      setElementsChosen((e) => ({ ...e, [key]: value }));
-      setShowPlayerSelect(true);
+  const handleSearchCardModalPlayerClick = (playerId) => {
+    const [nextSearchCard, newSearchDeck, newUsedDeck] = pickNextSearchCard(
+      boardState.searchDeck,
+      boardState.usedDeck
+    );
+    boardState[myPeerId].searchCards[pickedSearchCardIdx] = nextSearchCard;
+    boardState.searchDeck = newSearchDeck;
+    boardState.usedDeck = [...newUsedDeck, pickedSearchCard];
+
+    boardState.turnQ = [...boardState.turnQ.slice(1), boardState.turnQ[0]];
+    setInfobarMsg(`${boardState[boardState.turnQ[0]].name} 's  turn...`);
+
+    const res = getCardMatches(
+      { ...pickedSearchCard, ...searchFreeElement },
+      boardState[playerId].weaponCards
+    );
+
+    setBoardState(boardState);
+    const responseData = {
+      info: "searchResponse",
+      searchCard: pickedSearchCard,
+      freeChoice: searchFreeElement,
+      from: myPeerId,
+      to: playerId,
+      res: res,
+      boardInfo: boardState,
+    };
+    sendBroadcast(responseData);
+    setLastResponse(responseData);
+
+    setSearchFreeElement({});
+    setShowSearchModal(false);
+
+    setShowLastResponseModal(true);
+  };
+
+  const handleFinalGuessClick = () => {
+    if (
+      boardState.turnQ[0] === myPeerId &&
+      Object.keys(finalGuessElements).length === 3
+    ) {
+      let isCorrect = false;
+      if (
+        finalGuessElements.weapon === boardState.resultCard.weapon &&
+        finalGuessElements.count === boardState.resultCard.count &&
+        finalGuessElements.color === boardState.resultCard.color
+      ) {
+        // setIsGuessCorrect(true);
+        isCorrect = true;
+      }
+
+      boardState.turnQ = boardState.turnQ.slice(1);
+      if (isCorrect || boardState.turnQ.length === 1) {
+        setHasPlayerGuessed(true);
+        setInfobarMsg("Game over!!");
+      } else
+        setInfobarMsg(`${boardState[boardState.turnQ[0]].name} 's  turn...`);
+
+      setBoardState(boardState);
+      const responseData = {
+        info: "guessedHiddenCard",
+        isGuessCorrect: isCorrect,
+        from: myPeerId,
+        boardInfo: boardState,
+      };
+      sendBroadcast(responseData);
+      setLastResponse(responseData);
+
+      setHasPlayerGuessed(true);
+      setShowGuessModal(false);
+      setShowLastResponseModal(true);
     }
   };
 
-  const handlePlayerClick = (playerId) => {
-    // console.log(playerId, { ...selectedCard, ...elementsChosen });
-    // console.log(myBoardInfo);
-
-    const [nextSearchCard, newSearchDeck, newUsedDeck] = pickNextSearchCard(
-      myBoardInfo.searchDeck,
-      myBoardInfo.usedDeck
-    );
-
-    newUsedDeck.push(selectedCard);
-    myBoardInfo[myPeerId].searchCards[selectedCardIdx] = nextSearchCard;
-    myBoardInfo.searchDeck = newSearchDeck;
-    myBoardInfo.usedDeck = newUsedDeck;
-    myBoardInfo.turnQ = [...myBoardInfo.turnQ.slice(1), myBoardInfo.turnQ[0]];
-    if (myBoardInfo.turnQ[0] === myPeerId) setInfobarStr("Your turn...");
-    else setInfobarStr(`${myBoardInfo[myBoardInfo.turnQ[0]].name} 's  turn...`);
-    setMyBoardInfo(myBoardInfo);
-    // console.log(myBoardInfo);
-
-    const res = getCardMatches(
-      { ...selectedCard, ...elementsChosen },
-      myBoardInfo[playerId].weaponCards
-    );
-
-    sendBroadcast({
-      info: "responseSearchCard",
-      searchCard: selectedCard,
-      freeChoice: elementsChosen,
-      from: myName,
-      to: myBoardInfo[playerId].name,
-      res: res,
-      boardInfo: myBoardInfo,
-    });
-
-    setElementsChosen({});
-    setShowSearchCardModal(false);
-
-    setResData({
-      info: "selfSearchCard",
-      searchCard: selectedCard,
-      freeChoice: elementsChosen,
-      from: myName,
-      to: myBoardInfo[playerId].name,
-      res: res,
-      boardInfo: myBoardInfo,
-    });
-    setShowResponseModal(true);
-  };
-
-  const playerSelectContent = () => (
+  // UI renders
+  const getSearchCardModalChoiceContent = () => (
     <>
-      <h2>Select a Player</h2>
+      <h2>Choose Free Element</h2>
+      <div className={styles.card}>
+        <SearchCard card={pickedSearchCard} />
+      </div>
+      {ELEMENTS_TYPE.filter(
+        (itemsType) => !(itemsType in pickedSearchCard)
+      ).map((itemsType) => (
+        <ModalBtnRow
+          key={itemsType}
+          modalType="freeChoice"
+          itemsType={itemsType}
+          resList={searchFreeElement}
+          setResList={setSearchFreeElement}
+          setNextModal={setShowSearchModalPlayers}
+        />
+      ))}
+    </>
+  );
+  const getSearchCardModalPlayerContent = () => (
+    <>
+      <h2>Select player to ask</h2>
+      <div className={styles.card}>
+        <SearchCard card={pickedSearchCard} />
+      </div>
+      {Object.keys(searchFreeElement).length !== 0 && (
+        <div>
+          <br />
+          [free choice]: {getString(Object.values(searchFreeElement)[0])}
+        </div>
+      )}
       <div className={styles.modalBtnRow}>
         {Object.entries(playerList).map(([playerId, playerObj]) => (
           <div
             key={playerId}
             className={styles.modalBtn}
-            onClick={() => handlePlayerClick(playerId)}
+            onClick={() => handleSearchCardModalPlayerClick(playerId)}
           >
             {playerObj.name}
           </div>
@@ -158,218 +251,160 @@ const GamePageNew = forwardRef(function GamePageNew(
       </div>
     </>
   );
-
-  const freeChoiceSelectContent = () => (
-    <>
-      <h2>Choose element(s)</h2>
-      {!("weapon" in selectedCard) && (
-        <div className={styles.modalBtnRow}>
-          {WEAPONS.map((weapon) => (
-            <div
-              className={styles.modalBtn}
-              key={weapon}
-              onClick={() => handleModalElementBtn("weapon", weapon)}
-              style={{
-                backgroundColor:
-                  "weapon" in elementsChosen && elementsChosen.weapon == weapon
-                    ? "hsl(0, 0%, 60%)"
-                    : "hsl(0, 0%, 80%)",
-              }}
-            >
-              ({getString(weapon)})
-            </div>
-          ))}
-        </div>
-      )}
-      {!("count" in selectedCard) && (
-        <div className={styles.modalBtnRow}>
-          {COUNTS.map((count) => (
-            <div
-              className={styles.modalBtn}
-              key={count}
-              onClick={() => handleModalElementBtn("count", count)}
-              style={{
-                backgroundColor:
-                  "count" in elementsChosen && elementsChosen.count == count
-                    ? "hsl(0, 0%, 60%)"
-                    : "hsl(0, 0%, 80%)",
-              }}
-            >
-              {count}
-            </div>
-          ))}
-        </div>
-      )}
-      {!("color" in selectedCard) && (
-        <div className={styles.modalBtnRow}>
-          {COLORS.map((color) => (
-            <div
-              className={styles.modalBtn}
-              key={color}
-              onClick={() => handleModalElementBtn("color", color)}
-              style={{
-                backgroundColor:
-                  "color" in elementsChosen && elementsChosen.color == color
-                    ? lightenHex(color)
-                    : getHex(color),
-              }}
-            >
-              &nbsp;
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* <div
-        onClick={() => setShowPlayerSelect(true)}
-        className={styles.modalEndBtn}
-      >
-        Submit
-      </div> */}
-    </>
-  );
-
-  const getSearchResponseContent = () => {
-    if (
-      resData.info === "selfSearchCard" &&
-      (resData.searchCard.elementsCount === 2 || "free" in resData.searchCard)
-    ) {
-      return (
-        <div className={styles.cardRow}>
-          {resData.res.map((card, idx) => (
-            <div key={idx} className={styles.card}>
-              <ElementCard card={card} />
-            </div>
-          ))}
-        </div>
-      );
-    }
-  };
-
-  const getResModalContent = () => {
+  const getSearchModal = () => {
     return (
       <div
+        id="modal-overlay"
         className={styles.modalOverlay}
-        onClick={() => setShowResponseModal(false)}
+        onClick={(e) => {
+          if (e.target.id == "modal-overlay") {
+            setShowSearchModal(false);
+            setSearchFreeElement({});
+          }
+        }}
       >
         <div className={styles.modalContent}>
-          <h2>
-            {resData.from} asked {resData.to}
-          </h2>
-          <div className={styles.card}>
-            <SearchCard card={resData.searchCard} />
-          </div>
-          {Object.keys(resData.freeChoice).length !== 0 && (
-            <div>
-              <span>[choice] &nbsp;</span>
-              {Object.entries(resData.freeChoice).map(([element, value]) => (
-                <span key={element}>
-                  {element}: {value} &nbsp;&nbsp;
-                </span>
-              ))}
-            </div>
-          )}
-          {getSearchResponseContent()}
-          <br />
-          <div>No. of cards: {resData.res.length}</div>
+          {showSearchModalPlayers
+            ? getSearchCardModalPlayerContent()
+            : getSearchCardModalChoiceContent()}
         </div>
-        {/* <button onClick={() => setShowResponseModal(false)}>Close</button> */}
       </div>
     );
   };
 
-  const handleFinalCardGuess = () => {
-    if (Object.keys(finalGuessElements).length === 3) {
-      if (
-        finalGuessElements.weapon === myBoardInfo.resultCard.weapon &&
-        finalGuessElements.count === myBoardInfo.resultCard.count &&
-        finalGuessElements.color === myBoardInfo.resultCard.color
-      ) {
-        setInfobarStr("Yow Won!!!");
-      } else {
-        setInfobarStr("Yow lost!!!");
-      }
-      setResChecked(true);
+  const getLastResModalCards = () => {
+    if (
+      lastResponse.from === myPeerId &&
+      lastResponse.searchCard.elementsCount === 2
+    )
+      return (
+        <div className={styles.cardRow}>
+          <CardRow
+            cards={lastResponse.res}
+            cardType="weapon"
+            isClickable={false}
+          />
+        </div>
+      );
+  };
+  const getLastResponseModal = () => {
+    if (lastResponse.info === "guessedHiddenCard") {
+      const msg = lastResponse.isGuessCorrect
+        ? lastResponse.from === myPeerId
+          ? "You guessed the Hidden Card. You Won!!"
+          : `${boardState[lastResponse.from].name} guessed the card. They Won!!`
+        : lastResponse.boardInfo.turnQ.length !== 1
+        ? lastResponse.from === myPeerId
+          ? "You guessed wrong. You lost and are out of the game!!"
+          : `${
+              boardState[lastResponse.from].name
+            } guessed wrong. They lost and are out of the game!!`
+        : lastResponse.boardInfo.turnQ[0] === myPeerId
+        ? `${boardState[lastResponse.from].name} guessed wrong. You Won!!`
+        : `${boardState[lastResponse.from].name} guessed wrong. ${
+            boardState[lastResponse.boardInfo.turnQ[0]].name
+          } Won!!`;
+
+      return (
+        <div
+          id="modal-overlay"
+          className={styles.modalOverlay}
+          onClick={(e) => {
+            if (e.target.id == "modal-overlay") setShowLastResponseModal(false);
+          }}
+        >
+          <div className={styles.modalContent}>
+            <h2>{msg}</h2>
+            {/* <div className={styles.modalBtn} >
+                Start new Game
+              </div> */}
+          </div>
+        </div>
+      );
     }
-    setFinalCardModal(false);
+
+    if (lastResponse.info === "searchReplaceResponse")
+      return (
+        <div
+          id="modal-overlay"
+          className={styles.modalOverlay}
+          onClick={(e) => {
+            if (e.target.id == "modal-overlay") setShowLastResponseModal(false);
+          }}
+        >
+          <div className={styles.modalContent}>
+            <h2>
+              <span className={styles.focus}>
+                {boardState[lastResponse.from].name}
+              </span>{" "}
+              replaced all their Search Cards.
+            </h2>
+          </div>
+        </div>
+      );
+
+    if (lastResponse.info === "searchResponse")
+      return (
+        <div
+          id="modal-overlay"
+          className={styles.modalOverlay}
+          onClick={(e) => {
+            if (e.target.id == "modal-overlay") setShowLastResponseModal(false);
+          }}
+        >
+          <div className={styles.modalContent}>
+            <h2>
+              <span className={styles.focus}>
+                {boardState[lastResponse.from].name}
+              </span>{" "}
+              asked{" "}
+              <span className={styles.focus}>
+                {boardState[lastResponse.to].name}
+              </span>
+            </h2>
+            <div className={styles.card}>
+              <SearchCard card={lastResponse.searchCard} />
+            </div>
+            {Object.keys(lastResponse.freeChoice).length !== 0 && (
+              <div>
+                <br />
+                [free choice]:{" "}
+                {getString(Object.values(lastResponse.freeChoice)[0])}
+              </div>
+            )}
+            {getLastResModalCards()}
+            <br />
+            <div>
+              No. of cards:{" "}
+              <span className={styles.focus}>{lastResponse.res.length}</span>
+            </div>
+          </div>
+        </div>
+      );
   };
 
-  const getFinalCardGuessModal = () => {
+  const getGuessModal = () => {
     return (
       <div
+        id="modal-overlay"
         className={styles.modalOverlay}
-        // onClick={() => setFinalCardModal(false)}
+        onClick={(e) => {
+          if (e.target.id == "modal-overlay") setShowGuessModal(false);
+        }}
       >
         <div className={styles.modalContent}>
-          <h2>Select final choices</h2>
-          <div className={styles.modalBtnRow}>
-            {WEAPONS.map((weapon) => (
-              <div
-                className={styles.modalBtn}
-                key={weapon}
-                onClick={() =>
-                  setFinalGuessElements((f) => ({ ...f, weapon: weapon }))
-                }
-                style={{
-                  backgroundColor:
-                    "weapon" in finalGuessElements &&
-                    finalGuessElements.weapon == weapon
-                      ? "hsl(0, 0%, 60%)"
-                      : "hsl(0, 0%, 80%)",
-                }}
-              >
-                ({getString(weapon)})
-              </div>
-            ))}
-          </div>
-          <div className={styles.modalBtnRow}>
-            {COUNTS.map((count) => (
-              <div
-                className={styles.modalBtn}
-                key={count}
-                onClick={() =>
-                  setFinalGuessElements((f) => ({ ...f, count: count }))
-                }
-                style={{
-                  backgroundColor:
-                    "count" in finalGuessElements &&
-                    finalGuessElements.count == count
-                      ? "hsl(0, 0%, 60%)"
-                      : "hsl(0, 0%, 80%)",
-                }}
-              >
-                {count}
-              </div>
-            ))}
-          </div>
-          <div className={styles.modalBtnRow}>
-            {COLORS.map((color) => (
-              <div
-                className={styles.modalBtn}
-                key={color}
-                onClick={() =>
-                  setFinalGuessElements((f) => ({ ...f, color: color }))
-                }
-                style={{
-                  backgroundColor:
-                    "color" in finalGuessElements &&
-                    finalGuessElements.color == color
-                      ? lightenHex(color)
-                      : getHex(color),
-                }}
-              >
-                &nbsp;
-              </div>
-            ))}
-          </div>
-          <div className={styles.modalBtn} onClick={handleFinalCardGuess}>
+          <h2>Guess Hidden Card</h2>
+          {Array.from(ELEMENTS_TYPE, (itemsType) => (
+            <ModalBtnRow
+              key={itemsType}
+              modalType="finalGuess"
+              itemsType={itemsType}
+              resList={finalGuessElements}
+              setResList={setFinalGuessElements}
+            />
+          ))}
+          <div className={styles.modalBtn} onClick={handleFinalGuessClick}>
             Submit
-          </div>
-          <div
-            className={styles.modalBtn}
-            onClick={() => setFinalCardModal(false)}
-          >
-            Close
           </div>
         </div>
       </div>
@@ -378,38 +413,28 @@ const GamePageNew = forwardRef(function GamePageNew(
 
   return (
     <div className={styles.container}>
-      {/* Response Modal */}
-      {showResponseModal && getResModalContent()}
-
-      {/* FInal Guess Modal */}
-      {finalCardModal && getFinalCardGuessModal()}
-
-      {/* SearchCard Modal */}
-      {showSearchCardModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            {showPlayerSelect
-              ? playerSelectContent()
-              : freeChoiceSelectContent()}
-          </div>
-        </div>
-      )}
+      {/* Search Card Modal */}
+      {showSearchModal && getSearchModal()}
+      {/* Last Response Modal */}
+      {showLastResponseModal && getLastResponseModal()}
+      {/* Final Guess Modal */}
+      {showGuessModal && getGuessModal()}
 
       {/* infobar header */}
       <div className={styles.infobar}>
         <div
           className={styles.infobarBtn}
           onClick={() => {
-            if (resData) setShowResponseModal(true);
+            if (lastResponse) setShowLastResponseModal(true);
           }}
         >
           Last response
         </div>
-        <div>{infobarStr}</div>
+        <div>{infobarMsg}</div>
         <div
           className={styles.infobarBtn}
           onClick={() => {
-            if (!resChecked) setFinalCardModal(true);
+            if (!hasPlayerGuessed) setShowGuessModal(true);
           }}
         >
           Guess Card
@@ -425,34 +450,34 @@ const GamePageNew = forwardRef(function GamePageNew(
 
       {/* dynamic box content */}
       <div className={styles.dynamicBox}>
-        {navbarOption === "weaponCards" && (
+        {navbarActiveItem === "weaponCards" && (
           <CardRow
-            cards={myBoardInfo[myPeerId].weaponCards}
+            cards={boardState[myPeerId].weaponCards}
             cardType="weapon"
             isClickable={false}
           />
         )}
-        {navbarOption === "commonCards" && (
+        {navbarActiveItem === "commonCards" && (
           <CardRow
-            cards={myBoardInfo.commonCards}
+            cards={boardState.commonCards}
             cardType="weapon"
             isClickable={false}
           />
         )}
-        {navbarOption === "searchCards" && (
+        {navbarActiveItem === "searchCards" && (
           <CardRow
-            cards={myBoardInfo[myPeerId].searchCards}
+            cards={boardState[myPeerId].searchCards}
             cardType="search"
-            isClickable={myBoardInfo.turnQ[0] === myPeerId}
+            isClickable={boardState.turnQ[0] === myPeerId && !hasPlayerGuessed}
             handleClick={handleSearchCardClick}
           />
         )}
-        {navbarOption === "otherSearchCards" && (
+        {navbarActiveItem === "otherSearchCards" && (
           <div className={styles.cardRow}>
             {Object.entries(playerList).map(([playerId, playerObj]) => (
               <div className={styles.oscBox} key={playerId}>
                 <span className={styles.oscTitle}>{playerObj.name}</span>
-                {myBoardInfo[playerId].searchCards.map((card, idx) => (
+                {boardState[playerId].searchCards.map((card, idx) => (
                   <div key={idx} className={styles.card}>
                     <SearchCard card={card} />
                   </div>
@@ -461,7 +486,7 @@ const GamePageNew = forwardRef(function GamePageNew(
             ))}
           </div>
         )}
-        {navbarOption === "notes" && (
+        {navbarActiveItem === "notes" && (
           <div className={styles.notes}>
             <Notes players={memoPlayerNames} />
           </div>
@@ -471,44 +496,98 @@ const GamePageNew = forwardRef(function GamePageNew(
       {/* navbar footer */}
       <div className={styles.navbar}>
         <NavBtn
-          isActive={navbarOption === "weaponCards"}
-          handleClick={() => setNavbarOption("weaponCards")}
-          text={`Weapon Cards: ${myBoardInfo[myPeerId].weaponCards.length}`}
+          isActive={navbarActiveItem === "weaponCards"}
+          handleClick={() => setNavbarActiveItem("weaponCards")}
+          text={`Weapon Cards: ${boardState[myPeerId].weaponCards.length}`}
         />
         <NavBtn
-          isActive={navbarOption === "commonCards"}
-          handleClick={() => setNavbarOption("commonCards")}
+          isActive={navbarActiveItem === "commonCards"}
+          handleClick={() => setNavbarActiveItem("commonCards")}
           text={"Common Cards"}
         />
         <NavBtn
-          isActive={navbarOption === "searchCards"}
-          handleClick={() => setNavbarOption("searchCards")}
+          isActive={navbarActiveItem === "searchCards"}
+          handleClick={() => setNavbarActiveItem("searchCards")}
           text={"Search Cards"}
+          longPressHandler={navbarSearchCardsLongPressHandler}
+          isLongPressable={boardState.turnQ[0] === myPeerId}
         />
         <NavBtn
-          isActive={navbarOption === "otherSearchCards"}
-          handleClick={() => setNavbarOption("otherSearchCards")}
+          isActive={navbarActiveItem === "otherSearchCards"}
+          handleClick={() => setNavbarActiveItem("otherSearchCards")}
           text={"Others"}
         />
         <NavBtn
-          isActive={navbarOption === "notes"}
-          handleClick={() => setNavbarOption("notes")}
+          isActive={navbarActiveItem === "notes"}
+          handleClick={() => setNavbarActiveItem("notes")}
           text={"Notes"}
         />
       </div>
     </div>
   );
 });
-
 GamePageNew.propTypes = {
   myPeerId: PropTypes.string.isRequired,
-  myName: PropTypes.string.isRequired,
   sendBroadcast: PropTypes.func.isRequired,
   playerList: PropTypes.object.isRequired,
   boardInfo: PropTypes.object.isRequired,
 };
-
 export default GamePageNew;
+
+function ModalBtnRow({
+  modalType,
+  itemsType,
+  resList,
+  setResList,
+  setNextModal,
+}) {
+  const items =
+    itemsType === "weapon"
+      ? WEAPONS
+      : itemsType === "color"
+      ? COLORS
+      : itemsType === "count"
+      ? COUNTS
+      : null;
+
+  return (
+    <div className={styles.modalBtnRow}>
+      {items.map((item) => (
+        <div
+          className={styles.modalBtn}
+          key={item}
+          onClick={() => {
+            if (modalType === "finalGuess")
+              setResList((f) => ({ ...f, [itemsType]: item }));
+            else if (modalType === "freeChoice") {
+              setResList({ [itemsType]: item });
+              setNextModal(true);
+            }
+          }}
+          style={{
+            backgroundColor:
+              itemsType === "color" ? getHex(item) : "hsl(0, 0%, 80%)",
+            outline:
+              itemsType in resList && resList[itemsType] === item
+                ? itemsType === "color"
+                  ? "3px solid white"
+                  : "3px solid #ffcc00"
+                : "",
+          }}
+        >
+          {itemsType === "color" ? <span>&nbsp;</span> : getString(item)}
+        </div>
+      ))}
+    </div>
+  );
+}
+ModalBtnRow.propTypes = {
+  modalType: PropTypes.string.isRequired,
+  itemsType: PropTypes.string.isRequired,
+  resList: PropTypes.object,
+  setResList: PropTypes.func,
+  setNextModal: PropTypes.func,
+};
 
 function CardRow({ cards, cardType, isClickable, handleClick }) {
   return (
@@ -535,13 +614,20 @@ CardRow.propTypes = {
   handleClick: PropTypes.func,
 };
 
-function NavBtn({ text, isActive, handleClick }) {
+function NavBtn({
+  text,
+  isActive,
+  handleClick,
+  isLongPressable = false,
+  longPressHandler = {},
+}) {
   return (
     <button
       className={`${styles.navButton} ${
         isActive ? styles.navButtonActive : ""
       }`}
       onClick={handleClick}
+      {...(isLongPressable ? longPressHandler : {})}
     >
       {text}
     </button>
@@ -551,4 +637,6 @@ NavBtn.propTypes = {
   text: PropTypes.string.isRequired,
   isActive: PropTypes.bool.isRequired,
   handleClick: PropTypes.func.isRequired,
+  isLongPressable: PropTypes.bool,
+  longPressHandler: PropTypes.object,
 };

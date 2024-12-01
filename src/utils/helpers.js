@@ -3,7 +3,7 @@ import { COLOR_HEXS, COLOR_NAMES, COUNT_NAMES, DEFAULT_COLOR_HEX, WEAPON_ICONS }
 
 export const getString = (arg) => {
     if (arg in WEAPON_ICONS) return WEAPON_ICONS[arg]
-    else if (arg in COUNT_NAMES) return COUNT_NAMES[arg]
+    if (arg in COUNT_NAMES) return COUNT_NAMES[arg]
     if (arg in COLOR_NAMES) return COLOR_NAMES[arg]
     return "Unknown"
 }

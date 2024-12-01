@@ -69,7 +69,11 @@ export default function LobbyJoinPage({ myName }) {
         } else if (packet.data.info === "beginGame") {
           setBoardInfo(packet.data.boardInfo);
           setBeginGame(true);
-        } else if (packet.data.info === "responseSearchCard") {
+        } else if (packet.data.info === "searchResponse") {
+          gamePageRef.current.setResponse(packet.data);
+        } else if (packet.data.info === "searchReplaceResponse") {
+          gamePageRef.current.setResponse(packet.data);
+        } else if (packet.data.info === "guessedHiddenCard") {
           gamePageRef.current.setResponse(packet.data);
         }
       } else if (packet.type === "private") {
@@ -101,10 +105,7 @@ export default function LobbyJoinPage({ myName }) {
       <GamePageNew
         ref={gamePageRef}
         myPeerId={myPeerRef.current.id}
-        myName={myName}
-        // playerCount={playerCount}
         sendBroadcast={sendBroadcast}
-        // sendPrivate={sendPrivate}
         playerList={connListRef.current}
         boardInfo={boardInfo}
       />

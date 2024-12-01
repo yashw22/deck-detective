@@ -4,6 +4,7 @@ export const MAX_PLAYERS = 5
 export const S_NAME_LEN = 2
 
 export const FREE_ICON = "❓"
+export const ELEMENTS_TYPE = ["weapon", "count", "color"]
 
 export const WEAPONS = ["Axe", "Bow", "Gun"]
 export const WEAPON_ICONS = { "Axe": "🪓", "Bow": "🏹", "Gun": "🔫" }

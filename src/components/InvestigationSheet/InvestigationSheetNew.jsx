@@ -176,7 +176,7 @@ export default function InvestigationSheetNew({ players }) {
     }
   };
   const handleResetClick = () => {
-    const userResponse = confirm("You are about to wipe all data. Proceed?");
+    const userResponse = confirm("Sure you wanna reset your Sheet? All you markings will be lost!!");
     if (userResponse) {
       resetSheet();
     }

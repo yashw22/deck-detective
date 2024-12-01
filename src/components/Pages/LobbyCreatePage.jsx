@@ -7,6 +7,7 @@ import GamePageNew from "./GamePageNew";
 import {
   distributeSearchCards,
   distributeWeaponCards,
+  shuffleArray,
 } from "../../utils/gameUtil";
 import { MAX_PLAYERS, MIN_PLAYERS } from "../../config/constants";
 import { peerConfig } from "../../config/peerConfig";
@@ -163,7 +164,11 @@ export default function LobbyCreatePage({ myName }) {
 
   const processData = (senderPeerId, packet) => {
     if (packet.type === "broadcast") {
-      if (packet.data.info === "responseSearchCard") {
+      if (packet.data.info === "searchResponse") {
+        gamePageRef.current.setResponse(packet.data);
+      } else if (packet.data.info === "searchReplaceResponse") {
+        gamePageRef.current.setResponse(packet.data);
+      } else if (packet.data.info === "guessedHiddenCard") {
         gamePageRef.current.setResponse(packet.data);
       }
     } else if (packet.type === "private") {
@@ -196,7 +201,7 @@ export default function LobbyCreatePage({ myName }) {
           weaponCards: playerWeaponCards[playerCount - 1],
           searchCards: playerSearchCards[playerCount - 1],
         },
-        turnQ: [myPeerId, ...Object.keys(connListRef.current)],
+        turnQ: shuffleArray([...Object.keys(connListRef.current), myPeerId]),
       };
       Object.entries(connListRef.current).map(([peerId, peerObj], idx) => {
         newBoard[peerId] = {
@@ -230,10 +235,7 @@ export default function LobbyCreatePage({ myName }) {
       <GamePageNew
         ref={gamePageRef}
         myPeerId={myPeerId}
-        myName={myName}
-        // playerCount={playerCount}
         sendBroadcast={sendBroadcast}
-        // sendPrivate={sendPrivate}
         playerList={connListRef.current}
         boardInfo={boardInfo}
       />

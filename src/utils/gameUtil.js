@@ -64,17 +64,18 @@ export const sortCards = (a, b) => {
         COUNTS.indexOf(a.count) - COUNTS.indexOf(b.count);
     return countComparison;
 }
+export const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+        [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
+    }
+    return array;
+}
 
 export const distributeWeaponCards = (numPlayers) => {
-    var deck = getWeaponDeck();
-    const deckLen = deck.length;
+    var deck = shuffleArray(getWeaponDeck())
 
-    for (let i = deckLen - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [deck[i], deck[j]] = [deck[j], deck[i]];
-    }
-
-    const cardsPerPlayer = Math.floor((deckLen - 1) / numPlayers);
+    const cardsPerPlayer = Math.floor((deck.length - 1) / numPlayers);
     var playerCards = Array.from({ length: numPlayers }, () => []);
 
     let cardIdx = 0;
@@ -93,13 +94,7 @@ export const distributeWeaponCards = (numPlayers) => {
     return [playerCards, commonCards, resultCard];
 };
 export const distributeSearchCards = (numPlayers) => {
-    var deck = getSearchDeck();
-    const deckLen = deck.length;
-
-    for (let i = deckLen - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [deck[i], deck[j]] = [deck[j], deck[i]];
-    }
+    var deck = shuffleArray(getSearchDeck());
 
     var playerCards = Array.from({ length: numPlayers }, () => []);
 
@@ -113,12 +108,7 @@ export const distributeSearchCards = (numPlayers) => {
 
 export const pickNextSearchCard = (searchDeck, usedDeck) => {
     if (searchDeck.length === 0) {
-        const deckLen = usedDeck.length;
-        for (let i = deckLen - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [usedDeck[i], usedDeck[j]] = [usedDeck[j], usedDeck[i]];
-        }
-        searchDeck = usedDeck;
+        searchDeck = shuffleArray(usedDeck);
         usedDeck = [];
     }
     const pickedSearchCard = searchDeck.shift();
