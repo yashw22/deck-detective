@@ -57,6 +57,7 @@ const GamePageNew = forwardRef(function GamePageNew(
 
   useImperativeHandle(ref, () => ({
     setResponse: (data) => {
+      // console.log(boardState);
       if (
         data.info === "searchResponse" ||
         data.info === "searchReplaceResponse"
@@ -315,6 +316,12 @@ const GamePageNew = forwardRef(function GamePageNew(
         >
           <div className={styles.modalContent}>
             <h2>{msg}</h2>
+            {(lastResponse.isGuessCorrect ||
+              lastResponse.boardInfo.turnQ.length === 1) && (
+              <div className={styles.card}>
+                <ElementCard card={boardState.resultCard} />
+              </div>
+            )}
             {/* <div className={styles.modalBtn} >
                 Start new Game
               </div> */}
@@ -510,7 +517,7 @@ const GamePageNew = forwardRef(function GamePageNew(
           handleClick={() => setNavbarActiveItem("searchCards")}
           text={"Search Cards"}
           longPressHandler={navbarSearchCardsLongPressHandler}
-          isLongPressable={boardState.turnQ[0] === myPeerId}
+          isLongPressable={boardState.turnQ[0] === myPeerId && !hasPlayerGuessed}
         />
         <NavBtn
           isActive={navbarActiveItem === "otherSearchCards"}
