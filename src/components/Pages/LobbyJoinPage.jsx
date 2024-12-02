@@ -20,6 +20,20 @@ export default function LobbyJoinPage({ myName }) {
   const gamePageRef = useRef();
   const [boardInfo, setBoardInfo] = useState({});
 
+  const dotsRef = useRef(null);
+  useEffect(() => {
+    if (!playerCount) {
+      let dotsCount = 0;
+      const interval = setInterval(() => {
+        if (dotsRef.current) {
+          dotsCount = (dotsCount % 5) + 1;
+          dotsRef.current.innerText = ".".repeat(dotsCount);
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [playerCount]);
+
   useEffect(() => {
     const newPeer = new Peer(generateString(), peerConfig);
     myPeerRef.current = newPeer;
@@ -118,6 +132,19 @@ export default function LobbyJoinPage({ myName }) {
         <span className={styles.detectiveLabel}>Detective</span>{" "}
         <span className={styles.playerName}>{myName}</span>
       </p>
+      {!playerCount && (
+        <div>
+          Connecting to server{" "}
+          <span
+            ref={dotsRef}
+            style={{
+              width: "1.8em",
+              textAlign: "left",
+              display: "inline-block",
+            }}
+          ></span>
+        </div>
+      )}
       {playerCount !== 0 && !hostConnRef.current && (
         <div className={styles.connection}>
           <input
@@ -132,7 +159,6 @@ export default function LobbyJoinPage({ myName }) {
           </button>
         </div>
       )}
-
       <h2 className={styles.heading}>Lobby</h2>
       <p className={styles.info}>Players in Lobby: {playerCount}</p>
       <div className={styles.playersContainer}>

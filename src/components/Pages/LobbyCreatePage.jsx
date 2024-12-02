@@ -26,6 +26,21 @@ export default function LobbyCreatePage({ myName }) {
   const gamePageRef = useRef();
   const [boardInfo, setBoardInfo] = useState({});
 
+  const dotsRef = useRef(null);
+  useEffect(() => {
+    if (!myPeerId) {
+      let dotsCount = 0;
+      const interval = setInterval(() => {
+        if (dotsRef.current) {
+          dotsCount = (dotsCount % 5) + 1;
+          dotsRef.current.innerText =
+            ".".repeat(dotsCount) + " ".repeat(5 - dotsCount);
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [myPeerId]);
+
   useEffect(() => {
     // const savedSession = sessionStorage.getItem("lobbyData");
     // if (savedSession) {
@@ -248,9 +263,22 @@ export default function LobbyCreatePage({ myName }) {
         <span className={styles.detectiveLabel}>Detective</span>{" "}
         <span className={styles.playerName}>{myName}</span>
       </p>
-      <p>
-        Game ID: <strong>{myPeerId}</strong>
-        {myPeerId && (
+
+      {!myPeerId ? (
+        <p>
+          Connecting to server{" "}
+          <span
+            ref={dotsRef}
+            style={{
+              width: "1.8em",
+              textAlign: "left",
+              display: "inline-block",
+            }}
+          ></span>
+        </p>
+      ) : (
+        <p>
+          Game ID: <strong>{myPeerId}</strong>
           <button
             className={styles.copyButton}
             onClick={() => navigator.clipboard.writeText(myPeerId)}
@@ -266,8 +294,8 @@ export default function LobbyCreatePage({ myName }) {
               <path d="M8 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8zm0 2h8v12H8V4zm-2 4H4v12a2 2 0 0 0 2 2h8v-2H6V8z" />
             </svg>
           </button>
-        )}
-      </p>
+        </p>
+      )}
 
       {playerCount >= MIN_PLAYERS && (
         <button className={styles.button} onClick={handleBeginGame}>
