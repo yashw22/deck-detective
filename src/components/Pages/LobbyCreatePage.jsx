@@ -303,21 +303,25 @@ export default function LobbyCreatePage({ myName }) {
         </button>
       )}
 
-      <h1 className={styles.heading}>Lobby</h1>
-      <div className={styles.playersContainer}>
-        <p>Connected Players: {playerCount}</p>
-        {Object.entries(connListRef.current).map(([peerId, obj]) => (
-          <div key={peerId} className={styles.playerBox}>
-            <span>{obj.name}</span>
-            <button
-              className={styles.removeButton}
-              onClick={() => handleRemovePlayer(peerId)}
-            >
-              X
-            </button>
+      {myPeerId && (
+        <>
+          <h1 className={styles.heading}>Lobby</h1>
+          <div className={styles.playersContainer}>
+            <p>Connected Players: {playerCount}</p>
+            {Object.entries(connListRef.current).map(([peerId, obj]) => (
+              <div key={peerId} className={styles.playerBox}>
+                <span>{obj.name}</span>
+                <button
+                  className={styles.removeButton}
+                  onClick={() => handleRemovePlayer(peerId)}
+                >
+                  X
+                </button>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 }

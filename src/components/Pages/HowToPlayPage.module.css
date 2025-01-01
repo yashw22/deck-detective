@@ -1,4 +1,12 @@
 .container {
+  position: fixed;
+  inset: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow-y: auto;
+}
+
+.innerContainer {
   max-width: 800px;
   margin: auto;
   font-family: Arial, sans-serif;

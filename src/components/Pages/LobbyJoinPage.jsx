@@ -159,16 +159,20 @@ export default function LobbyJoinPage({ myName }) {
           </button>
         </div>
       )}
-      <h2 className={styles.heading}>Lobby</h2>
-      <p className={styles.info}>Players in Lobby: {playerCount}</p>
-      <div className={styles.playersContainer}>
-        {Object.entries(connListRef.current).map(([peerId, obj]) => (
-          <div key={peerId} className={styles.playerBox}>
-            <span>{obj.name}</span>
-            {peerId === hostConnRef.current.peer && <span>👑</span>}
+      {hostConnRef.current && (
+        <>
+          <h2 className={styles.heading}>Lobby</h2>
+          <p className={styles.info}>Players in Lobby: {playerCount}</p>
+          <div className={styles.playersContainer}>
+            {Object.entries(connListRef.current).map(([peerId, obj]) => (
+              <div key={peerId} className={styles.playerBox}>
+                <span>{obj.name}</span>
+                {peerId === hostConnRef.current.peer && <span>👑</span>}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 }

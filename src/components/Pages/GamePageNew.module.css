@@ -61,7 +61,7 @@
 
 .dynamicBox {
   height: 25%;
-  width: 100%;
+  width: 100vw;
   position: fixed;
   bottom: 50px;
   left: 0px;
@@ -83,12 +83,12 @@
   overflow-y: auto;
   overflow-x: scroll;
   height: 100%;
-  width: 100%;
+  width: 100vw;
   display: flex;
-  white-space: nowrap;
   align-items: center;
-  justify-content: space-evenly;
+  /* justify-content: space-around; */
   /* text-align: center; */
+  /* background-color: rgba(66, 201, 33, 0.459); */
 
   -ms-overflow-style: none;
   /* scrollbar-width: none; */

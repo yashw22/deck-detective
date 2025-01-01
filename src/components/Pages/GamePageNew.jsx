@@ -517,7 +517,9 @@ const GamePageNew = forwardRef(function GamePageNew(
           handleClick={() => setNavbarActiveItem("searchCards")}
           text={"Search Cards"}
           longPressHandler={navbarSearchCardsLongPressHandler}
-          isLongPressable={boardState.turnQ[0] === myPeerId && !hasPlayerGuessed}
+          isLongPressable={
+            boardState.turnQ[0] === myPeerId && !hasPlayerGuessed
+          }
         />
         <NavBtn
           isActive={navbarActiveItem === "otherSearchCards"}
