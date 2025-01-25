@@ -505,7 +505,7 @@ const GamePageNew = forwardRef(function GamePageNew(
         <NavBtn
           isActive={navbarActiveItem === "weaponCards"}
           handleClick={() => setNavbarActiveItem("weaponCards")}
-          text={`Weapon Cards: ${boardState[myPeerId].weaponCards.length}`}
+          text={`Element Cards: ${boardState[myPeerId].weaponCards.length}`}
         />
         <NavBtn
           isActive={navbarActiveItem === "commonCards"}
