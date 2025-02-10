@@ -26,6 +26,15 @@ export default function LobbyCreatePage({ myName }) {
   const gamePageRef = useRef();
   const [boardInfo, setBoardInfo] = useState({});
 
+  const [restartStatus, setRestartStatus] = useState("");
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setRestartStatus("Restarting server, may take up to 2 minutes");
+    }, 10000); //15 sec
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   const dotsRef = useRef(null);
   useEffect(() => {
     if (!myPeerId) {
@@ -275,6 +284,7 @@ export default function LobbyCreatePage({ myName }) {
               display: "inline-block",
             }}
           ></span>
+          <div>{restartStatus}</div>
         </p>
       ) : (
         <p>
